@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.addColumn('project_models', 'code_name',Sequelize.STRING,);
+    await queryInterface.addColumn('project_models','code_name',Sequelize.STRING)
     /**
      * Add altering commands here.
      *
@@ -13,7 +13,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.removeColumn('project_models', 'code_name');
+    await queryInterface.removeColumn('project_models','code_name');
     /**
      * Add reverting commands here.
      *

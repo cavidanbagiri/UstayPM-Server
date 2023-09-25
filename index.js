@@ -10,6 +10,7 @@ require('dotenv').config();
 // require('./src/configs/database');
 const { sequelize, ProjectModel } = require('./models');
 const main = async ()=>{
+  // await sequelize.authenticate()
   await sequelize.authenticate()
 }
 main();

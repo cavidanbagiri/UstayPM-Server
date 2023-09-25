@@ -20,7 +20,7 @@ module.exports =
       "username": process.env.DB_PRODUCTION_USER,
       "password": process.env.DB_PRODUCTION_PASSWORD,
       "database": process.env.DB_PRODUCTION_NAME,
-      "host": process.env.DB_PRODUCTION_HOST+"?sslmode=no-verify",
+      "host": process.env.DB_PRODUCTION_HOST,
       "dialect": "postgres"
     }
   }

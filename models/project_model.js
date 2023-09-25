@@ -15,13 +15,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   project_model.init({
     project_name: DataTypes.STRING,
-    code_name: DataTypes.STRING
+    code_name: DataTypes.STRING,
   }, {
     sequelize,
-    tableName:'project_models',
+    tableName: 'project_models',
     modelName: 'ProjectModel',
   });
   return project_model;
 };
-
-// postgres://ustay_pm_user:w6YSQ33DBLKS9YPaIMj5PiDjKB13QDPi@dpg-ck8u83vsasqs739c6oh0-a.frankfurt-postgres.render.com/ustay_pm
