@@ -7,14 +7,19 @@ const app = express();
 require('dotenv').config();
 
 // Activate Database Connection
-require('./src/configs/database');
+// require('./src/configs/database');
+const { sequelize, ProjectModel } = require('./models');
+const main = async ()=>{
+  await sequelize.authenticate()
+}
+main();
 
 // Import cookieParser for using Frontend sending
 const cookieParser = require('cookie-parser');
 
 
 // Import Routers
-const { HomeRouter } = require('./src/routes');
+const { HomeRouter, AdminRouter } = require('./src/routes');
 
 // Create Cors For Using Frontend
 const cors = require('cors');
@@ -32,7 +37,8 @@ app.use(
 );
 
 // Use Routers
-app.use('/api/index',HomeRouter);
+app.use('/api/index', HomeRouter);
+app.use('/api/admin', AdminRouter);
 
 
 
