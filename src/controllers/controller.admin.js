@@ -1,4 +1,5 @@
 const AdminService = require("../services/service.admin");
+const tryCatch = require("../utils/trycatch");
 
 class AdminController {
   
@@ -64,6 +65,25 @@ class AdminController {
       throw new Error(err);
     }
   }
+
+  // Create Field
+  static async createField(req, res, next) {
+
+    const data = req.body;
+
+    tryCatch(
+      await AdminService.createField(data)
+      .then((respond)=>{
+        console.log('new fields created : ',respond);
+        res.send(respond)
+      })
+      .catch((err)=>{
+        console.log('Create Field Error : ',err);
+      })
+    )
+
+  }
+
 }
 
 module.exports = AdminController;

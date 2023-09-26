@@ -8,6 +8,6 @@ router.post('/createproject', AdminController.createProject);
 router.post('/createdepartment', AdminController.createDepartment);
 router.post('/setstatus', AdminController.setStatus);
 router.post('/createuser', AdminController.createUser);
-
+router.post('/createfield', AdminController.createField);
 
 module.exports = router
