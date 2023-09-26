@@ -17,6 +17,8 @@ main();
 // Import cookieParser for using Frontend sending
 const cookieParser = require('cookie-parser');
 
+// Import ErrorHandler
+const errorHandler = require('./src/middleware/errorHandler');
 
 // Import Routers
 const { HomeRouter, AdminRouter, UserRouter } = require('./src/routes');
@@ -42,6 +44,8 @@ app.use('/api/admin', AdminRouter);
 app.use('/api/user', UserRouter);
 
 
+// Handle Error
+app.use(errorHandler);
 
 // Listen Server
 app.listen(process.env.PORT,()=>{

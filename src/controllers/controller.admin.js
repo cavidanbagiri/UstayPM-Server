@@ -13,10 +13,10 @@ class AdminController {
           return res.status(201).send(respond);
         })
         .catch((err) => {
-          throw new Error(err);
+          next(err);
         });
     } catch (err) {
-      throw new Error(err);
+      next(err);
     }
   }
   // Create New Department
@@ -29,10 +29,10 @@ class AdminController {
           return res.status(201).send(respond);
         })
         .catch((err) => {
-          throw new Error(err);
+          next(err);
         });
     } catch (err) {
-      throw new Error(err);
+      next(err)
     }
   }
   // Set Status || Change Status
@@ -44,10 +44,10 @@ class AdminController {
             return res.status(201).send(respond);
         })
         .catch((err)=>{
-            throw new Error(err);
+            next(err);
         })
     } catch (err) {
-      throw new Error(err);
+      next(err)
     }
   }
   // Create User
@@ -59,10 +59,10 @@ class AdminController {
             return res.status(201).send(respond);
         })
         .catch((err)=>{
-            throw new Error(err);
+            next(err);
         })
     } catch (err) {
-      throw new Error(err);
+      next(err)
     }
   }
 
@@ -79,6 +79,7 @@ class AdminController {
       })
       .catch((err)=>{
         console.log('Create Field Error : ',err);
+        next(err)
       })
     )
 
@@ -97,7 +98,7 @@ class AdminController {
       })
       .catch((err)=>{
         console.log('Default Row Created Error : ',err);
-        throw new Error(err);
+        next(err)
       })
     )
 

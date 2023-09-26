@@ -67,7 +67,7 @@ class AdminService {
       });
       return first;
     }
-    return 'Error : Default value already has ';
+    throw new Error('Default Value Already Has')
   }
 }
 
