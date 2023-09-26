@@ -7,5 +7,7 @@ const AdminController = require('../controllers/controller.admin');
 router.post('/createproject', AdminController.createProject);
 router.post('/createdepartment', AdminController.createDepartment);
 router.post('/setstatus', AdminController.setStatus);
+router.post('/createuser', AdminController.createUser);
+
 
 module.exports = router

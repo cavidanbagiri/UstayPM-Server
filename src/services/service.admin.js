@@ -1,5 +1,7 @@
 
-const { ProjectModel, DepartmentModel, StatusModel } = require('../../models');
+const { ProjectModel, DepartmentModel, StatusModel, UserModel } = require('../../models');
+
+const hashPassword = require('../helpers/hash_password');
 
 class AdminService{
 
@@ -26,6 +28,19 @@ class AdminService{
             departmentId: data.departmentId
         })
         return new_status
+    }
+    static async createUser(data){
+        data.password = await hashPassword(data.password);
+        const new_user = await UserModel.create({
+            email: data.email,
+            password: data.password,
+            name: data.name,
+            surname: data.surname,
+            projectId: data.projectId,
+            departmentId: data.departmentId,
+            statusId: data.statusId 
+        })
+        return new_user
     }
 }
 

@@ -24,34 +24,42 @@ class AdminController {
     try {
       await AdminService.createDepartment(department_name)
         .then((respond) => {
-          console.log("new Department name is created : ", respond);
           return res.send(respond);
         })
         .catch((err) => {
-          console.log("Error Happen For Create Department: ", err);
           throw new Error(err);
         });
     } catch (err) {
-      console.log("Error Happen For Create Department: ", err);
       throw new Error(err);
     }
   }
   // Set Status || Change Status
   static async setStatus(req, res, next) {
     const data = req.body;
-    console.log('data : ',data);
     try {
         await AdminService.setStatus(data)
         .then((respond)=>{
-            console.log('Setting Status Complete');
             return res.send(respond);
         })
         .catch((err)=>{
-            console.log("Setting Status Error : ",err);
             throw new Error(err);
         })
     } catch (err) {
-      console.log("Setting Status Error : ",err);
+      throw new Error(err);
+    }
+  }
+  // Create User
+  static async createUser(req, res, next) {
+    const data = req.body;
+    try {
+        await AdminService.createUser(data)
+        .then((respond)=>{
+            return res.send(respond);
+        })
+        .catch((err)=>{
+            throw new Error(err);
+        })
+    } catch (err) {
       throw new Error(err);
     }
   }
