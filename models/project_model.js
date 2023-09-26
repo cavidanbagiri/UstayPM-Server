@@ -14,8 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   project_model.init({
-    project_name: DataTypes.STRING,
-    code_name: DataTypes.STRING,
+    project_name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    code_name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
   }, {
     sequelize,
     tableName: 'project_models',
