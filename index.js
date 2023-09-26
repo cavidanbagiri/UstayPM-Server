@@ -19,7 +19,7 @@ const cookieParser = require('cookie-parser');
 
 
 // Import Routers
-const { HomeRouter, AdminRouter } = require('./src/routes');
+const { HomeRouter, AdminRouter, UserRouter } = require('./src/routes');
 
 // Create Cors For Using Frontend
 const cors = require('cors');
@@ -39,6 +39,7 @@ app.use(
 // Use Routers
 app.use('/api/index', HomeRouter);
 app.use('/api/admin', AdminRouter);
+app.use('/api/user', UserRouter);
 
 
 
