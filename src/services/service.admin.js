@@ -1,5 +1,5 @@
 
-const { ProjectModel, DepartmentModel } = require('../../models');
+const { ProjectModel, DepartmentModel, StatusModel } = require('../../models');
 
 class AdminService{
 
@@ -19,6 +19,14 @@ class AdminService{
         return new_department;
     }
 
+    static async setStatus(data){
+        const new_status = await StatusModel.create({
+            status_name: data.status_name,
+            status_code: data.status_code,
+            departmentId: data.departmentId
+        })
+        return new_status
+    }
 }
 
 module.exports = AdminService
