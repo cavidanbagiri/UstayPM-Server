@@ -22,7 +22,7 @@ const cookieParser = require('cookie-parser');
 const errorHandler = require('./src/middleware/errorHandler');
 
 // Import Routers
-const { HomeRouter, AdminRouter, UserRouter } = require('./src/routes');
+const { HomeRouter, AdminRouter, UserRouter, STFRouter } = require('./src/routes');
 
 // Create Cors For Using Frontend
 const cors = require('cors');
@@ -43,6 +43,7 @@ app.use(
 app.use('/api/index', HomeRouter);
 app.use('/api/admin', AdminRouter);
 app.use('/api/user', UserRouter);
+app.use('/api/stf', STFRouter);
 
 
 // Handle Error
