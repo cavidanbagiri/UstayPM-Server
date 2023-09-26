@@ -10,18 +10,36 @@ class AdminController {
         try{
             await AdminService.createProject(project_name, code_name)
             .then((respond)=>{
-                console.log('New Project Creates');
                 return res.send(respond);
             })
             .catch((err)=>{
-                console.log('Create Project Error : ',err);
+                throw new Error(err);
+            })
+        } 
+        catch(err){
+            throw new Error(err);
+        }
+    }
+
+    static async createDepartment(req, res, next){
+        const {department_name} = req.body;
+        
+        try{
+            await AdminService.createDepartment(department_name)
+            .then((respond)=>{
+                console.log('new Department name is created : ', respond);
+                return res.send(respond);
+            })
+            .catch((err)=>{
+                console.log('Error Happen For Create Department: ', err);
                 throw new Error(err);
             })
         }
         catch(err){
-            console.log('Create Project Error: ',err);
+            console.log('Error Happen For Create Department: ', err);
             throw new Error(err);
         }
+
     }
 
 }
