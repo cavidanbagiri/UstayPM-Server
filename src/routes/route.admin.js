@@ -9,5 +9,6 @@ router.post('/createdepartment', AdminController.createDepartment);
 router.post('/setstatus', AdminController.setStatus);
 router.post('/createuser', AdminController.createUser);
 router.post('/createfield', AdminController.createField);
+router.post('/createdefaultrowstfnums', AdminController.createDefaultRowSTFNUMS);
 
 module.exports = router

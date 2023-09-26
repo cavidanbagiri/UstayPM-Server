@@ -10,7 +10,7 @@ class AdminController {
     try {
       await AdminService.createProject(project_name, code_name)
         .then((respond) => {
-          return res.send(respond);
+          return res.status(201).send(respond);
         })
         .catch((err) => {
           throw new Error(err);
@@ -26,7 +26,7 @@ class AdminController {
     try {
       await AdminService.createDepartment(department_name)
         .then((respond) => {
-          return res.send(respond);
+          return res.status(201).send(respond);
         })
         .catch((err) => {
           throw new Error(err);
@@ -41,7 +41,7 @@ class AdminController {
     try {
         await AdminService.setStatus(data)
         .then((respond)=>{
-            return res.send(respond);
+            return res.status(201).send(respond);
         })
         .catch((err)=>{
             throw new Error(err);
@@ -56,7 +56,7 @@ class AdminController {
     try {
         await AdminService.createUser(data)
         .then((respond)=>{
-            return res.send(respond);
+            return res.status(201).send(respond);
         })
         .catch((err)=>{
             throw new Error(err);
@@ -75,10 +75,29 @@ class AdminController {
       await AdminService.createField(data)
       .then((respond)=>{
         console.log('new fields created : ',respond);
-        res.send(respond)
+        res.status(201).send(respond)
       })
       .catch((err)=>{
         console.log('Create Field Error : ',err);
+      })
+    )
+
+  }
+
+  // Create First Row
+  static async createDefaultRowSTFNUMS(req, res, next){
+
+    const data = req.body;
+
+    tryCatch(
+      await AdminService.createDefaultRowSTFNUMS(data)
+      .then((respond)=>{
+        console.log('Default Row Created');
+        res.status(201).send(respond);
+      })
+      .catch((err)=>{
+        console.log('Default Row Created Error : ',err);
+        throw new Error(err);
       })
     )
 
