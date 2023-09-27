@@ -74,7 +74,6 @@ class AdminController {
     tryCatch(
       await AdminService.createField(data)
       .then((respond)=>{
-        console.log('new fields created : ',respond);
         res.status(201).send(respond)
       })
       .catch((err)=>{
@@ -87,13 +86,10 @@ class AdminController {
 
   // Create First Row
   static async createDefaultRowSTFNUMS(req, res, next){
-
     const data = req.body;
-
     tryCatch(
       await AdminService.createDefaultRowSTFNUMS(data)
       .then((respond)=>{
-        console.log('Default Row Created');
         res.status(201).send(respond);
       })
       .catch((err)=>{
@@ -101,7 +97,36 @@ class AdminController {
         next(err)
       })
     )
+  }
 
+  // Fetch Project Name 
+  static async fetchProject (req, res, next){
+    const project_id = req.params.project_id;
+    tryCatch(
+      await AdminService.fetchProject(project_id)
+      .then((respond)=>{
+        res.status(200).send(respond);
+      })
+      .catch((err)=>{
+        console.log('Project Id Row Created Error : ',err);
+        next(err)
+      })
+    )
+  }
+
+  // Fetch Fields Name 
+  static async fetchfields (req, res, next){
+    const project_id = req.params.project_id;
+    tryCatch(
+      await AdminService.fetchfields(project_id)
+      .then((respond)=>{
+        res.status(200).send(respond);
+      })
+      .catch((err)=>{
+        console.log('Project Id Row Created Error : ',err);
+        next(err)
+      })
+    )
   }
 
 }

@@ -10,5 +10,7 @@ router.post('/setstatus', AdminController.setStatus);
 router.post('/createuser', AdminController.createUser);
 router.post('/createfield', AdminController.createField);
 router.post('/createdefaultrowstfnums', AdminController.createDefaultRowSTFNUMS);
+router.get('/project/:project_id', AdminController.fetchProject);
+router.get('/fieldnames/:project_id', AdminController.fetchfields);
 
 module.exports = router

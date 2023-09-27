@@ -69,6 +69,28 @@ class AdminService {
     }
     throw new Error('Default Value Already Has')
   }
+
+  static async fetchProject(projectId){
+    const res = await ProjectModel.findOne({
+      attributes:["project_name"],
+      where:{
+        id:projectId
+      }
+    })
+    return res?.dataValues?.project_name
+  }
+
+  static async fetchfields(projectId){
+    const res = await FieldsModel.findAll({
+      attributes:["id", "field_name"],
+      where:{
+        "projectId":projectId
+      }
+    })
+    console.log(res);
+    return res
+  }
+
 }
 
 module.exports = AdminService;
