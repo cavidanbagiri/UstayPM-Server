@@ -14,7 +14,7 @@ class STFController {
         return res.status(201).send(respond)
       })
       .catch((err)=>{
-        console.log('Create STF Error : ',err);
+        // console.log('Create STF Error : ',err);
         next(err);
       })
     )

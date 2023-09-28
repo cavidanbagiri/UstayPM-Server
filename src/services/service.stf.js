@@ -1,14 +1,14 @@
-const {
-  sequelize,
-  STFModel,
-  ProjectModel
-} = require("../../models");
+const { sequelize, STFModel, ProjectModel } = require("../../models");
 const STFQueries = require("../queries/stf_queries");
-
+const EmptyFieldError = require("../exceptions/EmptyFieldError");
 // Create STF Class
 class STFServiceCreate {
   // Create STF
   static async createSTF(data) {
+    // Validate All Column that, Each row and common information is true || not
+    this.#checkValidation(data);
+
+    // Set STF Num inside of data and insert to table
     data.stf_num = await this.#createSTFNUMSForm(data);
 
     for (let i of data.orders) {
@@ -20,9 +20,7 @@ class STFServiceCreate {
 
   // Get Last Nums and Add +1  stf_nums table and return last stf_nums
   static async #getLastNumsAddAndCreateSTFNums(projectId) {
-    const last = await sequelize.query(
-      createSTFNUMSAndReturn
-    );
+    const last = await sequelize.query(STFQueries.createSTFNUMSAndReturn(projectId));
     return last[0][0]["stf_nums"];
   }
 
@@ -64,6 +62,33 @@ class STFServiceCreate {
     });
     return res;
   }
+
+  // Check Validation for importing data
+  static #checkValidation(data) {
+    if (!data.projectId) 
+      throw new EmptyFieldError("Project Cant Be null", 400);
+    if (!data.userId) 
+      throw new EmptyFieldError("User Cant Be null", 400);
+    if (!data.departmentId)
+      throw new EmptyFieldError("Department Cant Be null", 400);
+    if (!data.fieldsId) 
+      throw new EmptyFieldError("Fields Cant Be null", 400);
+    if (data.orders.length === 0) 
+      throw new EmptyFieldError("Orders Must Be At Least 1 Order", 400);
+    for (let i = 0; i < data.orders?.length; i++) {
+      data.orders[i].material_type = data.orders[i].material_type.trim()
+      data.orders[i].material_name = data.orders[i].material_name.trim()
+      data.orders[i].material_unit = data.orders[i].material_unit.trim()
+      if (data.orders[i].material_type === "")
+        throw new EmptyFieldError("Material Type Cant Be Empty", 400);
+      if (data.orders[i].material_name === "")
+        throw new EmptyFieldError("Material Name Cant Be Empty", 400);
+      if (data.orders[i].material_amount <= 0)
+        throw new EmptyFieldError("Material AMount Cant Be Zero", 400);
+      if (data.orders[i].material_unit === "")
+        throw new EmptyFieldError("Material Unit Cant Be Empty", 400);
+    }
+  }
 }
 
 class FetchUserSTF {
@@ -80,27 +105,27 @@ module.exports = {
 };
 
 // const res = await STFModel.findAll({
-    //   attributes: [
-    //     "stf_num",
-    //     "material_type",
-    //     "material_name",
-    //     "material_amount",
-    //     "material_unit",
-    //     "createdAt"
-    //   ],
-    //   where: {
-    //     userId: user_id,
-    //   },
-    //   include: [
-    //     {
-    //       attributes: ["email","name","surname"],
-    //       model: UserModel,
-    //       required: false,
-    //     },
-    //     {
-    //       attributes: ["field_name"],
-    //       model: FieldsModel,
-    //       required: false,
-    //     },
-    //   ],
-    // });
+//   attributes: [
+//     "stf_num",
+//     "material_type",
+//     "material_name",
+//     "material_amount",
+//     "material_unit",
+//     "createdAt"
+//   ],
+//   where: {
+//     userId: user_id,
+//   },
+//   include: [
+//     {
+//       attributes: ["email","name","surname"],
+//       model: UserModel,
+//       required: false,
+//     },
+//     {
+//       attributes: ["field_name"],
+//       model: FieldsModel,
+//       required: false,
+//     },
+//   ],
+// });

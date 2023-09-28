@@ -14,7 +14,6 @@ class UserController {
     const user_data = req.body;
     const hashpassword = await hashPassowrd(user_data.password);
     user_data.password = hashpassword;
-    console.log('user_data : ',user_data);
     tryCatch(
         await UserService.loginUser(user_data)
         .then((user) => {
@@ -27,6 +26,7 @@ class UserController {
             }
           }
           res.cookie('jwt',temp_user.tokens.access_token);
+          delete user.tokens;
           return res.status(200).send(temp_user);
         })
         .catch((err) => {

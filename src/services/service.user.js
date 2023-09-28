@@ -1,21 +1,21 @@
 
+const UserNotFoundError = require('../exceptions/UserNotFoundError');
 const { UserModel } = require('../../models');
 
 class UserService {
 
   static async loginUser(user_data) {
-    const user = await UserModel.findOne({
+    return await UserModel.findOne({
       where: {
         email: user_data.email,
         password: user_data.password,
       },
-    });
-    if (user) {
-      return user.dataValues;
-    } else {
-      console.log('User Login Error : ',err);
-      return null;
-    }
+    })
+    .then((respond)=>{
+      return respond.dataValues
+    }).catch((err)=>{
+      throw new UserNotFoundError("User Not Found", 400)
+    })
   }
 }
 
