@@ -10,7 +10,6 @@ class STFController {
     tryCatch(
       await STFServiceCreate.createSTF(data)
       .then((respond)=>{
-        console.log('Create STF respond ', respond);
         return res.status(201).send(respond)
       })
       .catch((err)=>{

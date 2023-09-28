@@ -49,7 +49,7 @@ class STFServiceCreate {
 
   // Create Each Row For STF
   static async #createEachRow(data, each) {
-    const res = await STFModel.create({
+    return await STFModel.create({
       stf_num: data.stf_num,
       projectId: data.projectId,
       userId: data.userId,
@@ -59,8 +59,12 @@ class STFServiceCreate {
       material_name: each.material_name,
       material_amount: each.material_amount,
       material_unit: each.material_unit,
-    });
-    return res;
+    })
+    .then((respond)=>{
+      return respond
+    }).catch((err)=>{
+      throw EmptyFieldError(err.message, 400);
+    })
   }
 
   // Check Validation for importing data
