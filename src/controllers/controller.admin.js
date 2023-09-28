@@ -6,7 +6,6 @@ class AdminController {
   // Create New Project
   static async createProject(req, res, next) {
     const { project_name, code_name } = req.body;
-    console.log(project_name, code_name);
     try {
       await AdminService.createProject(project_name, code_name)
         .then((respond) => {
