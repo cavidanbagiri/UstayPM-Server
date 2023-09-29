@@ -7,8 +7,9 @@ class STFQUeries {
   }
   static fetchUserSTFAll(user_id){
     const string_query = `
-    select stf_num, material_type, material_name, material_amount, material_unit, completed, users_models.name, users_models.surname from stf_models
+    select stf_models.id as stf_id, stf_num, material_type, material_name, material_amount, material_unit, stf_models."createdAt", completed, concat(users_models.name, ' ', users_models.surname) as username, fields_models.field_name from stf_models
     left join users_models on stf_models."userId" = users_models.id
+    left join fields_models on fields_models.id = "fieldId"
     where stf_models."userId"=${user_id}
     `
     return string_query;

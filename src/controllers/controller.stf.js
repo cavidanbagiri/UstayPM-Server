@@ -23,7 +23,6 @@ class STFController {
   static async fetchUserSTFAll(req, res, next) {
     console.log('called');
     const user_id = req.params.user_id;
-    console.log('user id : ',user_id);
     tryCatch(
       await FetchUserSTF.fetchUserSTFAll(user_id)
       .then((respond)=>{
