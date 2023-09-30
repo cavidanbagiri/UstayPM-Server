@@ -8,7 +8,7 @@ class STFServiceCreate {
     // Validate All Column that, Each row and common information is true || not
     this.#checkValidation(data);
 
-    // Set STF Num inside of data and insert to table
+    // Set STF Num inside of data and insert to table -> SRU.RS.07.10003
     data.stf_num = await this.#createSTFNUMSForm(data);
 
     for (let i of data.orders) {
@@ -36,12 +36,12 @@ class STFServiceCreate {
 
   // Return stf_nums form for STFModel
   static async #createSTFNUMSForm(data) {
-    // Get Last STFNums value
+    // Get Last STFNums value // 10003
     const last_created_stf_num = await this.#getLastNumsAddAndCreateSTFNums(
-      data.projectId
+      data.user.projectId
     );
-    // Get Project code_name
-    const project_code_name = await this.#getProjectCodeName(data.projectId);
+    // Get Project code_name // SRU.RS.07 + 10003 = SRU.RS.07.10003
+    const project_code_name = await this.#getProjectCodeName(data.user.projectId);
     // Create stf_nums accoring to STFModel
     let stf_num = project_code_name + last_created_stf_num.toString();
     return stf_num;
@@ -51,14 +51,14 @@ class STFServiceCreate {
   static async #createEachRow(data, each) {
     return await STFModel.create({
       stf_num: data.stf_num,
-      projectId: data.projectId,
-      userId: data.userId,
-      departmentId: data.departmentId,
-      fieldId: data.fieldsId,
+      projectId: data.user.projectId,
+      userId: data.user.id,
+      departmentId: data.user.departmentId,
       material_type: each.material_type,
       material_name: each.material_name,
       material_amount: each.material_amount,
       material_unit: each.material_unit,
+      fieldId: each.fieldId,
     })
     .then((respond)=>{
       return respond
@@ -69,14 +69,14 @@ class STFServiceCreate {
 
   // Check Validation for importing data
   static #checkValidation(data) {
-    if (!data.projectId) 
+    if (!data.user.projectId) 
       throw new EmptyFieldError("Project Cant Be null", 400);
-    if (!data.userId) 
+    if (!data.user.id) 
       throw new EmptyFieldError("User Cant Be null", 400);
-    if (!data.departmentId)
+    if (!data.user.departmentId)
       throw new EmptyFieldError("Department Cant Be null", 400);
-    if (!data.fieldsId) 
-      throw new EmptyFieldError("Fields Cant Be null", 400);
+    // if (!data.fieldId) 
+    //   throw new EmptyFieldError("Fields Cant Be null", 400);
     if (data.orders.length === 0) 
       throw new EmptyFieldError("Orders Must Be At Least 1 Order", 400);
     for (let i = 0; i < data.orders?.length; i++) {
@@ -91,7 +91,9 @@ class STFServiceCreate {
         throw new EmptyFieldError("Material AMount Cant Be Zero", 400);
       if (data.orders[i].material_unit === "")
         throw new EmptyFieldError("Material Unit Cant Be Empty", 400);
-    }
+      if (data.orders[i].fieldId === "")
+        throw new EmptyFieldError("Material Type Cant Be Empty", 400);
+      }
   }
 }
 

@@ -17,16 +17,15 @@ class STFController {
         next(err);
       })
     )
+    // return 'OK'
   }
 
   // Fetch All STF
   static async fetchUserSTFAll(req, res, next) {
-    console.log('called');
     const user_id = req.params.user_id;
     tryCatch(
       await FetchUserSTF.fetchUserSTFAll(user_id)
       .then((respond)=>{
-        console.log('Fetch STF For User ', respond);
         return res.status(200).send(respond)
       })
       .catch((err)=>{

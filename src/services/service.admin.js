@@ -116,7 +116,6 @@ class AdminService {
         projectId: projectId,
       },
     });
-    console.log(res);
     return res;
   }
 }

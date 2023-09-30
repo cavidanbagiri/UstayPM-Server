@@ -5,11 +5,11 @@ const UserNotFoundError = require("../exceptions/UserNotFoundError");
 const errorHandler = (err, req, res, next) => {
 
     if(err instanceof UserNotFoundError){
-        console.log('Yes Error is instance of UserNotFoundError');
+        console.log('Yes Error is instance of UserNotFoundError', err.message);
         return res.status(err.statusCode).send(err.message);
     }
     if(err instanceof EmptyFieldError){
-        console.log('Yes Error is instance of EmptyFieldError');
+        console.log('Yes Error is instance of EmptyFieldError', err.message);
         return res.status(err.statusCode).send(err.message);
     }
 
