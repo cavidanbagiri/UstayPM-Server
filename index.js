@@ -11,7 +11,7 @@ require('dotenv').config();
 const { sequelize } = require('./models');
 const main = async ()=>{
   await sequelize.authenticate()
-  // await sequelize.sync({force: true})
+  // await sequelize.sync({force: false})
 }
 main();
 
