@@ -15,7 +15,7 @@ if (config.use_env_variable) {
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
   // let connection_string = `postgres://${process.env.DB_PRODUCTION_USER}:${process.env.DB_PRODUCTION_PASSWORD}@${process.env.DB_PRODUCTION_HOST}/${process.env.DB_PRODUCTION_NAME}?sslmode=no-verify`;
-  // let connection_string = `postgres://${process.env.DB_PRODUCTION_USER}:${process.env.DB_PRODUCTION_PASSWORD}@${process.env.DB_PRODUCTION_HOST}/${process.env.DB_PRODUCTION_NAME}?sslmode='disable'`;
+  // let connection_string = `postgres://${process.env.DB_PRODUCTION_USER}:${process.env.DB_PRODUCTION_PASSWORD}@${process.env.DB_PRODUCTION_HOST}/${process.env.DB_PRODUCTION_NAME}?sslmode=no-verify`;
   
   // sequelize = new Sequelize(connection_string);
 }
