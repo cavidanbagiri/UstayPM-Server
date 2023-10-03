@@ -1,6 +1,9 @@
 const { sequelize, STFModel, ProjectModel } = require("../../models");
 const STFQueries = require("../queries/stf_queries");
 const EmptyFieldError = require("../exceptions/EmptyFieldError");
+const whereQuery = require("../utils/whereQuery");
+
+
 // Create STF Class
 class STFServiceCreate {
   // Create STF
@@ -64,7 +67,8 @@ class STFServiceCreate {
       return respond
     }).catch((err)=>{
       throw EmptyFieldError(err.message, 400);
-    })
+    });
+
   }
 
   // Check Validation for importing data
@@ -95,9 +99,11 @@ class STFServiceCreate {
         throw new EmptyFieldError("Material Type Cant Be Empty", 400);
       }
   }
+
 }
 
 class FetchUserSTF {
+
   // Get User STF All
   static async fetchUserSTFAll(user_id) {
     const res = await sequelize.query(STFQueries.fetchUserSTFAll(user_id));
@@ -105,9 +111,33 @@ class FetchUserSTF {
   }
 }
 
+class FilterSTF {
+
+  // Filter User STF
+  static async filterSTF(query) {
+
+    const where_query = whereQuery('', query);
+
+    const string_query = `
+    ${STFQueries.stf_user_filter_query}
+      WHERE  ${where_query}
+      ORDER BY stf_models.stf_num DESC
+    `;
+
+    const result = await sequelize.query(string_query);
+
+    // console.log('where query is : ', where_query);
+    // console.log('res query is : ', result[0]);
+
+    return result[0];
+  }
+
+}
+
 module.exports = {
   STFServiceCreate,
   FetchUserSTF,
+  FilterSTF,
 };
 
 // const res = await STFModel.findAll({
