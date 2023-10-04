@@ -5,6 +5,7 @@ const {
   UserModel,
   FieldsModel,
   STFNUMS,
+  VendorModel,
 } = require("../../models");
 const EmptyFieldError = require("../exceptions/EmptyFieldError");
 
@@ -118,6 +119,13 @@ class AdminService {
     });
     return res;
   }
+
+  // Cretae Vendor
+  static async createVendor (data){
+    const res = await VendorModel.create(data);
+    return res;
+  }
+
 }
 
 module.exports = AdminService;
