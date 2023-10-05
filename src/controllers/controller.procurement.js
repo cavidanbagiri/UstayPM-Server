@@ -2,6 +2,7 @@ const {
   ProcurementServiceFetchSTF,
   ProcurementServiceFetchCompanies,
   ProcurementServiceFetchProcurementUsers,
+  ProcurementServiceCreateSM
 } = require("../services/service.procurement");
 const tryCatch = require("../utils/trycatch");
 
@@ -10,6 +11,24 @@ class ProcurementController {
   static async fetchSTF(req, res, next) {
     tryCatch(
       await ProcurementServiceFetchSTF.fetchSTF()
+        .then((respond) => {
+          res.status(200).send(respond);
+        })
+        .catch((err) => {
+          console.log("Fetch STF Error From Procurement");
+          next(err);
+        })
+    );
+    return "OK";
+  }
+
+  // Fetch All STF
+  static async createSM(req, res, next) {
+    console.log("---------");
+    console.log('create sm body : ', req.body);
+    const data= req.body;
+    tryCatch(
+      await ProcurementServiceCreateSM.createSM(data)
         .then((respond) => {
           res.status(200).send(respond);
         })
