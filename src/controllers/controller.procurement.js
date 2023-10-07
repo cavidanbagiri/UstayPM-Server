@@ -1,5 +1,6 @@
 const {
   ProcurementServiceFetchSTF,
+  ProcurementServiceFetchSM,
   ProcurementServiceFetchCompanies,
   ProcurementServiceFetchProcurementUsers,
   ProcurementServiceCreateSM
@@ -11,6 +12,21 @@ class ProcurementController {
   static async fetchSTF(req, res, next) {
     tryCatch(
       await ProcurementServiceFetchSTF.fetchSTF()
+        .then((respond) => {
+          res.status(200).send(respond);
+        })
+        .catch((err) => {
+          console.log("Fetch STF Error From Procurement");
+          next(err);
+        })
+    );
+    return "OK";
+  }
+
+  // Fetch All STF
+  static async fetchSM(req, res, next) {
+    tryCatch(
+      await ProcurementServiceFetchSM.fetchSM()
         .then((respond) => {
           res.status(200).send(respond);
         })

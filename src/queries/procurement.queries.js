@@ -8,6 +8,18 @@ class ProcurementQueries {
   left join users_models on users_models.id = stf_models."userId"
   `;
 
+  // Fetch All STF 
+  static select_all_sm_query = `
+  select sm_models.id as sm_id, sm_models.sm_num, stf_models.stf_num, situation_models.status_name as situation, sm_models.sm_material_name, sm_models.sm_material_amount,
+  sm_models.sm_material_unit, sm_models."createdAt", sm_models."projectId" as project_id, sm_models."departmentId" as department_id,
+  concat(users_models.name , ' ', users_models.surname)  as username
+  from sm_models
+  left join stf_models on sm_models."stfId"=stf_models.id
+  left join users_models on users_models.id = stf_models."userId"
+  left join conditions_models on conditions_models."smId" = sm_models.id
+  left join situation_models on situation_models.id =  conditions_models."situationId"
+  `;
+
   // Fetch All Companies
   static select_companies = `
     SELECT id as company_id, vendor_name  FROM vendors_models

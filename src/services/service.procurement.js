@@ -16,6 +16,14 @@ class ProcurementServiceFetchSTF {
 
 }
 
+class ProcurementServiceFetchSM {
+  static async fetchSM () {
+    const string_query = ProcurementQueries.select_all_sm_query;
+    const result = await sequelize.query(string_query);
+    return result[0];
+  }
+}
+
 // Create SM
 class ProcurementServiceCreateSM {
 
@@ -127,5 +135,6 @@ module.exports = {
   ProcurementServiceFetchSTF,
   ProcurementServiceFetchCompanies,
   ProcurementServiceFetchProcurementUsers,
-  ProcurementServiceCreateSM
+  ProcurementServiceCreateSM,
+  ProcurementServiceFetchSM
 }
