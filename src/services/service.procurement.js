@@ -1,6 +1,6 @@
 
 
-const { sequelize, ProjectModel, SMModel } = require('../../models');
+const { sequelize, ProjectModel, SMModel, ConditionModel } = require('../../models');
 
 const ProcurementQueries = require('../queries/procurement.queries');
 
@@ -21,12 +21,21 @@ class ProcurementServiceCreateSM {
 
   // Create SM 
   static async createSM(data){
-    const projectId = 1;
-    // Create SM_Num form
-    const sm_num = await this.#createSMNumForm(projectId);
-    // Create SM Model
-    for(let i of data){
-      const result = await this.#createSMDataModel(sm_num, i)
+    if(data.length){
+      // Take Project Id
+      const projectId = data[0].project_id;
+      // Create SM_Num form
+      const sm_num = await this.#createSMNumForm(projectId);
+      // Create SM Model
+      for(let i of data){
+        const result = await this.#createSMDataModel(sm_num, i)
+        .then(async(respond)=>{
+          await this.#createConditionModelSM(respond.dataValues)
+        }).catch((err)=>{
+          console.log("Create New SM Error : ", err);
+          throw new Error(err);
+        })
+      }
     }
 
     return 'OK';
@@ -73,13 +82,24 @@ class ProcurementServiceCreateSM {
       currency: each.currency,
       left_over: each.sm_material_amount,
       approximate_date: '2023-05-10',
-      projectId: 1,
-      departmentId:1,
+      projectId: each.project_id,
+      departmentId:each.department_id,
       vendorId: each.VendorModelId,
       supplierId: each.supplierName,
       stfId: each.stfId,
     })
     return result;
+  }
+
+  // Create Condition Model For Each SM ID
+  static async #createConditionModelSM(respond) {
+
+    const result = await ConditionModel.create({
+      smId: respond.id,
+      situationId: 1,
+      projectId: respond.projectId
+    })
+
   }
 
 }
