@@ -2,6 +2,7 @@
 const { sequelize, WarehouseModel, SMModel } = require('../../models');
 
 const ProcurementQueries = require('../queries/procurement.queries')
+const WarehouseQueries = require('../queries/warehouse.queries');
 
 // Fetch processing SMS
 class WarehouseServiceFetchProcessingSMS {
@@ -11,6 +12,7 @@ class WarehouseServiceFetchProcessingSMS {
   }
 }
 
+// Accept SM
 class WarehouseServiceAcceptSMS {
 
   // Accept SMS To Warehouse
@@ -104,8 +106,21 @@ class WarehouseServiceAcceptSMS {
 
 }
 
+class WarehouseServiceFetchReceivedSMS {
+
+  // Fetch Received SM From Warehouse
+  static async fetchSMFromWarehouse (){
+
+    const result = await sequelize.query(WarehouseQueries.received_sms_from_warehouse_query);
+    // console.log('rec result is ', result[0]);
+    return result[0];
+
+  }
+
+} 
 
 module.exports = {
   WarehouseServiceFetchProcessingSMS,
   WarehouseServiceAcceptSMS,
+  WarehouseServiceFetchReceivedSMS
 }

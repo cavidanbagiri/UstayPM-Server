@@ -8,4 +8,6 @@ router.get("/processingsm", WarehouseController.fetchProcessingSM);
 
 router.post("/accept", WarehouseController.acceptSM);
 
+router.get('/receivedsm', WarehouseController.fetchSMFromWarehouse);
+
 module.exports = router;
