@@ -25,7 +25,7 @@ class WarehouseController {
     const data = req.body;
     console.log('entering data : ', data);
     tryCatch(
-      await WarehouseServiceAcceptSMS.acceptSMS()
+      await WarehouseServiceAcceptSMS.acceptSMS(data)
       .then((respond) => {
         return res.send("OK");
         // return res.send(respond);
