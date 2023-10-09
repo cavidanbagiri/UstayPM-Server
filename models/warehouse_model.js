@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DOUBLE,
       allowNull: true,
     },
+    delivery_left_over_amount: {
+      type: DataTypes.DOUBLE,
+      allowNull: true,
+    },
     delivery_material_unit: {
       type: DataTypes.STRING,
       allowNull: true,

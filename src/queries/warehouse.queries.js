@@ -2,7 +2,7 @@ class WarehouseQueries {
   static received_sms_from_warehouse_query = `
 
   select sm_models.id as sm_id, sm_models.sm_num, stf_models.stf_num, warehouse_models.delivery_material_name,
-  warehouse_models.delivery_material_amount, warehouse_models.delivery_material_unit,
+  warehouse_models.delivery_material_amount, warehouse_models.delivery_left_over_amount, warehouse_models.delivery_material_unit,
   sm_models.price, sm_models.total, sm_models.currency, sm_models.left_over, 
   warehouse_models."createdAt", sm_models."projectId" as project_id, sm_models."departmentId" as department_id,
   concat(users_models.name , ' ', users_models.surname)  as orderer,

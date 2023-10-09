@@ -31,6 +31,7 @@ class WarehouseServiceAcceptSMS {
     const result = await WarehouseModel.create({
       delivery_material_name: data.checked_values[each].sm_material_name,
       delivery_material_amount : data.table_data[each].entering_delivery_amount,
+      delivery_left_over_amount : data.table_data[each].entering_delivery_amount,
       delivery_material_unit : data.table_data[each].delivery_unit,
       delivery_material_price : data.checked_values[each].price,
       delivery_material_total : data.checked_values[each].total,
