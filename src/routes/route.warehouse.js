@@ -10,4 +10,6 @@ router.post("/accept", WarehouseController.acceptSM);
 
 router.get('/receivedsm', WarehouseController.fetchSMFromWarehouse);
 
+router.post('/provide', WarehouseController.provideMaterial);
+
 module.exports = router;

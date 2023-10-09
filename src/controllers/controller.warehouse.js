@@ -2,7 +2,8 @@ const tryCatch = require("../utils/trycatch");
 const {
   WarehouseServiceFetchProcessingSMS,
   WarehouseServiceAcceptSMS,
-  WarehouseServiceFetchReceivedSMS
+  WarehouseServiceFetchReceivedSMS,
+  WarehouseServiceProvideSM
 } = require("../services/service.warehouse");
 
 class WarehouseController {
@@ -51,6 +52,25 @@ class WarehouseController {
         next(err);
       })
     )
+  }
+
+  // Provide Material 
+  static async provideMaterial(req, res, next) {
+    const data = req.body;
+    console.log('data is : ', data);
+    tryCatch(
+      await WarehouseServiceProvideSM.provideMaterial(data)
+      .then((respond) => {
+        console.log('is ',respond);
+        return res.send(respond);
+        // return res.send(respond);
+      })
+      .catch((err) => {
+        console.log("Accept SMS Error : ", err);
+        next(err);
+      })
+    )
+
   }
 
 }

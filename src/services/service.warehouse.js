@@ -50,16 +50,13 @@ class WarehouseServiceAcceptSMS {
 
   // Withdrow From SMS LeftOver
   static async #withdrowSMAmount (data, each) {
-    console.log('withdrow work-----------------------');
     // Get Current SM Amount
     const entering_amount = Number(data.table_data[each].entering_delivery_amount)
 
     // Find SM with id
     const result = await this.#findSMById( data.checked_values[each].sm_id )
     .then(async (respond)=>{
-      console.log('sec -------------------------', respond);
       const sm_amount = Number(respond.dataValues.sm_material_amount);
-      console.log('Entering Amount ',entering_amount, typeof entering_amount, ' sm : ', sm_amount, typeof sm_amount);
       // If Entering Amount Greater Than SM AMount
       if(entering_amount > sm_amount){
 
@@ -67,7 +64,6 @@ class WarehouseServiceAcceptSMS {
         const max_accepting_amount = sm_amount + (sm_amount * 0,1);
         // If Greater Than Max Accepting Value Return Error
         if( entering_amount > max_accepting_amount ){
-          console.log('here also------------------------------');
           throw new Error(`Wrong Operation, Amount Cant Be Greater Than ${max_accepting_amount}`);
         }
         else{
@@ -76,7 +72,6 @@ class WarehouseServiceAcceptSMS {
       }
       // If Not
       else{
-        console.log('work----------------------');
         await this.#updateSMLeftOverAmount(data.checked_values[each].sm_id, entering_amount);
       }
     }).catch((err)=>{
@@ -107,6 +102,7 @@ class WarehouseServiceAcceptSMS {
 
 }
 
+// Fetch Received Warehouse
 class WarehouseServiceFetchReceivedSMS {
 
   // Fetch Received SM From Warehouse
@@ -120,8 +116,20 @@ class WarehouseServiceFetchReceivedSMS {
 
 } 
 
+class WarehouseServiceProvideSM {
+
+  // Provide Material 
+  static async provideMaterial(data) {
+    
+    return 'OK';
+
+  }
+
+}
+
 module.exports = {
   WarehouseServiceFetchProcessingSMS,
   WarehouseServiceAcceptSMS,
-  WarehouseServiceFetchReceivedSMS
+  WarehouseServiceFetchReceivedSMS,
+  WarehouseServiceProvideSM
 }
