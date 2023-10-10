@@ -128,33 +128,67 @@ class WarehouseServiceProvideSM {
   // Provide Material
   static async provideMaterial(data) {
 
-
     for (let i of data.data){
 
-      const res = await this.#createProvideModel(data.user, i);
+      // const res = await this.#createProvideModel(data.user, i);
+      const each = await this.#findWarehouseItemById(i.warehouse_id);
+  
+      const res = this.checkWithdrow(data.user, each, i)
+      return res.then((respond)=>{
+        return respond;
+      }).catch((err)=>{
+        return new Error(err);
+      })
 
     }
 
-    
+  }
 
-    return "OK";
+  // Find Warehouse Data With Id
+  static async #findWarehouseItemById (warehouse_id) {
+    const res = await WarehouseModel.findOne({
+      where:{
+        id : warehouse_id
+      }
+    })
+    console.log('finding is : ',res);
+    return res.dataValues;
+  }
+
+  // Check If Withdrow if possible
+  static async checkWithdrow (user_id, warehouse_item, data){
+    if (warehouse_item.delivery_left_over_amount - data.provide_amount >= 0){
+      const res = await this.#updateWarehouseItemLeftOver(warehouse_item.id, data.provide_amount)
+      .then(async(respond)=>{
+        return this.#createProvideModel(user_id, data);
+      }).catch((err)=>{
+        console.log('err ',err);
+        return new Error("Check Withdrow Error : ",err);
+      })
+      return res;
+    }
+    else{
+      return null;
+    }
+  }
+
+  // Update Left Over Amount From Warehouse
+  static async #updateWarehouseItemLeftOver(warehouse_id, provide_amount){
+    const res = sequelize.query(WarehouseQueries.updateWarehouseLeftOverAmount(warehouse_id, provide_amount));
   }
 
   // Create Provide Model
   static async #createProvideModel (userId, data){
-
     const res = await ProvidedModel.create({
       warehouseId: data.warehouse_id,
       userId: userId,
-      typeId: 1,
-      departmentId: 1,
+      typeId: data.type,
+      departmentId: data.provide_department,
       provided_amount: data.provide_amount,
       deliver_to: data.provide_user,
       card_number: data.provide_user_card_number,
     });
-
     return res;
-
   }
 
 

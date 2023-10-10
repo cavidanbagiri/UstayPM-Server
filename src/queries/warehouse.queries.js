@@ -30,6 +30,11 @@ class WarehouseQueries {
     select id, type_name from warehouse_delivery_types 
   `
 
+  static updateWarehouseLeftOverAmount(warehouse_id, provide_amount) {
+    const string_query = `update warehouse_models set delivery_left_over_amount = 
+    delivery_left_over_amount - ${provide_amount} where id=${warehouse_id} `;
+    return string_query;
+  }
 
 }
 
