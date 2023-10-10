@@ -123,6 +123,7 @@ class WarehouseServiceFetchReceivedSMS {
   }
 }
 
+// Provide Sm From Warehouse To Area
 class WarehouseServiceProvideSM {
   // Provide Material
   static async provideMaterial(data) {
@@ -159,9 +160,29 @@ class WarehouseServiceProvideSM {
 
 }
 
+// Fetch Departments
+class WarehouseServiceFetchDepartments {
+  static async fetchDepartments(){
+    const res = await sequelize.query(WarehouseQueries.fetch_departments);
+    return res[0];
+  }
+
+}
+
+// Fetch Departments
+class WarehouseServiceFetchWarehouseDeliveryTypes {
+  static async fetchWarehouseDeliveryTypes(){
+    const res = await sequelize.query(WarehouseQueries.fetch_warehouse_delivery_types);
+    return res[0];
+  }
+  
+}
+
 module.exports = {
   WarehouseServiceFetchProcessingSMS,
   WarehouseServiceAcceptSMS,
   WarehouseServiceFetchReceivedSMS,
   WarehouseServiceProvideSM,
+  WarehouseServiceFetchDepartments,
+  WarehouseServiceFetchWarehouseDeliveryTypes
 };
