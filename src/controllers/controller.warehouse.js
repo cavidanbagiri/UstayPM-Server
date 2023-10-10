@@ -54,7 +54,7 @@ class WarehouseController {
     )
   }
 
-  // Provide Material 
+  // Provide Material TO Area
   static async provideMaterial(req, res, next) {
     const data = req.body;
     console.log('data is : ', data);
