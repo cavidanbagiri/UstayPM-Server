@@ -66,6 +66,7 @@ class AdminService {
         return respond;
       })
       .catch((err) => {
+        console.log('first err : ',err);
         throw new EmptyFieldError(err.message, 400);
       });
   }

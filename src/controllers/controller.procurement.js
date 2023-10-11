@@ -40,8 +40,6 @@ class ProcurementController {
 
   // Fetch All STF
   static async createSM(req, res, next) {
-    console.log("---------");
-    console.log('create sm body : ', req.body);
     const data= req.body;
     tryCatch(
       await ProcurementServiceCreateSM.createSM(data)

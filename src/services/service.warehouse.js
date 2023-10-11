@@ -23,7 +23,7 @@ class WarehouseServiceAcceptSMS {
   // Accept SMS To Warehouse
   static async acceptSMS(data) {
     for (let i = 0; i < data.checked_values.length; i++) {
-      const res = await this.#createWarehouseModel(data, i);
+      const res = await this.#withdrowSMAmount(data, i);
     }
     return "OK";
   }
@@ -44,9 +44,7 @@ class WarehouseServiceAcceptSMS {
       passport: data.table_data[each].passport,
       acceptedBy: data.user.id,
       smId: data.checked_values[each].sm_id,
-    }).then(async (respond) => {
-      await this.#withdrowSMAmount(data, each);
-    });
+    })
     return result;
   }
 
@@ -74,7 +72,20 @@ class WarehouseServiceAcceptSMS {
             await this.#updateSMLeftOverAmount(
               data.checked_values[each].sm_id,
               entering_amount
-            );
+            ).then(async(respond)=>{
+              await this.#createWarehouseModel(data, each)
+              .then((respond)=>{
+
+              }).catch((err)=>{
+                throw new Error(
+                  `Wrong Operation, Amount Cant Be Greater Than ${max_accepting_amount}`
+                );
+              })
+            }).catch((err)=>{
+              throw new Error(
+                `Wrong Operation, Amount Cant Be Greater Than ${max_accepting_amount}`
+              );
+            })
           }
         }
         // If Not
@@ -82,7 +93,20 @@ class WarehouseServiceAcceptSMS {
           await this.#updateSMLeftOverAmount(
             data.checked_values[each].sm_id,
             entering_amount
-          );
+          ).then(async(respond)=>{
+            await this.#createWarehouseModel(data, each)
+              .then((respond)=>{
+
+              }).catch((err)=>{
+                throw new Error(
+                  `Wrong Operation, Amount Cant Be Greater Than ${max_accepting_amount}`
+                );
+              })
+          }).catch((err)=>{
+            throw new Error(
+              `Wrong Operation, Amount Cant Be Greater Than ${max_accepting_amount}`
+            );
+          })
         }
       })
       .catch((err) => {
@@ -133,9 +157,9 @@ class WarehouseServiceProvideSM {
       // const res = await this.#createProvideModel(data.user, i);
       const each = await this.#findWarehouseItemById(i.warehouse_id);
   
-      const res = this.checkWithdrow(data.user, each, i)
-      return res.then((respond)=>{
-        return respond;
+      const res = await this.checkWithdrow(data.user, each, i)
+      .then((respond)=>{
+        // return respond;
       }).catch((err)=>{
         return new Error(err);
       })

@@ -9,7 +9,7 @@ const errorHandler = (err, req, res, next) => {
         return res.status(err.statusCode).send(err.message);
     }
     if(err instanceof EmptyFieldError){
-        console.log('Yes Error is instance of EmptyFieldError', err.message);
+        console.log('Yes Error is instance of EmptyFieldError', err);
         return res.status(err.statusCode).send(err.message);
     }
 
