@@ -40,12 +40,12 @@ app.use(
 );
 
 // Use Routers
-app.use('/api/index', HomeRouter);
-app.use('/api/admin', AdminRouter);
-app.use('/api/user', UserRouter);
-app.use('/api/stf', STFRouter);
-app.use('/api/procurement', ProcurementRouter);
-app.use('/api/warehouse', WarehouseRouter);
+app.use('/index', HomeRouter);
+app.use('/admin', AdminRouter);
+app.use('/user', UserRouter);
+app.use('/stf', STFRouter);
+app.use('/procurement', ProcurementRouter);
+app.use('/warehouse', WarehouseRouter);
 
 
 // Handle Error
