@@ -1,5 +1,5 @@
 
-
+const moment = require('moment');
 const { sequelize, ProjectModel, SMModel, ConditionModel } = require('../../models');
 
 const ProcurementQueries = require('../queries/procurement.queries');
@@ -80,6 +80,7 @@ class ProcurementServiceCreateSM {
 
   // Create SM Data Model
   static async #createSMDataModel(sm_num, each){
+    await this.#revertDateAndTime(each);
     const result = await SMModel.create({
       sm_num: sm_num,
       sm_material_name: each.sm_material_name,
@@ -95,19 +96,32 @@ class ProcurementServiceCreateSM {
       vendorId: each.VendorModelId,
       supplierId: each.supplierName,
       stfId: each.stfId,
+      approximate_date: each.ProcurementComingDate
     })
     return result;
   }
 
   // Create Condition Model For Each SM ID
   static async #createConditionModelSM(respond) {
-
     const result = await ConditionModel.create({
       smId: respond.id,
       situationId: 1,
       projectId: respond.projectId
     })
+  }
 
+  // Revert Date
+  // Revert Date and Time
+  static async #revertDateAndTime(data){
+    // If There is a Data
+    if (data.ProcurementComingDate !== "") {
+      data.ProcurementComingDate = moment(
+        data.ProcurementComingDate
+      ).format("YYYY-MM-DD");
+    } else {
+      data.ProcurementComingDate = null;
+    }
+    console.log('date is : ',data.ProcurementComingDate);
   }
 
 }
