@@ -40,7 +40,6 @@ class ProcurementServiceCreateSM {
         .then(async(respond)=>{
           await this.#createConditionModelSM(respond.dataValues)
         }).catch((err)=>{
-          console.log("Create New SM Error : ", err);
           throw new Error(err);
         })
       }
@@ -63,9 +62,7 @@ class ProcurementServiceCreateSM {
   // Create sm_num for new sms
   static async #getLastNumsAddAndCreateSMNums(projectId){
     const last = await sequelize.query(ProcurementQueries.createSMSNUMSAndReturn(projectId));
-    // console.log('last',last);
     return last[0][0]["sms_nums"];
-    // return 'cavidan'
   }
 
   // Get Project Code Name
@@ -75,12 +72,13 @@ class ProcurementServiceCreateSM {
         id: projectId,
       },
     });
-    return result[0].dataValues.code_name;
+    return result[0]?.dataValues?.code_name;
   }
 
   // Create SM Data Model
   static async #createSMDataModel(sm_num, each){
-    await this.#revertDateAndTime(each);
+    // Change Procurement Date time to database with moment js
+    this.#revertDateAndTime(each);
     const result = await SMModel.create({
       sm_num: sm_num,
       sm_material_name: each.sm_material_name,
@@ -90,7 +88,6 @@ class ProcurementServiceCreateSM {
       total: each.total,
       currency: each.currency,
       left_over: each.sm_material_amount,
-      approximate_date: '2023-05-10',
       projectId: each.project_id,
       departmentId:each.department_id,
       vendorId: each.VendorModelId,
@@ -112,7 +109,7 @@ class ProcurementServiceCreateSM {
 
   // Revert Date
   // Revert Date and Time
-  static async #revertDateAndTime(data){
+  static #revertDateAndTime(data){
     // If There is a Data
     if (data.ProcurementComingDate !== "") {
       data.ProcurementComingDate = moment(
@@ -121,7 +118,8 @@ class ProcurementServiceCreateSM {
     } else {
       data.ProcurementComingDate = null;
     }
-    console.log('date is : ',data.ProcurementComingDate);
+    // Add This Line
+    return data.ProcurementComingDate;
   }
 
 }

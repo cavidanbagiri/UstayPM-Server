@@ -58,7 +58,6 @@ class WarehouseController {
   // Provide Material TO Area
   static async provideMaterial(req, res, next) {
     const data = req.body;
-    console.log("data is : ", data);
     tryCatch(
       await WarehouseServiceProvideSM.provideMaterial(data)
         .then((respond) => {
