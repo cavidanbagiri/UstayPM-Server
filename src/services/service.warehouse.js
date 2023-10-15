@@ -139,6 +139,7 @@ class WarehouseServiceAcceptSMS {
       delivery_material_currency: data.checked_values[each].currency,
       doc_number: data.sms_data.doc_number,
       doc_date: data.sms_data.doc_date,
+      providing_date: data.sms_data.providing_date,
       certificate: data.table_data[each].certificate,
       passport: data.table_data[each].passport,
       acceptedBy: data.user.id,

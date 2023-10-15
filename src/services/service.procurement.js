@@ -78,7 +78,7 @@ class ProcurementServiceCreateSM {
   // Create SM Data Model
   static async #createSMDataModel(sm_num, each){
     // Change Procurement Date time to database with moment js
-    this.#revertDateAndTime(each);
+    // this.#revertDateAndTime(each);
     const result = await SMModel.create({
       sm_num: sm_num,
       sm_material_name: each.sm_material_name,
@@ -109,18 +109,18 @@ class ProcurementServiceCreateSM {
 
   // Revert Date
   // Revert Date and Time
-  static #revertDateAndTime(data){
-    // If There is a Data
-    if (data.ProcurementComingDate !== "") {
-      data.ProcurementComingDate = moment(
-        data.ProcurementComingDate
-      ).format("YYYY-MM-DD");
-    } else {
-      data.ProcurementComingDate = null;
-    }
-    // Add This Line
-    return data.ProcurementComingDate;
-  }
+  // static #revertDateAndTime(data){
+  //   // If There is a Data
+  //   if (data.ProcurementComingDate !== "") {
+  //     data.ProcurementComingDate = moment(
+  //       data.ProcurementComingDate
+  //     ).format("YYYY-MM-DD");
+  //   } else {
+  //     data.ProcurementComingDate = null;
+  //   }
+  //   // Add This Line
+  //   return data.ProcurementComingDate;
+  // }
 
 }
 

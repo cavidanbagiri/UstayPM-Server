@@ -26,6 +26,7 @@ class WarehouseController {
   // Accept Processing SMS TO Warehouse
   static async acceptSM(req, res, next) {
     const data = req.body;
+    console.log('coming date : ',data);
     tryCatch(
       await WarehouseServiceAcceptSMS.acceptSMS(data)
         .then((respond) => {

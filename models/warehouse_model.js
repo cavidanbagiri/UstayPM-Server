@@ -51,6 +51,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: true,
     },
+    providing_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
     certificate: {
       type: DataTypes.BOOLEAN,
       allowNull: false,

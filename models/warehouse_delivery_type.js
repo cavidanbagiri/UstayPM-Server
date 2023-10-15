@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    tableName: 'warehouse_delivery_type',
+    tableName: 'warehouse_delivery_types',
     modelName: 'WarehouseDeliveryTypeModel',
   });
   return warehouse_delivery_type;
