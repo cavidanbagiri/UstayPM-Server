@@ -2,7 +2,7 @@ const tryCatch = require("../utils/trycatch");
 const {
   WarehouseServiceFetchProcessingSMS,
   WarehouseServiceAcceptSMS,
-  WarehouseServiceFetchReceivedSMS,
+  WarehouseServiceFetchWarehouseData,
   WarehouseServiceProvideSM,
   WarehouseServiceFetchDepartments,
   WarehouseServiceFetchWarehouseDeliveryTypes,
@@ -40,9 +40,9 @@ class WarehouseController {
   }
 
   // Fetch Received SM From Warehouse
-  static async fetchSMFromWarehouse(req, res, next) {
+  static async fetchWarehouseData(req, res, next) {
     tryCatch(
-      await WarehouseServiceFetchReceivedSMS.fetchSMFromWarehouse()
+      await WarehouseServiceFetchWarehouseData.fetchWarehouseData()
         .then((respond) => {
           return res.send(respond);
           // return res.send(respond);

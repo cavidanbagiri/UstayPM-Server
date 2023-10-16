@@ -132,7 +132,7 @@ class WarehouseServiceAcceptSMS {
     const result = await WarehouseModel.create({
       delivery_material_name: data.checked_values[each].sm_material_name,
       delivery_material_amount: data.table_data[each].entering_delivery_amount,
-      delivery_left_over_amount: data.table_data[each].entering_delivery_amount,
+      stock: data.table_data[each].entering_delivery_amount,
       delivery_material_unit: data.table_data[each].delivery_unit,
       delivery_material_price: data.checked_values[each].price,
       delivery_material_total: data.checked_values[each].total,
@@ -163,9 +163,9 @@ class WarehouseServiceAcceptSMS {
 }
 
 // Fetch Received Warehouse
-class WarehouseServiceFetchReceivedSMS {
+class WarehouseServiceFetchWarehouseData {
   // Fetch Received SM From Warehouse
-  static async fetchSMFromWarehouse() {
+  static async fetchWarehouseData() {
     const result = await sequelize.query(
       WarehouseQueries.received_sms_from_warehouse_query
     );
@@ -212,7 +212,7 @@ class WarehouseServiceProvideSM {
   // Check If Withdrow if possible
   static async checkWithdrow(user_id, warehouse_item, data) {
     // If Withdrow Amount less than possible leftoveramount
-    if (warehouse_item.delivery_left_over_amount - data.provide_amount >= 0) {
+    if (warehouse_item.stock - data.provide_amount >= 0) {
       const res = await this.#updateWarehouseItemLeftOver(
         warehouse_item.id,
         data.provide_amount
@@ -278,7 +278,7 @@ class WarehouseServiceFetchWarehouseDeliveryTypes {
 module.exports = {
   WarehouseServiceFetchProcessingSMS,
   WarehouseServiceAcceptSMS,
-  WarehouseServiceFetchReceivedSMS,
+  WarehouseServiceFetchWarehouseData,
   WarehouseServiceProvideSM,
   WarehouseServiceFetchDepartments,
   WarehouseServiceFetchWarehouseDeliveryTypes,
