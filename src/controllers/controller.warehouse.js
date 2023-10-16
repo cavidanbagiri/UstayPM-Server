@@ -26,7 +26,6 @@ class WarehouseController {
   // Accept Processing SMS TO Warehouse
   static async acceptSM(req, res, next) {
     const data = req.body;
-    console.log('coming date : ',data);
     tryCatch(
       await WarehouseServiceAcceptSMS.acceptSMS(data)
         .then((respond) => {
@@ -45,7 +44,6 @@ class WarehouseController {
     tryCatch(
       await WarehouseServiceFetchReceivedSMS.fetchSMFromWarehouse()
         .then((respond) => {
-          console.log("cont respond is ", respond);
           return res.send(respond);
           // return res.send(respond);
         })
@@ -62,7 +60,6 @@ class WarehouseController {
     tryCatch(
       await WarehouseServiceProvideSM.provideMaterial(data)
         .then((respond) => {
-          console.log("is ", respond);
           return res.send(respond);
           // return res.send(respond);
         })
@@ -78,7 +75,6 @@ class WarehouseController {
     tryCatch(
       await WarehouseServiceFetchDepartments.fetchDepartments()
         .then((respond) => {
-          console.log("is ", respond);
           return res.send(respond);
           // return res.send(respond);
         })
@@ -94,7 +90,6 @@ class WarehouseController {
     tryCatch(
       await WarehouseServiceFetchWarehouseDeliveryTypes.fetchWarehouseDeliveryTypes()
         .then((respond) => {
-          console.log('is ',respond);
           return res.send(respond);
           // return res.send(respond);
         })
