@@ -115,13 +115,11 @@ class FilterSTF {
 
   // Filter User STF
   static async filterSTF(query) {
-
-    const where_query = whereQuery('', query);
+    const where_query = whereQuery('', query, "stf_models");
 
     const string_query = `
     ${STFQueries.stf_user_filter_query}
       WHERE  ${where_query}
-      ORDER BY stf_models.stf_num DESC
     `;
 
     const result = await sequelize.query(string_query);

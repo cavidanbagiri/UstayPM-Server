@@ -1,6 +1,7 @@
 
-module.exports = createWhereQuery = (start_keyword, filtered_object) => {
-
+module.exports = createWhereQuery = (start_keyword, filtered_object, table_name) => {
+  let time_query = '';
+  console.log('filtered objecy : ',filtered_object);
   /*
     start_keyword if filtered data for user will be add 'and' after where user id
   */
@@ -21,8 +22,22 @@ module.exports = createWhereQuery = (start_keyword, filtered_object) => {
       else if(key === 'createdAt' ){
         where_query += `stf_models."${key}"::date = '${filtered_object[key]}' `
       }
-      else if(key === 'user' ){
-        where_query += `stf_models."userId" = '${filtered_object[key]}' `
+      else if(key === 'user' && key != '' ){
+        where_query += `${table_name}."userId" = '${filtered_object[key]}' `
+      }
+      else if(key === 'date_order' ){
+
+        where_query = where_query.slice(0, -4);
+        
+        if(filtered_object[key] === 'Ascending' ){
+          time_query += ` ORDER BY ${table_name}."createdAt" ASC `
+        }
+        else if(filtered_object[key] === 'Descending'){
+          time_query += ` ORDER BY ${table_name}."createdAt" DESC `
+        }
+        else{
+          time_query = '';
+        }
       }
       else{
         where_query += `${key} = '${filtered_object[key]}' `
@@ -36,10 +51,7 @@ module.exports = createWhereQuery = (start_keyword, filtered_object) => {
       where_query = where_query.slice(0, -(start_keyword.length+1));
     }
     where_query = where_query.slice(0, -4);
-
-    console.log('where query : ',where_query);
-
-
+    where_query += time_query;
   return where_query;
 
 }
