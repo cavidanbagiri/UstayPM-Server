@@ -13,10 +13,10 @@ class STFController {
         return res.status(201).send(respond)
       })
       .catch((err)=>{
+        console.log('here work');
         next(err);
       })
     )
-    // return 'OK'
   }
 
   // Fetch All STF

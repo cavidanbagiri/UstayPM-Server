@@ -9,15 +9,15 @@ class STFServiceCreate {
   // Create STF
   static async createSTF(data) {
     // Validate All Column that, Each row and common information is true || not
+    console.log('l work 1');
     this.#checkValidation(data);
 
+    console.log('l work 2');
     // Set STF Num inside of data and insert to table -> SRU.RS.07.10003
     data.stf_num = await this.#createSTFNUMSForm(data);
-
     for (let i of data.orders) {
       await this.#createEachRow(data, i);
     }
-
     return "OK";
   }
 
@@ -95,8 +95,8 @@ class STFServiceCreate {
         throw new EmptyFieldError("Material AMount Cant Be Zero", 400);
       if (data.orders[i].material_unit === "")
         throw new EmptyFieldError("Material Unit Cant Be Empty", 400);
-      if (data.orders[i].fieldId === "")
-        throw new EmptyFieldError("Material Type Cant Be Empty", 400);
+      if (data.orders[i].fieldId === 0)
+        throw new EmptyFieldError("Field Cant Be Empty", 400);
       }
   }
 

@@ -9,12 +9,12 @@ const errorHandler = (err, req, res, next) => {
         return res.status(err.statusCode).send(err.message);
     }
     if(err instanceof EmptyFieldError){
-        console.log('Yes Error is instance of EmptyFieldError', err);
+        console.log('Yes Error is instance of EmptyFieldError', err.message);
         return res.status(err.statusCode).send(err.message);
     }
 
     console.log('Error Handler From Middleware : ',err);
-    return res.status(400).send(err);
+    return res.status(400).send(err.message);
 }
 
 module.exports = errorHandler;
