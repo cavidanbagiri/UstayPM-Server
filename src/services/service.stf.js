@@ -1,7 +1,7 @@
 const { sequelize, STFModel, ProjectModel } = require("../../models");
 const STFQueries = require("../queries/stf_queries");
 const EmptyFieldError = require("../exceptions/EmptyFieldError");
-const whereQuery = require("../utils/whereQuery");
+const WhereQuery = require("../utils/whereQuery");
 
 
 // Create STF Class
@@ -110,21 +110,30 @@ class FetchUserSTF {
 }
 
 class FilterSTF {
-
   // Filter User STF
   static async filterSTF(query) {
-    const where_query = whereQuery('', query, "stf_models");
-
+    const where_query = WhereQuery.userSTFWhereQuery('', query, "stf_models");
     const string_query = `
     ${STFQueries.stf_user_filter_query}
       WHERE  ${where_query}
     `;
-
     const result = await sequelize.query(string_query);
-
     return result[0];
   }
+}
 
+class FilterSTFWarehouseData {
+  // Filter User STF
+  static async filterSTFWarehouseData(query) {
+    const where_query = WhereQuery.userWarehouseWhereQuery('', query, "warehouse_models");
+    console.log('where query is : => ', where_query);
+    const string_query = `
+    ${STFQueries.stf_user_filter_query_warehouse_data}
+      WHERE  ${where_query}
+    `;
+    const result = await sequelize.query(string_query);
+    return result[0];
+  }
 }
 
 class FetchWarehouseData {
@@ -140,6 +149,7 @@ module.exports = {
   FetchUserSTF,
   FilterSTF,
   FetchWarehouseData,
+  FilterSTFWarehouseData
 };
 
 // const res = await STFModel.findAll({

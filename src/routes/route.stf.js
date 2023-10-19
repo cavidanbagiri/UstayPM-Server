@@ -10,6 +10,8 @@ router.post('/createstf', STFController.createSTF);
 router.get('/getuserstfall/:user_id', STFController.fetchUserSTFAll);
 // FIlter User STF
 router.get('/filter', STFController.filterSTF);
+// FIlter User STF Warehouse Data
+router.get('/filterwarehouse', STFController.filterSTFWarehouseData);
 // Get Warehouse Material Who Created By Current User
 router.get('/warehouse/:user_id', STFController.fetchWarehouseDataForUser)
 
