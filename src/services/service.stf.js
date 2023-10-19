@@ -9,10 +9,8 @@ class STFServiceCreate {
   // Create STF
   static async createSTF(data) {
     // Validate All Column that, Each row and common information is true || not
-    console.log('l work 1');
     this.#checkValidation(data);
 
-    console.log('l work 2');
     // Set STF Num inside of data and insert to table -> SRU.RS.07.10003
     data.stf_num = await this.#createSTFNUMSForm(data);
     for (let i of data.orders) {
@@ -124,18 +122,24 @@ class FilterSTF {
 
     const result = await sequelize.query(string_query);
 
-    // console.log('where query is : ', where_query);
-    // console.log('res query is : ', result[0]);
-
     return result[0];
   }
 
+}
+
+class FetchWarehouseData {
+  static async fetchWarehouseDataForUser (user_id) {
+    const string_query = STFQueries.fetchUserWarehouseData(user_id);
+    const result = await sequelize.query(string_query);
+    return result[0];
+  }
 }
 
 module.exports = {
   STFServiceCreate,
   FetchUserSTF,
   FilterSTF,
+  FetchWarehouseData,
 };
 
 // const res = await STFModel.findAll({

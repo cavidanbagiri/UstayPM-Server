@@ -1,6 +1,6 @@
 const tryCatch = require("../utils/trycatch");
 
-const { STFServiceCreate, FetchUserSTF, FilterSTF } = require("../services/service.stf");
+const { STFServiceCreate, FetchUserSTF, FilterSTF, FetchWarehouseData } = require("../services/service.stf");
 
 class STFController {
 
@@ -48,7 +48,21 @@ class STFController {
         next(err);
       })
     )
+  }
 
+  // Get Warehouse Material Who Created By Current User
+  static async fetchWarehouseDataForUser(req, res, next) {
+    const user_id = req.params.user_id;
+    tryCatch(
+      await FetchWarehouseData.fetchWarehouseDataForUser(user_id)
+      .then((respond)=>{
+        return res.status(200).send(respond)
+      })
+      .catch((err)=>{
+        console.log('Returning Data STF Error : ', err);
+        next(err);
+      })
+    )
   }
 
 }

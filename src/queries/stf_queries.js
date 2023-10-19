@@ -28,6 +28,22 @@ class STFQUeries {
     return string_query;
   }
 
+  // fetch user warehouse Data
+  static fetchUserWarehouseData(user_id) {
+    const string_query = `
+    select warehouse_models.id as warehouse_id, stf_models.id as stf_id, sm_models.id as sm_id,
+    sm_models.sm_num, stf_models.stf_num,
+    warehouse_models.delivery_material_name as material_name, warehouse_models.delivery_material_amount as amount, warehouse_models.delivery_material_unit as unit, 
+    warehouse_models.stock, warehouse_models.certificate, warehouse_models.passport, vendors_models.vendor_name
+    from warehouse_models
+    LEFT JOIN sm_models ON warehouse_models."smId" = sm_models.id
+    LEFT JOIN stf_models ON sm_models."stfId" = stf_models.id
+    LEFT JOIN vendors_models ON sm_models."vendorId" = vendors_models.id
+    where stf_models."userId" = ${user_id}
+    `
+    return string_query;
+  }
+
 }
 
 module.exports = STFQUeries;
