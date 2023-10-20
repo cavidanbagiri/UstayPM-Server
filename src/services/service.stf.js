@@ -126,9 +126,6 @@ class STFServiceCreate {
 class FetchUserSTF {
   // Get User STF All
   static async fetchUserSTFAll(user_id) {
-    for (let i = 0; i < 10000; i++) {
-      console.log(i);
-    }
     const res = await sequelize.query(STFQueries.fetchUserSTFAll(user_id));
     return res[0];
   }
