@@ -3,13 +3,16 @@ const STFQueries = require("../queries/stf_queries");
 const EmptyFieldError = require("../exceptions/EmptyFieldError");
 const WhereQuery = require("../utils/whereQuery");
 
-
 // Create STF Class
 class STFServiceCreate {
   // Create STF
   static async createSTF(data) {
     // Validate All Column that, Each row and common information is true || not
-    this.#checkValidation(data);
+    try {
+      this.#checkValidation(data);
+    } catch (err) {
+      throw new Error(err)
+    }
 
     // Set STF Num inside of data and insert to table -> SRU.RS.07.10003
     data.stf_num = await this.#createSTFNUMSForm(data);
@@ -21,7 +24,9 @@ class STFServiceCreate {
 
   // Get Last Nums and Add +1  stf_nums table and return last stf_nums
   static async #getLastNumsAddAndCreateSTFNums(projectId) {
-    const last = await sequelize.query(STFQueries.createSTFNUMSAndReturn(projectId));
+    const last = await sequelize.query(
+      STFQueries.createSTFNUMSAndReturn(projectId)
+    );
     return last[0][0]["stf_nums"];
   }
 
@@ -42,7 +47,9 @@ class STFServiceCreate {
       data.user.projectId
     );
     // Get Project code_name // SRU.RS.07 + 10003 = SRU.RS.07.10003
-    const project_code_name = await this.#getProjectCodeName(data.user.projectId);
+    const project_code_name = await this.#getProjectCodeName(
+      data.user.projectId
+    );
     // Create stf_nums accoring to STFModel
     let stf_num = project_code_name + last_created_stf_num.toString();
     return stf_num;
@@ -61,30 +68,47 @@ class STFServiceCreate {
       material_unit: each.material_unit,
       fieldId: each.fieldId,
     })
-    .then((respond)=>{
-      return respond
-    }).catch((err)=>{
-      throw EmptyFieldError(err.message, 400);
-    });
-
+      .then((respond) => {
+        return respond;
+      })
+      .catch((err) => {
+        throw new EmptyFieldError(err.message, 400);
+      });
   }
 
   // Check Validation for importing data
   static #checkValidation(data) {
-    if (!data.user.projectId) 
+    if (!data.user.projectId)
       throw new EmptyFieldError("Project Cant Be null", 400);
-    if (!data.user.id) 
-      throw new EmptyFieldError("User Cant Be null", 400);
+    if (!data.user.id) throw new EmptyFieldError("User Cant Be null", 400);
     if (!data.user.departmentId)
       throw new EmptyFieldError("Department Cant Be null", 400);
-    // if (!data.fieldId) 
-    //   throw new EmptyFieldError("Fields Cant Be null", 400);
-    if (data.orders.length === 0) 
+    if (data.orders.length === 0)
       throw new EmptyFieldError("Orders Must Be At Least 1 Order", 400);
     for (let i = 0; i < data.orders?.length; i++) {
-      data.orders[i].material_type = data.orders[i].material_type.trim()
-      data.orders[i].material_name = data.orders[i].material_name.trim()
-      data.orders[i].material_unit = data.orders[i].material_unit.trim()
+      if (!data.orders[i].material_type)
+        throw new EmptyFieldError(
+          `Material Type Must Be Defined in ${i + 1} Row`, 400
+        );
+      if (!data.orders[i].material_name)
+        throw new EmptyFieldError(
+          `Material Name Must Be Defined in ${i + 1} Row`, 400
+        );
+      if (!data.orders[i].material_amount)
+        throw new EmptyFieldError(
+          `Material Amount Must Be Defined in ${i + 1} Row`, 400
+        );
+      if (!data.orders[i].material_unit)
+        throw new EmptyFieldError(
+          `Material Unit Must Be Defined in ${i + 1} Row`, 400
+        );
+      if (!data.orders[i].fieldId)
+        throw new EmptyFieldError(
+          `Material Field Must Be Defined in ${i + 1} Row`, 400
+        );
+      data.orders[i].material_type = data.orders[i].material_type.trim();
+      data.orders[i].material_name = data.orders[i].material_name.trim();
+      data.orders[i].material_unit = data.orders[i].material_unit.trim();
       if (data.orders[i].material_type === "")
         throw new EmptyFieldError("Material Type Cant Be Empty", 400);
       if (data.orders[i].material_name === "")
@@ -95,15 +119,16 @@ class STFServiceCreate {
         throw new EmptyFieldError("Material Unit Cant Be Empty", 400);
       if (data.orders[i].fieldId === 0)
         throw new EmptyFieldError("Field Cant Be Empty", 400);
-      }
+    }
   }
-
 }
 
 class FetchUserSTF {
-
   // Get User STF All
   static async fetchUserSTFAll(user_id) {
+    for (let i = 0; i < 10000; i++) {
+      console.log(i);
+    }
     const res = await sequelize.query(STFQueries.fetchUserSTFAll(user_id));
     return res[0];
   }
@@ -112,7 +137,7 @@ class FetchUserSTF {
 class FilterSTF {
   // Filter User STF
   static async filterSTF(query) {
-    const where_query = WhereQuery.userSTFWhereQuery('', query, "stf_models");
+    const where_query = WhereQuery.userSTFWhereQuery("", query, "stf_models");
     const string_query = `
     ${STFQueries.stf_user_filter_query}
       WHERE  ${where_query}
@@ -125,8 +150,11 @@ class FilterSTF {
 class FilterSTFWarehouseData {
   // Filter User STF
   static async filterSTFWarehouseData(query) {
-    const where_query = WhereQuery.userWarehouseWhereQuery('', query, "warehouse_models");
-    console.log('where query is : => ', where_query);
+    const where_query = WhereQuery.userWarehouseWhereQuery(
+      "",
+      query,
+      "warehouse_models"
+    );
     const string_query = `
     ${STFQueries.stf_user_filter_query_warehouse_data}
       WHERE  ${where_query}
@@ -137,7 +165,7 @@ class FilterSTFWarehouseData {
 }
 
 class FetchWarehouseData {
-  static async fetchWarehouseDataForUser (user_id) {
+  static async fetchWarehouseDataForUser(user_id) {
     const string_query = STFQueries.fetchUserWarehouseData(user_id);
     const result = await sequelize.query(string_query);
     return result[0];
@@ -149,7 +177,7 @@ module.exports = {
   FetchUserSTF,
   FilterSTF,
   FetchWarehouseData,
-  FilterSTFWarehouseData
+  FilterSTFWarehouseData,
 };
 
 // const res = await STFModel.findAll({

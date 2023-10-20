@@ -10,10 +10,10 @@ class UserController {
 
   // User Login
   static async loginUser(req, res, next) {
-
     const user_data = req.body;
     const hashpassword = await hashPassowrd(user_data.password);
     user_data.password = hashpassword;
+    console.log('data ', user_data);
     tryCatch(
         await UserService.loginUser(user_data)
         .then((user) => {
