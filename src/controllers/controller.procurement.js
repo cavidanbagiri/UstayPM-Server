@@ -3,7 +3,9 @@ const {
   ProcurementServiceFetchSM,
   ProcurementServiceFetchCompanies,
   ProcurementServiceFetchProcurementUsers,
-  ProcurementServiceCreateSM
+  ProcurementServiceCreateSM,
+  ProcurementServiceFilterSTF,
+  ProcurementServiceFilterSM
 } = require("../services/service.procurement");
 const tryCatch = require("../utils/trycatch");
 
@@ -23,12 +25,26 @@ class ProcurementController {
     return "OK";
   }
 
+  // Filter STF Result
+  static async filterSTF(req, res, next) {
+    const query = req.query;
+    tryCatch(
+      await ProcurementServiceFilterSTF.filterSTF(query)
+      .then((respond)=>{
+        return res.status(200).send(respond)
+      })
+      .catch((err)=>{
+        console.log('Filter STF Error : ',err);
+        next(err);
+      })
+    )
+  }
+
   // Fetch All STF
   static async fetchSM(req, res, next) {
     tryCatch(
       await ProcurementServiceFetchSM.fetchSM()
         .then((respond) => {
-          console.log(' l am working');
           res.status(200).send(respond);
         })
         .catch((err) => {
@@ -37,6 +53,21 @@ class ProcurementController {
         })
     );
     return "OK";
+  }
+
+  // Filter STF Result
+  static async filterSM(req, res, next) {
+    const query = req.query;
+    tryCatch(
+      await ProcurementServiceFilterSM.filterSM(query)
+      .then((respond)=>{
+        return res.status(200).send(respond)
+      })
+      .catch((err)=>{
+        console.log('Filter STF Error : ',err);
+        next(err);
+      })
+    )
   }
 
   // Fetch All STF

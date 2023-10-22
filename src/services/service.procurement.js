@@ -8,12 +8,41 @@ const {
 
 const ProcurementQueries = require("../queries/procurement.queries");
 const EmptyFieldError = require("../exceptions/EmptyFieldError");
+const WhereQuery = require("../utils/whereQuery");
 
 // Fetch All STF
 class ProcurementServiceFetchSTF {
   // Fetch All STF
   static async fetchSTF() {
     const string_query = ProcurementQueries.select_all_stf_query;
+    const result = await sequelize.query(string_query);
+    return result[0];
+  }
+}
+
+class ProcurementServiceFilterSTF {
+  // Filter User STF
+  static async filterSTF(query) {
+    const where_query = WhereQuery.userSTFWhereQuery("where", query, "stf_models");
+    // console.log('where query is ->>>>>>>>>>>>>>>>>>>>>>>> ',where_query);
+    const string_query = `
+    ${ProcurementQueries.select_all_stf_query}
+      ${where_query}
+    `;
+    const result = await sequelize.query(string_query);
+    return result[0];
+  }
+}
+
+class ProcurementServiceFilterSM {
+  // Filter User STF
+  static async filterSM(query) {
+    const where_query = WhereQuery.userSMWhereQuery("where", query, "sm_models");
+    // console.log('where query is ->>>>>>>>>>>>>>>>>>>>>>>> ',where_query);
+    const string_query = `
+    ${ProcurementQueries.select_all_sm_query}
+      ${where_query}
+    `;
     const result = await sequelize.query(string_query);
     return result[0];
   }
@@ -176,4 +205,6 @@ module.exports = {
   ProcurementServiceFetchProcurementUsers,
   ProcurementServiceCreateSM,
   ProcurementServiceFetchSM,
+  ProcurementServiceFilterSTF,
+  ProcurementServiceFilterSM
 };
