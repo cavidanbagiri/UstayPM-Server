@@ -28,6 +28,7 @@ class ProcurementController {
     tryCatch(
       await ProcurementServiceFetchSM.fetchSM()
         .then((respond) => {
+          console.log(' l am working');
           res.status(200).send(respond);
         })
         .catch((err) => {

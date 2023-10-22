@@ -78,13 +78,10 @@ class STFServiceCreate {
 
   // Check Validation for importing data
   static #checkValidation(data) {
-    if (!data.user.projectId)
-      throw new EmptyFieldError("Project Cant Be null", 400);
+    if (!data.user.projectId)throw new EmptyFieldError("Project Cant Be null", 400);
     if (!data.user.id) throw new EmptyFieldError("User Cant Be null", 400);
-    if (!data.user.departmentId)
-      throw new EmptyFieldError("Department Cant Be null", 400);
-    if (data.orders.length === 0)
-      throw new EmptyFieldError("Orders Must Be At Least 1 Order", 400);
+    if (!data.user.departmentId)throw new EmptyFieldError("Department Cant Be null", 400);
+    if (data.orders.length === 0)throw new EmptyFieldError("Orders Must Be At Least 1 Order", 400);
     for (let i = 0; i < data.orders?.length; i++) {
       if (!data.orders[i].material_type)
         throw new EmptyFieldError(
