@@ -210,6 +210,15 @@ class ProcurementServiceFetchCreatedSTFUsernames {
   }
 }
 
+// Fetch Warehouse Data For Procurement
+class ProcurementServiceWarehouseData{
+  static async fetchWarehouseData() {
+    const string_query = ProcurementQueries.fetch_warehouse_data;
+    const result = await sequelize.query(string_query);
+    return result[0];
+  }
+}
+
 module.exports = {
   ProcurementServiceFetchSTF,
   ProcurementServiceFetchCompanies,
@@ -218,5 +227,6 @@ module.exports = {
   ProcurementServiceFetchSM,
   ProcurementServiceFilterSTF,
   ProcurementServiceFilterSM,
-  ProcurementServiceFetchCreatedSTFUsernames
+  ProcurementServiceFetchCreatedSTFUsernames,
+  ProcurementServiceWarehouseData
 };

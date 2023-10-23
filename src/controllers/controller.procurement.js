@@ -7,6 +7,7 @@ const {
   ProcurementServiceFilterSTF,
   ProcurementServiceFilterSM,
   ProcurementServiceFetchCreatedSTFUsernames,
+  ProcurementServiceWarehouseData
 } = require("../services/service.procurement");
 const tryCatch = require("../utils/trycatch");
 
@@ -130,6 +131,21 @@ class ProcurementController {
         })
     );
     return "OK";
+  }
+
+  // Get Warehouse Material Who Created By Current User
+  static async fetchWarehouseData(req, res, next) {
+    console.log('l am work');
+    tryCatch(
+      await ProcurementServiceWarehouseData.fetchWarehouseData()
+      .then((respond)=>{
+        return res.status(200).send(respond)
+      })
+      .catch((err)=>{
+        console.log('Returning Data STF Error : ', err);
+        next(err);
+      })
+    )
   }
 
 }

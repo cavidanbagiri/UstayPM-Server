@@ -25,6 +25,9 @@ router.get('/companies', ProcurementController.fetchCompanies);
 router.get('/users', ProcurementController.fetchProcurementUsers);
 
 // Fetch STF Created Usernames
-router.get('/createdstfusers', ProcurementController.fetchSTFCreateUsernames)
+router.get('/createdstfusers', ProcurementController.fetchSTFCreateUsernames);
+
+// Fetch Warehouse Data
+router.get('/warehouse', ProcurementController.fetchWarehouseData)
 
 module.exports = router
