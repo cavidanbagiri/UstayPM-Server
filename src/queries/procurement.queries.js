@@ -35,6 +35,11 @@ class ProcurementQueries {
     select id as user_id, concat(name, ' ', surname) as procurement_users from users_models where "departmentId" = 2 or "departmentId" = 4
   `;
 
+  // Fetch All Procurement Users
+  static select_stf_created_users_names = `
+  select id, concat(name, ' ', surname) as ordered_name from users_models
+  `;
+
   
   // Create new stf num and add to stfmodel
   static createSMSNUMSAndReturn(projectId) {

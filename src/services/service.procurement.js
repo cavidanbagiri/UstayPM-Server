@@ -199,6 +199,17 @@ class ProcurementServiceFetchProcurementUsers {
   }
 }
 
+// Fetch All Companies
+class ProcurementServiceFetchCreatedSTFUsernames {
+  // Fetch Procurement Users
+  static async fetchSTFCreateUsernames() {
+    const result = await sequelize.query(
+      ProcurementQueries.select_stf_created_users_names
+    );
+    return result[0];
+  }
+}
+
 module.exports = {
   ProcurementServiceFetchSTF,
   ProcurementServiceFetchCompanies,
@@ -206,5 +217,6 @@ module.exports = {
   ProcurementServiceCreateSM,
   ProcurementServiceFetchSM,
   ProcurementServiceFilterSTF,
-  ProcurementServiceFilterSM
+  ProcurementServiceFilterSM,
+  ProcurementServiceFetchCreatedSTFUsernames
 };

@@ -5,7 +5,8 @@ const {
   ProcurementServiceFetchProcurementUsers,
   ProcurementServiceCreateSM,
   ProcurementServiceFilterSTF,
-  ProcurementServiceFilterSM
+  ProcurementServiceFilterSM,
+  ProcurementServiceFetchCreatedSTFUsernames,
 } = require("../services/service.procurement");
 const tryCatch = require("../utils/trycatch");
 
@@ -115,6 +116,22 @@ class ProcurementController {
     );
     return "OK";
   }
+
+  // Fetch Procurement Users
+  static async fetchSTFCreateUsernames(req, res, next) {
+    tryCatch(
+      await ProcurementServiceFetchCreatedSTFUsernames.fetchSTFCreateUsernames()
+        .then((respond) => {
+          res.status(200).send(respond);
+        })
+        .catch((err) => {
+          console.log("Fetch Procurement Users Errors From Procurement");
+          next(err);
+        })
+    );
+    return "OK";
+  }
+
 }
 
 module.exports = ProcurementController;

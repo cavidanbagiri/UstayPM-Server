@@ -18,13 +18,20 @@ class WhereQuery {
         if (key === "material_name") {
           where_query += `${key} LIKE '${filtered_object[key]}%' `;
           // where_query += ` or sm_material_name LIKE '${filtered_object[key]}%' `
-        } else if (key === "stf_num") {
+        }
+        else if (key === "usernames") {
+          where_query += `users_models.id = ${filtered_object[key]} `
+        }
+        else if (key === "stf_num") {
           where_query += `${key} LIKE '%${filtered_object[key]}' `;
-        } else if (key === "createdAt") {
+        } 
+        else if (key === "createdAt") {
           where_query += `stf_models."${key}"::date = '${filtered_object[key]}' `;
-        } else if (key === "user" && key != "") {
+        }
+        else if (key === "user" && key != "") {
           where_query += `${table_name}."userId" = '${filtered_object[key]}' `;
-        } else if (key === "date_order") {
+        }
+        else if (key === "date_order") {
           where_query = where_query.slice(0, -4);
 
           if (filtered_object[key] === "Ascending") {
@@ -52,13 +59,12 @@ class WhereQuery {
     // Add Ascending Or Descending
     where_query += time_query;
 
-    console.log('where query is : -> ', where_query);
-
     return where_query;
   }
 
   // Where Query For STF
   static userSMWhereQuery(start_keyword, filtered_object, table_name) {
+    // console.log('Sm Filtered Object : ',filtered_object);
     start_keyword = start_keyword.trim();
     /*
       Where Query For Filtering Data For STF's 
@@ -72,16 +78,26 @@ class WhereQuery {
     for (let [key, value] of Object.entries(filtered_object)) {
       if (filtered_object[key] !== "" && filtered_object[key] !== "All") {
         // If Key name is material name or material type, like query will work will start wil entering value
-        if (key === "material_name") {
+        if (key === "sm_material_name") {
           where_query += `${key} LIKE '${filtered_object[key]}%' `;
           // where_query += ` or sm_material_name LIKE '${filtered_object[key]}%' `
-        } else if (key === "stf_num") {
+        } 
+        else if (key === "usernames") {
+          where_query += `users_models.id = ${filtered_object[key]} `
+        }
+        else if (key === "vendor_name") {
+          where_query += `vendors_models.id = ${filtered_object[key]} `
+        }
+        else if (key === "stf_num") {
           where_query += `${key} LIKE '%${filtered_object[key]}' `;
-        } else if (key === "createdAt") {
+        }
+        else if (key === "sm_num") {
+          where_query += `${key} LIKE '%${filtered_object[key]}' `;
+        }
+        else if (key === "createdAt") {
           where_query += `${table_name}."${key}"::date = '${filtered_object[key]}' `;
-        } else if (key === "user" && key != "") {
-          where_query += `${table_name}."userId" = '${filtered_object[key]}' `;
-        } else if (key === "date_order") {
+        }
+        else if (key === "date_order") {
           where_query = where_query.slice(0, -4);
 
           if (filtered_object[key] === "Ascending") {
