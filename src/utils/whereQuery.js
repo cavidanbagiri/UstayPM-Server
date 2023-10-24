@@ -82,10 +82,10 @@ class WhereQuery {
           where_query += `${key} LIKE '${filtered_object[key]}%' `;
           // where_query += ` or sm_material_name LIKE '${filtered_object[key]}%' `
         } 
-        else if (key === "usernames") {
+        else if (key === "usernames" && filtered_object[key] !== "All") {
           where_query += `users_models.id = ${filtered_object[key]} `
         }
-        else if (key === "vendor_name") {
+        else if (key === "vendor_name" && filtered_object[key] !== "All" ) {
           where_query += `vendors_models.id = ${filtered_object[key]} `
         }
         else if (key === "stf_num") {
