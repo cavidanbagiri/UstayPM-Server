@@ -23,6 +23,7 @@ class WarehouseServiceFetchProcessingSMS {
 class WarehouseServiceAcceptSMS {
   // Accept SMS To Warehouse
   static async acceptSMS(data) {
+    console.log("entering data : ", data);
     for (let i = 0; i < data.checked_values.length; i++) {
       const res = await this.#withdrowSMAmount(data, i);
     }
@@ -35,71 +36,110 @@ class WarehouseServiceAcceptSMS {
     const entering_amount = Number(
       data.table_data[each].entering_delivery_amount
     );
-
+    let max_accepting_amount = 0;
     // Find SM with id
     const result = await this.#findSMById(data.checked_values[each].sm_id)
       .then(async (respond) => {
-        if(respond){
-          const sm_amount = Number(respond?.dataValues?.sm_material_amount);
-        // If Entering Amount Greater Than SM AMount
-        if (entering_amount > sm_amount) {
-          // Find Max Accepting Value
-          const max_accepting_amount = sm_amount + (sm_amount * 0, 1);
-          // If Greater Than Max Accepting Value Return Error
-          if (entering_amount > max_accepting_amount) {
-            throw new Error(
-              `Wrong Operation, Amount Cant Be Greater Than ${max_accepting_amount}`
-            );
-          } else {
+        if (respond) {
+          const sm_amount = Number(respond?.dataValues?.left_over);
+
+          // If Entering Amount Greater Than SM AMount
+          if (entering_amount > sm_amount) {
+            // Find Max Accepting Value
+            max_accepting_amount = sm_amount + (sm_amount * 0, 1);
+            // If Greater Than Max Accepting Value Return Error
+            if (entering_amount > max_accepting_amount) {
+              throw new Error(
+                `Wrong Operation, Amount Cant Be Greater Than ${max_accepting_amount}`
+              );
+            } else {
+              await this.#updateSMLeftOverAmount(
+                data.checked_values[each].sm_id,
+                entering_amount
+              )
+                .then(async (respond) => {
+                  await this.#createWarehouseModel(data, each)
+                    .then(async(respond) => {
+                      await this.#changeSMSituation(data, each)
+                      .then((respond) => {})
+                      .catch((err) => {
+                        console.log(
+                          "Error in Change Condition Situation : ",
+                          err
+                        );
+                        throw new Error(
+                          `Error in Change Condition Situation : ${err}`
+                        );
+                      });
+                    })
+                    .catch((err) => {
+                      throw new Error(
+                        `Wrong Operation, Accepting SM Cant execute and err :  ${err}`
+                      );
+                    });
+                })
+                .catch((err) => {
+                  throw new Error(`Wrong Operation, Error is : ${err} `);
+                });
+            }
+          }
+          else if (entering_amount === sm_amount){
             await this.#updateSMLeftOverAmount(
               data.checked_values[each].sm_id,
               entering_amount
             )
               .then(async (respond) => {
                 await this.#createWarehouseModel(data, each)
-                  .then((respond) => {})
+                  .then(async (respond) => {
+                    await this.#changeSMSituation(data, each)
+                      .then((respond) => {})
+                      .catch((err) => {
+                        console.log(
+                          "Error in Change Condition Situation : ",
+                          err
+                        );
+                        throw new Error(
+                          `Error in Change Condition Situation : ${err}`
+                        );
+                      });
+                  })
                   .catch((err) => {
+                    console.log("first : ", err);
                     throw new Error(
-                      `Wrong Operation, Accepting SM Cant execute and err :  ${err}`
+                      `Wrong Operation, Amount Cant Be Greater Than ${max_accepting_amount}`
                     );
                   });
               })
               .catch((err) => {
+                console.log("second ", err);
                 throw new Error(
-                  `Wrong Operation, Error is : ${err} `
+                  `Wrong Operation, Amount Cant Be Greater Than ${max_accepting_amount}`
                 );
               });
           }
-        }
-        // If Not
-        else {
-          await this.#updateSMLeftOverAmount(
-            data.checked_values[each].sm_id,
-            entering_amount
-          )
-            .then(async (respond) => {
-              await this.#createWarehouseModel(data, each)
-                .then(async(respond) => {
-                  await this.#changeSMSituation(data, each)
-                  .then((respond)=>{
-
-                  }).catch((err)=>{
-                    console.log('Error in Change Condition Situation : ',err);
-                    throw new Error(`Error in Change Condition Situation : ${err}`);
-                  })
-                })
-                .catch((err) => {
-                  throw new Error(
-                    `Wrong Operation, Amount Cant Be Greater Than ${max_accepting_amount}`
-                  );
-                });
-            })
-            .catch((err) => {
-              throw new Error(
-                `Wrong Operation, Amount Cant Be Greater Than ${max_accepting_amount}`
-              );
-            });
-        }
+          // If Not
+          else {
+            await this.#updateSMLeftOverAmount(
+              data.checked_values[each].sm_id,
+              entering_amount
+            )
+              .then(async (respond) => {
+                await this.#createWarehouseModel(data, each)
+                  .then(async (respond) => {})
+                  .catch((err) => {
+                    console.log("first : ", err);
+                    throw new Error(
+                      `Wrong Operation, Amount Cant Be Greater Than ${max_accepting_amount}`
+                    );
+                  });
+              })
+              .catch((err) => {
+                console.log("second ", err);
+                throw new Error(
+                  `Wrong Operation, Amount Cant Be Greater Than ${max_accepting_amount}`
+                );
+              });  
+          }
         }
       })
       .catch((err) => {
@@ -151,15 +191,14 @@ class WarehouseServiceAcceptSMS {
   // If SM Left Over Amount is equals 0 or less than 0, condition will change and will be complete
   static async #changeSMSituation(data, each) {
     const result = await ConditionModel.update(
-      {situationId: 2},
+      { situationId: 2 },
       {
-        where:{
-          smId: data.checked_values[each].sm_id
+        where: {
+          smId: data.checked_values[each].sm_id,
+        },
       }
-    }
-    )
+    );
   }
-
 }
 
 // Fetch Received Warehouse
@@ -181,15 +220,15 @@ class WarehouseServiceProvideSM {
     for (let i of data.data) {
       // Find Selectinf row from warehouse models
       const each = await this.#findWarehouseItemById(i.warehouse_id);
-      if(each){
+      if (each) {
         // Check withdrow if possible
         const res = await this.checkWithdrow(data.user, each, i)
-        .then((respond) => {
-          // return respond;
-        })
-        .catch((err) => {
-          return new Error(err);
-        });
+          .then((respond) => {
+            // return respond;
+          })
+          .catch((err) => {
+            return new Error(err);
+          });
       }
     }
   }
@@ -201,10 +240,9 @@ class WarehouseServiceProvideSM {
         id: warehouse_id,
       },
     });
-    if(res){
+    if (res) {
       return res?.dataValues;
-    }
-    else{
+    } else {
       return null;
     }
   }
@@ -226,7 +264,7 @@ class WarehouseServiceProvideSM {
         });
       return res;
     }
-    // If Not 
+    // If Not
     else {
       return null;
     }
