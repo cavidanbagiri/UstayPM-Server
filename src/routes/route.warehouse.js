@@ -11,7 +11,7 @@ router.get("/processingsm", WarehouseController.fetchProcessingSM);
 router.post("/accept", WarehouseController.acceptSM);
 
 // Fetch Received SM To Warehouse
-router.get('/warehouse', WarehouseController.fetchWarehouseData);
+router.get('/', WarehouseController.fetchWarehouseData);
 
 // FIlter Warehouse Data
 router.get('/filter', WarehouseController.filterWarehouseData);
