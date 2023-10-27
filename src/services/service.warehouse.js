@@ -8,6 +8,7 @@ const {
 
 const ProcurementQueries = require("../queries/procurement.queries");
 const WarehouseQueries = require("../queries/warehouse.queries");
+const WhereQuery = require("../utils/whereQuery");
 
 // Fetch processing SMS
 class WarehouseServiceFetchProcessingSMS {
@@ -213,6 +214,22 @@ class WarehouseServiceFetchWarehouseData {
   }
 }
 
+// Get Filtered Data For Warehouse Section
+class WarehouseServiceFilterWarehouseData {
+  // Fetch Warehouse Data
+  static async filterWarehouseData (query) {
+    console.log(' l am working :) and query is : ', query);
+    const where_query = WhereQuery.WarehouseWhereQuery("where", query, "warehouse_models");
+    // console.log('where query is ->>>>>>>>>>>>>>>>>>>>>>>> ',where_query);
+    const string_query = `
+    ${WarehouseQueries.received_sms_from_warehouse_query}
+      ${where_query}
+    `;
+    const result = await sequelize.query(string_query);
+    return result[0];
+  }
+}
+
 // Provide Sm From Warehouse To Area
 class WarehouseServiceProvideSM {
   // Provide Material
@@ -320,4 +337,5 @@ module.exports = {
   WarehouseServiceProvideSM,
   WarehouseServiceFetchDepartments,
   WarehouseServiceFetchWarehouseDeliveryTypes,
+  WarehouseServiceFilterWarehouseData
 };
