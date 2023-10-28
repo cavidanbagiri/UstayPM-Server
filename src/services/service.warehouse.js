@@ -24,7 +24,6 @@ class WarehouseServiceFetchProcessingSMS {
 class WarehouseServiceAcceptSMS {
   // Accept SMS To Warehouse
   static async acceptSMS(data) {
-    console.log("entering data : ", data);
     for (let i = 0; i < data.checked_values.length; i++) {
       const res = await this.#withdrowSMAmount(data, i);
     }
@@ -209,7 +208,6 @@ class WarehouseServiceFetchWarehouseData {
     const result = await sequelize.query(
       WarehouseQueries.received_sms_from_warehouse_query
     );
-    // console.log('rec result is ', result[0]);
     return result[0];
   }
 }
@@ -218,9 +216,7 @@ class WarehouseServiceFetchWarehouseData {
 class WarehouseServiceFilterWarehouseData {
   // Fetch Warehouse Data
   static async filterWarehouseData (query) {
-    console.log(' l am working :) and query is : ', query);
     const where_query = WhereQuery.WarehouseWhereQuery("where", query, "warehouse_models");
-    // console.log('where query is ->>>>>>>>>>>>>>>>>>>>>>>> ',where_query);
     const string_query = `
     ${WarehouseQueries.received_sms_from_warehouse_query}
       ${where_query}

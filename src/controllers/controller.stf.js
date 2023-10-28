@@ -1,6 +1,6 @@
 const tryCatch = require("../utils/trycatch");
 
-const { STFServiceCreate, FetchUserSTF, FilterSTF, FetchWarehouseData, FilterSTFWarehouseData } = require("../services/service.stf");
+const { STFServiceCreate, FetchUserSTF, FilterSTF, FetchWarehouseData } = require("../services/service.stf");
 
 class STFController {
 
@@ -40,22 +40,6 @@ class STFController {
 
     tryCatch(
       await FilterSTF.filterSTF(query)
-      .then((respond)=>{
-        return res.status(200).send(respond)
-      })
-      .catch((err)=>{
-        console.log('Filter STF Error : ',err);
-        next(err);
-      })
-    )
-  }
-
-  // Filter STF Section For User
-  static async filterSTFWarehouseData(req, res, next) {
-    const query = req.query;
-
-    tryCatch(
-      await FilterSTFWarehouseData.filterSTFWarehouseData(query)
       .then((respond)=>{
         return res.status(200).send(respond)
       })

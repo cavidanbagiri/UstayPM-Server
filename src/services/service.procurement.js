@@ -23,8 +23,7 @@ class ProcurementServiceFetchSTF {
 class ProcurementServiceFilterSTF {
   // Filter User STF
   static async filterSTF(query) {
-    const where_query = WhereQuery.userSTFWhereQuery("where", query, "stf_models");
-    // console.log('where query is ->>>>>>>>>>>>>>>>>>>>>>>> ',where_query);
+    const where_query = WhereQuery.STFWhereQuery("where", query, "stf_models");
     const string_query = `
     ${ProcurementQueries.select_all_stf_query}
       ${where_query}
@@ -37,8 +36,7 @@ class ProcurementServiceFilterSTF {
 class ProcurementServiceFilterSM {
   // Filter User STF
   static async filterSM(query) {
-    const where_query = WhereQuery.userSMWhereQuery("where", query, "sm_models");
-    // console.log('where query is ->>>>>>>>>>>>>>>>>>>>>>>> ',where_query);
+    const where_query = WhereQuery.SMWhereQuery("where", query, "sm_models");
     const string_query = `
     ${ProcurementQueries.select_all_sm_query}
       ${where_query}
@@ -149,7 +147,6 @@ class ProcurementServiceCreateSM {
   // Create SM Data Model
   static async #createSMDataModel(sm_num, each) {
     // Change Procurement Date time to database with moment js
-    // this.#revertDateAndTime(each);
     const result = await SMModel.create({
       sm_num: sm_num,
       sm_material_name: each.sm_material_name,
@@ -210,15 +207,6 @@ class ProcurementServiceFetchCreatedSTFUsernames {
   }
 }
 
-// Fetch Warehouse Data For Procurement
-class ProcurementServiceWarehouseData{
-  static async fetchWarehouseData() {
-    const string_query = ProcurementQueries.fetch_warehouse_data;
-    const result = await sequelize.query(string_query);
-    return result[0];
-  }
-}
-
 module.exports = {
   ProcurementServiceFetchSTF,
   ProcurementServiceFetchCompanies,
@@ -228,5 +216,4 @@ module.exports = {
   ProcurementServiceFilterSTF,
   ProcurementServiceFilterSM,
   ProcurementServiceFetchCreatedSTFUsernames,
-  ProcurementServiceWarehouseData
 };

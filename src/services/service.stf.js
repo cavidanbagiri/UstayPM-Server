@@ -131,26 +131,9 @@ class FetchUserSTF {
 class FilterSTF {
   // Filter User STF
   static async filterSTF(query) {
-    const where_query = WhereQuery.userSTFWhereQuery("", query, "stf_models");
+    const where_query = WhereQuery.STFWhereQuery("", query, "stf_models");
     const string_query = `
     ${STFQueries.stf_user_filter_query}
-      WHERE  ${where_query}
-    `;
-    const result = await sequelize.query(string_query);
-    return result[0];
-  }
-}
-
-class FilterSTFWarehouseData {
-  // Filter User STF
-  static async filterSTFWarehouseData(query) {
-    const where_query = WhereQuery.userWarehouseWhereQuery(
-      "",
-      query,
-      "warehouse_models"
-    );
-    const string_query = `
-    ${STFQueries.stf_user_filter_query_warehouse_data}
       WHERE  ${where_query}
     `;
     const result = await sequelize.query(string_query);
@@ -171,7 +154,7 @@ module.exports = {
   FetchUserSTF,
   FilterSTF,
   FetchWarehouseData,
-  FilterSTFWarehouseData,
+  // FilterSTFWarehouseData,
 };
 
 // const res = await STFModel.findAll({

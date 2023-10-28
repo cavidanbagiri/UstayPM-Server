@@ -39,20 +39,6 @@ class ProcurementQueries {
   static select_stf_created_users_names = `
   select id, concat(name, ' ', surname) as ordered_name from users_models
   `;
-
-  static fetch_warehouse_data = `
-  select warehouse_models.id as warehouse_id, stf_models.id as stf_id, sm_models.id as sm_id,
-  sm_models.sm_num, stf_models.stf_num,
-  warehouse_models.delivery_material_name as material_name, warehouse_models.delivery_material_amount as amount, warehouse_models.delivery_material_unit as unit, 
-  warehouse_models.stock, warehouse_models.certificate, warehouse_models.passport, fields_models.field_name as field, warehouse_models."createdAt", 
-  vendors_models.vendor_name
-  from warehouse_models
-  LEFT JOIN sm_models ON warehouse_models."smId" = sm_models.id
-  LEFT JOIN stf_models ON sm_models."stfId" = stf_models.id
-  LEFT JOIN vendors_models ON sm_models."vendorId" = vendors_models.id
-  LEFT JOIN fields_models ON stf_models."fieldId" = fields_models.id
-  `
-
   
   // Create new stf num and add to stfmodel
   static createSMSNUMSAndReturn(projectId) {

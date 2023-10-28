@@ -1,7 +1,7 @@
 class WhereQuery {
   
   // Where Query For STF
-  static userSTFWhereQuery(start_keyword, filtered_object, table_name) {
+  static STFWhereQuery(start_keyword, filtered_object, table_name) {
     start_keyword = start_keyword.trim();
     /*
       Where Query For Filtering Data For STF's 
@@ -63,7 +63,7 @@ class WhereQuery {
   }
 
   // Where Query For STF
-  static userSMWhereQuery(start_keyword, filtered_object, table_name) {
+  static SMWhereQuery(start_keyword, filtered_object, table_name) {
     // console.log('Sm Filtered Object : ',filtered_object);
     start_keyword = start_keyword.trim();
     /*
