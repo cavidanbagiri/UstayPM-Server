@@ -25,8 +25,7 @@ class ProcurementServiceFilterSTF {
   static async filterSTF(query) {
     const where_query = WhereQuery.STFWhereQuery("where", query, "stf_models");
     const string_query = `
-    ${ProcurementQueries.select_all_stf_query}
-      ${where_query}
+    ${ProcurementQueries.select_all_stf_query} ${where_query}
     `;
     const result = await sequelize.query(string_query);
     return result[0];

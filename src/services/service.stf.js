@@ -128,19 +128,6 @@ class FetchUserSTF {
   }
 }
 
-class FilterSTF {
-  // Filter User STF
-  static async filterSTF(query) {
-    const where_query = WhereQuery.STFWhereQuery("", query, "stf_models");
-    const string_query = `
-    ${STFQueries.stf_user_filter_query}
-      WHERE  ${where_query}
-    `;
-    const result = await sequelize.query(string_query);
-    return result[0];
-  }
-}
-
 class FetchWarehouseData {
   static async fetchWarehouseDataForUser(user_id) {
     const string_query = STFQueries.fetchUserWarehouseData(user_id);
@@ -152,9 +139,7 @@ class FetchWarehouseData {
 module.exports = {
   STFServiceCreate,
   FetchUserSTF,
-  FilterSTF,
   FetchWarehouseData,
-  // FilterSTFWarehouseData,
 };
 
 // const res = await STFModel.findAll({
