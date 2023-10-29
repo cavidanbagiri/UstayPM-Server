@@ -6,19 +6,8 @@ const {
   ConditionModel,
 } = require("../../models");
 
-const ProcurementQueries = require("../queries/procurement.queries");
 const WarehouseQueries = require("../queries/warehouse.queries");
 const WhereQuery = require("../utils/whereQuery");
-
-// Fetch processing SMS
-class WarehouseServiceFetchProcessingSMS {
-  static async fetchProcessingSMS() {
-    const result = await sequelize.query(
-      ProcurementQueries.select_all_sm_query
-    );
-    return result[0];
-  }
-}
 
 // Accept SM
 class WarehouseServiceAcceptSMS {
@@ -327,7 +316,6 @@ class WarehouseServiceFetchWarehouseDeliveryTypes {
 }
 
 module.exports = {
-  WarehouseServiceFetchProcessingSMS,
   WarehouseServiceAcceptSMS,
   WarehouseServiceFetchWarehouseData,
   WarehouseServiceProvideSM,

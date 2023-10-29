@@ -4,9 +4,6 @@ const router = express.Router();
 
 const WarehouseController = require("../controllers/controller.warehouse");
 
-// fetch Processing Sm
-router.get("/processingsm", WarehouseController.fetchProcessingSM);
-
 // Accept SM TO Warehouse
 router.post("/accept", WarehouseController.acceptSM);
 

@@ -43,8 +43,9 @@ class ProcurementController {
 
   // Fetch All STF
   static async fetchSM(req, res, next) {
+    const project_id = req.params.project_id;
     tryCatch(
-      await ProcurementServiceFetchSM.fetchSM()
+      await ProcurementServiceFetchSM.fetchSM(project_id)
         .then((respond) => {
           res.status(200).send(respond);
         })

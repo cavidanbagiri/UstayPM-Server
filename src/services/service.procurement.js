@@ -46,8 +46,8 @@ class ProcurementServiceFilterSM {
 }
 
 class ProcurementServiceFetchSM {
-  static async fetchSM() {
-    const string_query = ProcurementQueries.select_all_sm_query;
+  static async fetchSM(project_id) {
+    const string_query = ProcurementQueries.select_all_sm_query + ` where sm_models."projectId" = ${project_id} `;
     const result = await sequelize.query(string_query);
     return result[0];
   }

@@ -13,11 +13,10 @@ let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  // sequelize = new Sequelize(config.database, config.username, config.password, config);
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
   // let connection_string = `postgres://${process.env.DB_PRODUCTION_USER}:${process.env.DB_PRODUCTION_PASSWORD}@${process.env.DB_PRODUCTION_HOST}/${process.env.DB_PRODUCTION_NAME}?sslmode=no-verify`;
-  let connection_string = `postgres://${process.env.DB_PRODUCTION_USER}:${process.env.DB_PRODUCTION_PASSWORD}@${process.env.DB_PRODUCTION_HOST}/${process.env.DB_PRODUCTION_NAME}?sslmode=prefer`;
-  
-  sequelize = new Sequelize(connection_string);
+  // let connection_string = `postgres://${process.env.DB_PRODUCTION_USER}:${process.env.DB_PRODUCTION_PASSWORD}@${process.env.DB_PRODUCTION_HOST}/${process.env.DB_PRODUCTION_NAME}?sslmode=prefer`; 
+  // sequelize = new Sequelize(connection_string);
 }
 
 fs

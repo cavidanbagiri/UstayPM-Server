@@ -10,7 +10,7 @@ router.get('/fetchstf', ProcurementController.fetchSTF);
 router.get('/filterstf', ProcurementController.filterSTF)
 
 // Fetch All STF and show STF Page
-router.get('/fetchsm', ProcurementController.fetchSM);
+router.get('/fetchsm/:project_id', ProcurementController.fetchSM);
 
 // Filter SM Result
 router.get('/filtersm', ProcurementController.filterSM)
