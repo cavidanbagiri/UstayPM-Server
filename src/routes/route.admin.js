@@ -11,7 +11,6 @@ router.post('/createuser', AdminController.createUser);
 router.post('/createfield', AdminController.createField);
 router.post('/createdefaultrowstfnums', AdminController.createDefaultRowSTFNUMS);
 router.get('/project/:project_id', AdminController.fetchProject);
-router.get('/fieldnames/:project_id', AdminController.fetchfields);
 router.post('/createvendor/', AdminController.createVendor);
 
 module.exports = router

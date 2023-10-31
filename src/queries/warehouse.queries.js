@@ -19,12 +19,6 @@ class WarehouseQueries {
   left join vendors_models on sm_models."vendorId" = vendors_models.id
   `;
 
-
-  // Fetch Department
-  static fetch_departments = `
-    select id, department_name from department_models
-  `
-
   // Fetch Warehouse Delivery Types
   static fetch_warehouse_delivery_types = `
     select id, type_name from warehouse_delivery_types 

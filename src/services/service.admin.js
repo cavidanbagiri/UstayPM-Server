@@ -111,16 +111,6 @@ class AdminService {
     return res?.dataValues?.project_name;
   }
 
-  static async fetchfields(projectId) {
-    const res = await FieldsModel.findAll({
-      attributes: ["id", "field_name"],
-      where: {
-        projectId: projectId,
-      },
-    });
-    return res;
-  }
-
   // Cretae Vendor
   static async createVendor (data){
     const res = await VendorModel.create(data);

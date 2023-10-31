@@ -24,21 +24,6 @@ class ProcurementQueries {
   left join situation_models on situation_models.id =  conditions_models."situationId"
   left join vendors_models on sm_models."vendorId" = vendors_models.id
   `;
-
-  // Fetch All Companies
-  static select_companies = `
-    SELECT id as company_id, vendor_name  FROM vendors_models
-  `
-
-  // Fetch All Procurement Users
-  static select_procurement_users = `
-    select id as user_id, concat(name, ' ', surname) as procurement_users from users_models where "departmentId" = 2 or "departmentId" = 4
-  `;
-
-  // Fetch All Procurement Users
-  static select_stf_created_users_names = `
-  select id, concat(name, ' ', surname) as ordered_name from users_models
-  `;
   
   // Create new stf num and add to stfmodel
   static createSMSNUMSAndReturn(projectId) {

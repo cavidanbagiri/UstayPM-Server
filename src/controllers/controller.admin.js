@@ -113,21 +113,6 @@ class AdminController {
     )
   }
 
-  // Fetch Fields Name 
-  static async fetchfields (req, res, next){
-    const project_id = req.params.project_id;
-    tryCatch(
-      await AdminService.fetchfields(project_id)
-      .then((respond)=>{
-        res.status(200).send(respond);
-      })
-      .catch((err)=>{
-        console.log('Project Id Row Created Error : ',err);
-        next(err)
-      })
-    )
-  }
-
   // Create Vendor 
   static async createVendor (req, res, next){
     const data = req.body;

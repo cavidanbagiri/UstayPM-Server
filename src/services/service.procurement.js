@@ -151,42 +151,9 @@ class ProcurementServiceCreateSM {
   }
 }
 
-// Fetch All Companies
-class ProcurementServiceFetchCompanies {
-  // Fetch All Companies
-  static async fetchCompanies() {
-    const result = await sequelize.query(ProcurementQueries.select_companies);
-    return result[0];
-  }
-}
-
-// Fetch All Companies
-class ProcurementServiceFetchProcurementUsers {
-  // Fetch Procurement Users
-  static async fetchProcurementUsers() {
-    const result = await sequelize.query(
-      ProcurementQueries.select_procurement_users
-    );
-    return result[0];
-  }
-}
-
-// Fetch All Companies
-class ProcurementServiceFetchCreatedSTFUsernames {
-  // Fetch Procurement Users
-  static async fetchSTFCreateUsernames() {
-    const result = await sequelize.query(
-      ProcurementQueries.select_stf_created_users_names
-    );
-    return result[0];
-  }
-}
 
 module.exports = {
   ProcurementServiceFetchSTF,
-  ProcurementServiceFetchCompanies,
-  ProcurementServiceFetchProcurementUsers,
   ProcurementServiceCreateSM,
   ProcurementServiceFetchSM,
-  ProcurementServiceFetchCreatedSTFUsernames,
 };

@@ -1,10 +1,7 @@
 const {
   ProcurementServiceFetchSTF,
   ProcurementServiceFetchSM,
-  ProcurementServiceFetchCompanies,
-  ProcurementServiceFetchProcurementUsers,
-  ProcurementServiceCreateSM,
-  ProcurementServiceFetchCreatedSTFUsernames
+  ProcurementServiceCreateSM
 } = require("../services/service.procurement");
 const tryCatch = require("../utils/trycatch");
 
@@ -55,37 +52,7 @@ class ProcurementController {
     );
     return "OK";
   }
-
-  // Fetch All Companies
-  static async fetchCompanies(req, res, next) {
-    tryCatch(
-      await ProcurementServiceFetchCompanies.fetchCompanies()
-        .then((respond) => {
-          res.status(200).send(respond);
-        })
-        .catch((err) => {
-          console.log("Fetch COmpanies Error From Procurement");
-          next(err);
-        })
-    );
-    return "OK";
-  }
-
-  // Fetch Procurement Users
-  static async fetchProcurementUsers(req, res, next) {
-    tryCatch(
-      await ProcurementServiceFetchProcurementUsers.fetchProcurementUsers()
-        .then((respond) => {
-          res.status(200).send(respond);
-        })
-        .catch((err) => {
-          console.log("Fetch Procurement Users Errors From Procurement");
-          next(err);
-        })
-    );
-    return "OK";
-  }
-
+  
   // Fetch Procurement Users
   static async fetchSTFCreateUsernames(req, res, next) {
     tryCatch(

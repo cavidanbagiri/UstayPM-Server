@@ -1,7 +1,12 @@
 const {
   CommonServiceFilterSTF,
   CommonServiceFilterSM,
-  CommonServiceFilterWarehouse
+  CommonServiceFilterWarehouse,
+  CommonServiceFetchFields,
+  CommonServiceFetchCompanies,
+  CommonServiceFetchProcurementUsers,
+  CommonServiceFetchCreatedSTFUsers,
+  CommonServiceFetchDepartments
 } = require("../services/service.common");
 const tryCatch = require("../utils/trycatch");
 
@@ -50,6 +55,81 @@ class CommonController {
       })
     )
   }
+
+  // Fetch Fields Name 
+  static async fetchfields (req, res, next){
+    const project_id = req.params.project_id;
+    tryCatch(
+      await CommonServiceFetchFields.fetchfields(project_id)
+      .then((respond)=>{
+        res.status(200).send(respond);
+      })
+      .catch((err)=>{
+        console.log('Project Id Row Created Error : ',err);
+        next(err)
+      })
+    )
+  }
+
+  // Fetch Companies
+  static async fetchCompanies (req, res, next){
+    tryCatch(
+      await CommonServiceFetchCompanies.fetchCompanies()
+        .then((respond) => {
+          res.status(200).send(respond);
+        })
+        .catch((err) => {
+          console.log("Fetch COmpanies Error From Procurement");
+          next(err);
+        })
+    );
+    return "OK";
+  }
+
+  // Fetch Procurement Users
+  static async fetchProcurementUsers(req, res, next) {
+    tryCatch(
+      await CommonServiceFetchProcurementUsers.fetchProcurementUsers()
+        .then((respond) => {
+          res.status(200).send(respond);
+        })
+        .catch((err) => {
+          console.log("Fetch Procurement Users Errors From Procurement");
+          next(err);
+        })
+    );
+    return "OK";
+  }
+
+  // Fetch Procurement Users
+  static async fetchSTFCreateUsernames(req, res, next) {
+    tryCatch(
+      await CommonServiceFetchCreatedSTFUsers.fetchSTFCreateUsernames()
+        .then((respond) => {
+          res.status(200).send(respond);
+        })
+        .catch((err) => {
+          console.log("Fetch Procurement Users Errors From Procurement");
+          next(err);
+        })
+    );
+    return "OK";
+  }
+
+  // Fetch Departments
+  static async fetchDepartments(req, res, next) {
+    tryCatch(
+      await CommonServiceFetchDepartments.fetchDepartments()
+        .then((respond) => {
+          return res.send(respond);
+        })
+        .catch((err) => {
+          console.log("Fetch Departments Error : ", err);
+          next(err);
+        })
+    );
+  }
+
 
 }
 
