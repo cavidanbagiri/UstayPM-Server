@@ -201,20 +201,6 @@ class WarehouseServiceFetchWarehouseData {
   }
 }
 
-// Get Filtered Data For Warehouse Section
-class WarehouseServiceFilterWarehouseData {
-  // Fetch Warehouse Data
-  static async filterWarehouseData (query) {
-    const where_query = WhereQuery.WarehouseWhereQuery("where", query, "warehouse_models");
-    const string_query = `
-    ${WarehouseQueries.received_sms_from_warehouse_query}
-      ${where_query}
-    `;
-    const result = await sequelize.query(string_query);
-    return result[0];
-  }
-}
-
 // Provide Sm From Warehouse To Area
 class WarehouseServiceProvideSM {
   // Provide Material
@@ -321,5 +307,4 @@ module.exports = {
   WarehouseServiceProvideSM,
   WarehouseServiceFetchDepartments,
   WarehouseServiceFetchWarehouseDeliveryTypes,
-  WarehouseServiceFilterWarehouseData
 };

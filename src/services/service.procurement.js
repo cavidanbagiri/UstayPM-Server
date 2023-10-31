@@ -20,30 +20,6 @@ class ProcurementServiceFetchSTF {
   }
 }
 
-class ProcurementServiceFilterSTF {
-  // Filter User STF
-  static async filterSTF(query) {
-    const where_query = WhereQuery.STFWhereQuery("where", query, "stf_models");
-    const string_query = `
-    ${ProcurementQueries.select_all_stf_query} ${where_query}
-    `;
-    const result = await sequelize.query(string_query);
-    return result[0];
-  }
-}
-
-class ProcurementServiceFilterSM {
-  // Filter User STF
-  static async filterSM(query) {
-    const where_query = WhereQuery.SMWhereQuery("where", query, "sm_models");
-    const string_query = `
-    ${ProcurementQueries.select_all_sm_query}
-      ${where_query}
-    `;
-    const result = await sequelize.query(string_query);
-    return result[0];
-  }
-}
 
 class ProcurementServiceFetchSM {
   static async fetchSM(project_id) {
@@ -212,7 +188,5 @@ module.exports = {
   ProcurementServiceFetchProcurementUsers,
   ProcurementServiceCreateSM,
   ProcurementServiceFetchSM,
-  ProcurementServiceFilterSTF,
-  ProcurementServiceFilterSM,
   ProcurementServiceFetchCreatedSTFUsernames,
 };

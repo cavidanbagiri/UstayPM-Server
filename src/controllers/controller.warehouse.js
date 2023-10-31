@@ -6,7 +6,6 @@ const {
   WarehouseServiceProvideSM,
   WarehouseServiceFetchDepartments,
   WarehouseServiceFetchWarehouseDeliveryTypes,
-  WarehouseServiceFilterWarehouseData
 } = require("../services/service.warehouse");
 
 class WarehouseController {
@@ -40,21 +39,6 @@ class WarehouseController {
           next(err);
         })
     );
-  }
-
-  // Filter STF Result
-  static async filterWarehouseData(req, res, next) {
-    const query = req.query;
-    tryCatch(
-      await WarehouseServiceFilterWarehouseData.filterWarehouseData(query)
-      .then((respond)=>{
-        return res.status(200).send(respond)
-      })
-      .catch((err)=>{
-        console.log('Filter STF Error : ',err);
-        next(err);
-      })
-    )
   }
 
   // Provide Material TO Area

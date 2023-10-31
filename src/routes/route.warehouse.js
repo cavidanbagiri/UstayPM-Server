@@ -10,9 +10,6 @@ router.post("/accept", WarehouseController.acceptSM);
 // Fetch Received SM To Warehouse
 router.get('/', WarehouseController.fetchWarehouseData);
 
-// FIlter Warehouse Data
-router.get('/filter', WarehouseController.filterWarehouseData);
-
 // Provide Material To Area
 router.post('/provide', WarehouseController.provideMaterial);
 
