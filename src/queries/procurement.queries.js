@@ -2,7 +2,7 @@ class ProcurementQueries {
 
   // Fetch All STF 
   static select_all_stf_query = `
-  select stf_models.id as stf_id, stf_models.stf_num, stf_models.completed, stf_models.material_type, stf_models.material_name, stf_models.material_amount, stf_models.material_unit, stf_models."createdAt", stf_models."projectId" as project_id, stf_models."departmentId" as department_id,
+  select stf_models.id as stf_id, stf_models.stf_num, stf_models.completed, stf_models.material_type, stf_models.material_name, stf_models.material_amount as amount, stf_models.material_unit as unit, stf_models."createdAt", stf_models."projectId" as project_id, stf_models."departmentId" as department_id,
   concat(users_models.name , ' ', users_models.surname)  as username
   from stf_models
   left join users_models on users_models.id = stf_models."userId"
@@ -11,7 +11,7 @@ class ProcurementQueries {
   // Fetch All STF 
   static select_all_sm_query = `
   select sm_models.id as sm_id, sm_models."stfId" as stf_id, sm_models.sm_num, stf_models.stf_num, situation_models.status_name as situation, sm_models.sm_material_name,
-  sm_models.sm_material_amount, sm_models.sm_material_unit, sm_models.price, sm_models.total, sm_models.currency, sm_models.left_over, sm_models.approximate_date,
+  sm_models.sm_material_amount as amount, sm_models.sm_material_unit as unit, sm_models.price, sm_models.total, sm_models.currency, sm_models.left_over, sm_models.approximate_date,
   sm_models."createdAt", sm_models."projectId" as project_id, sm_models."departmentId" as department_id,
   concat(users_models.name , ' ', users_models.surname)  as orderer,
   concat(um.name, ' ', um.surname ) as supplier,
