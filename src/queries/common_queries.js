@@ -76,7 +76,6 @@ class CommonQueries {
   warehouse_models.delivery_material_name, warehouse_models.delivery_material_amount, warehouse_models.delivery_material_unit,
   warehouse_models.delivery_material_price, warehouse_models.delivery_material_total, warehouse_models.delivery_material_currency,
   warehouse_models.doc_number, warehouse_models.doc_date, warehouse_models.certificate, warehouse_models.passport, warehouse_models.stock, 
-  warehouse_models.providing_date,
   CONCAT(us_mod.name, ' ', us_mod.surname) as Supplier_name,
   CONCAT(u_m.name, ' ',u_m.surname) as Accepted_by
   FROM stf_models 
