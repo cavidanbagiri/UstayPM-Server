@@ -27,6 +27,9 @@ router.get('/createdstfusers', CommonController.fetchSTFCreateUsernames);
 // Fetch Departments
 router.get('/fetchdepartments', CommonController.fetchDepartments);
 
+// Fetch Row Inform By STF ID
+router.get('/fetchstfrowinform/:stf_id', CommonController.fetchSTFRowInform); 
+
 
 
 module.exports = router;

@@ -85,6 +85,14 @@ class CommonServiceFetchDepartments {
   }
 }
 
+class CommonServiceFetchSTFRowInform {
+  static async fetchSTFRowInform(stf_id) {
+    const res = await sequelize.query(CommonQueries.fetch_stf_row_inform+stf_id);
+    console.log('res is : ',res[0][0]);
+    return res[0][0];
+  }
+}
+
 module.exports = {
   CommonServiceFilterSTF,
   CommonServiceFilterSM,
@@ -93,5 +101,6 @@ module.exports = {
   CommonServiceFetchCompanies,
   CommonServiceFetchProcurementUsers,
   CommonServiceFetchCreatedSTFUsers,
-  CommonServiceFetchDepartments
+  CommonServiceFetchDepartments,
+  CommonServiceFetchSTFRowInform
 };

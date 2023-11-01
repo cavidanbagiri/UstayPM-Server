@@ -6,7 +6,8 @@ const {
   CommonServiceFetchCompanies,
   CommonServiceFetchProcurementUsers,
   CommonServiceFetchCreatedSTFUsers,
-  CommonServiceFetchDepartments
+  CommonServiceFetchDepartments,
+  CommonServiceFetchSTFRowInform
 } = require("../services/service.common");
 const tryCatch = require("../utils/trycatch");
 
@@ -130,6 +131,22 @@ class CommonController {
     );
   }
 
+  // Fetch Row Inform By STF ID
+  static async fetchSTFRowInform(req, res, next) {
+    const stf_id = req.params.stf_id;
+    tryCatch(
+      await CommonServiceFetchSTFRowInform.fetchSTFRowInform(stf_id)
+        .then((respond) => {
+          return res.send(respond);
+        })
+        .catch((err) => {
+          console.log("Fetch Departments Error : ", err);
+          next(err);
+        })
+    );
+
+    return 'OK';
+  }
 
 }
 
