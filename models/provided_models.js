@@ -32,6 +32,12 @@ module.exports = (sequelize, DataTypes) => {
     provided_date: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
+    },
+    serial_no: {
+      type: DataTypes.STRING,
+    },
+    unique_id: {
+      type: DataTypes.STRING,
     }
   }, {
     sequelize,
