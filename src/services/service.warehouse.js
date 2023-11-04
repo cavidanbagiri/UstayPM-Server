@@ -278,6 +278,8 @@ class WarehouseServiceProvideSM {
       provided_amount: data.provide_amount,
       deliver_to: data.provide_user,
       card_number: data.provide_user_card_number,
+      serial_no: data.serial_no,
+      unique_id: data.unique_id
     });
     return res;
   }
