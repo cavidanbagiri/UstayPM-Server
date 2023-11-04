@@ -21,7 +21,11 @@ module.exports =
       "password": process.env.DB_PRODUCTION_PASSWORD,
       "database": process.env.DB_PRODUCTION_NAME,
       "host": process.env.DB_PRODUCTION_HOST,
-      "dialect": "postgres"
+      "dialect": "postgres",
+      "port": 5432,
+      "dialectOptions": {
+        "ssl": true        //<============ Add this
+      }
     }
   }
   
