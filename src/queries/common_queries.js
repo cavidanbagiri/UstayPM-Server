@@ -1,10 +1,12 @@
 class CommonQueries {
   // Fetch All STF
   static select_all_stf_query = `
-  select stf_models.id as stf_id, stf_models.stf_num, stf_models.completed, stf_models.material_type, stf_models.material_name, stf_models.material_amount, stf_models.material_unit, stf_models."createdAt", stf_models."projectId" as project_id, stf_models."departmentId" as department_id,
-  concat(users_models.name , ' ', users_models.surname)  as username
+  select stf_models.id as stf_id, stf_models.stf_num, stf_models.completed, stf_models.material_type, stf_models.material_name, stf_models.material_amount as amount,
+  stf_models.material_unit as unit, stf_models."createdAt", stf_models."projectId" as project_id, stf_models."departmentId" as department_id,
+  concat(users_models.name , ' ', users_models.surname)  as username, fields_models.field_name
   from stf_models
   left join users_models on users_models.id = stf_models."userId"
+  left join fields_models on fields_models.id = "fieldId"
   `;
 
   // Fetch All SM
