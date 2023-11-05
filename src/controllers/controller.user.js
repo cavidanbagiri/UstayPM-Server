@@ -13,11 +13,12 @@ class UserController {
     const user_data = req.body;
     const hashpassword = await hashPassowrd(user_data.password);
     user_data.password = hashpassword;
-    console.log('data ', user_data);
     tryCatch(
         await UserService.loginUser(user_data)
         .then((user) => {
           delete user.password;
+          user.name = user.name[0].toUpperCase() + user.name.slice(1);
+          user.surname = user.surname[0].toUpperCase() + user.surname.slice(1);
           const temp_user = {
             ...user,
             tokens:{
