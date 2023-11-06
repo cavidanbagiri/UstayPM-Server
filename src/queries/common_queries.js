@@ -52,12 +52,12 @@ class CommonQueries {
 
   // Fetch All Procurement Users
   static select_procurement_users = `
-    select id as user_id, concat(name, ' ', surname) as procurement_users from users_models where "departmentId" = 2 or "departmentId" = 4
+    select id as user_id, INITCAP(concat(name, ' ', surname)) as procurement_users from users_models where "departmentId" = 2
   `;
 
   // Fetch All Procurement Users
   static select_stf_created_users_names = `
-  select id, concat(name, ' ', surname) as ordered_name from users_models
+  select id, Initcap(concat(name, ' ', surname)) as ordered_name from users_models
   `;
   
   // Fetch Department

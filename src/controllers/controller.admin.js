@@ -116,7 +116,6 @@ class AdminController {
   // Create Vendor 
   static async createVendor (req, res, next){
     const data = req.body;
-    console.log('data is : ',data);
     tryCatch(
       await AdminService.createVendor(data)
       .then((respond)=>{

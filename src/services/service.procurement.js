@@ -137,6 +137,7 @@ class ProcurementServiceCreateSM {
       supplierId: each.supplierName,
       stfId: each.stfId,
       approximate_date: each.ProcurementComingDate,
+      createdBy: each.createdBy
     });
     return result;
   }
