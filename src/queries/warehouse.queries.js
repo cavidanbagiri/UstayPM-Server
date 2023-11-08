@@ -6,8 +6,8 @@ class WarehouseQueries {
   warehouse_models.delivery_material_amount as amount, warehouse_models.stock, warehouse_models.delivery_material_unit as unit,
   sm_models.price, sm_models.total, sm_models.currency, sm_models.left_over, 
   warehouse_models."createdAt", sm_models."projectId" as project_id, sm_models."departmentId" as department_id,
-  concat(users_models.name , ' ', users_models.surname)  as orderer,
-  concat(um.name, ' ', um.surname ) as supplier,
+  Initcap(concat(users_models.name , ' ', users_models.surname))  as orderer,
+  Initcap(concat(um.name, ' ', um.surname )) as supplier,
   vendors_models.vendor_name
   from warehouse_models
   left join sm_models on warehouse_models."smId" = sm_models.id 
