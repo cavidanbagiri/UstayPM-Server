@@ -136,10 +136,19 @@ class FetchWarehouseData {
   }
 }
 
+class FetchProvidedData {
+  static async fetchProvidedDataForUser(department_id) {
+    const string_query = STFQueries.fetchUserProvidedData(department_id);
+    const result = await sequelize.query(string_query);
+    return result[0];
+  }
+}
+
 module.exports = {
   STFServiceCreate,
   FetchUserSTF,
   FetchWarehouseData,
+  FetchProvidedData
 };
 
 // const res = await STFModel.findAll({

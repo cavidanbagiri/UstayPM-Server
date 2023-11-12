@@ -14,18 +14,17 @@ if (config.use_env_variable) {
   console.log('if work');
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  console.log('else work');
-  // sequelize = new Sequelize(config.database, config.username, config.password, config);
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
   // let connection_string = `postgres://${process.env.DB_PRODUCTION_USER}:${process.env.DB_PRODUCTION_PASSWORD}@${process.env.DB_PRODUCTION_HOST}/${process.env.DB_PRODUCTION_NAME}?ssl=no-verify`;
   // let connection_string = `postgres://${process.env.DB_PRODUCTION_USER}:${process.env.DB_PRODUCTION_PASSWORD}@${process.env.DB_PRODUCTION_HOST}/${process.env.DB_PRODUCTION_NAME}?ssl=true`; 
   // sequelize = new Sequelize(connection_string);
-  sequelize = new Sequelize(process.env.DB_PRODUCTION_NAME, process.env.DB_PRODUCTION_USER, process.env.DB_PRODUCTION_PASSWORD, {
-    host: process.env.DB_PRODUCTION_HOST,
-    dialect: 'postgres',
-    dialectOptions: {
-      ssl:true
-    }
-  });
+  // sequelize = new Sequelize(process.env.DB_PRODUCTION_NAME, process.env.DB_PRODUCTION_USER, process.env.DB_PRODUCTION_PASSWORD, {
+  //   host: process.env.DB_PRODUCTION_HOST,
+  //   dialect: 'postgres',
+  //   dialectOptions: {
+  //     ssl:true
+  //   }
+  // });
 }
 
 fs

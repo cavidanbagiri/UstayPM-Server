@@ -38,6 +38,19 @@ class CommonServiceFilterWarehouse {
   }
 }
 
+class CommonServiceFilterProvided {
+  // Fetch Warehouse Data
+  static async filterProvided (query) {
+    const where_query = WhereQuery.WarehouseWhereQuery("where", query, "provided_models");
+    const string_query = `
+    ${CommonQueries.fetch_provide_data}
+      ${where_query}
+    `;
+    const result = await sequelize.query(string_query);
+    return result[0];
+  }
+}
+
 class CommonServiceFetchFields {
   static async fetchfields(projectId) {
     const res = await FieldsModel.findAll({
@@ -101,5 +114,6 @@ module.exports = {
   CommonServiceFetchProcurementUsers,
   CommonServiceFetchCreatedSTFUsers,
   CommonServiceFetchDepartments,
-  CommonServiceFetchSTFRowInform
+  CommonServiceFetchSTFRowInform,
+  CommonServiceFilterProvided
 };
