@@ -31,7 +31,10 @@ router.get('/createdstfusers', CommonController.fetchSTFCreateUsernames);
 router.get('/fetchdepartments', CommonController.fetchDepartments);
 
 // Fetch Row Inform By STF ID
-router.get('/fetchstfrowinform/:stf_id', CommonController.fetchSTFRowInform); 
+router.get('/fetchstfrowinform/:stf_id', CommonController.fetchSTFRowInform);
+
+// Get Statistic Data
+router.get('/statisticdata', CommonController.getStatisticData);
 
 
 

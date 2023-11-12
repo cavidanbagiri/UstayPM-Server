@@ -8,7 +8,8 @@ const {
   CommonServiceFetchCreatedSTFUsers,
   CommonServiceFetchDepartments,
   CommonServiceFetchSTFRowInform,
-  CommonServiceFilterProvided
+  CommonServiceFilterProvided,
+  CommonServiceStatisticData
 } = require("../services/service.common");
 const tryCatch = require("../utils/trycatch");
 
@@ -162,6 +163,20 @@ class CommonController {
     );
 
     return 'OK';
+  }
+
+  // Get Statistic Data
+  static async getStatisticData (req, res, next) {
+    tryCatch(
+      await CommonServiceStatisticData.getStatisticData()
+      .then((respond) => {
+        return res.send(respond);
+      })
+      .catch((err) => {
+        console.log("Fetch Departments Error : ", err);
+        next(err);
+      })
+    )
   }
 
 }

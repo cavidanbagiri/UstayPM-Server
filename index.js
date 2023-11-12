@@ -46,8 +46,8 @@ app.use('/user', UserRouter);
 app.use('/stf', STFRouter);
 app.use('/procurement', ProcurementRouter);
 app.use('/warehouse', WarehouseRouter);
-app.use('/common', CommonRouter);
 app.use('/provides', ProvideRouter);
+app.use('/common', CommonRouter);
 
 // Handle Error
 app.use(errorHandler);

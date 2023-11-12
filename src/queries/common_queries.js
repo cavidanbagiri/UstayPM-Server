@@ -109,9 +109,13 @@ class CommonQueries {
   LEFT JOIN warehouse_models ON warehouse_models."smId" = sm_models.id
   LEFT JOIN users_models as u_m ON warehouse_models."acceptedBy" = u_m.id
   WHERE stf_models.id = 
-  
   `
 
+  static get_stf_statistic_result = 'SELECT completed, count(completed) from stf_models group by completed'
+  static get_sm_statistic_result = 'select status_name, count("situationId") from conditions_models left join situation_models on conditions_models."situationId" = situation_models.id group by "situationId", status_name'
+  static get_warehouse_statistic_result = ' select count(id) from warehouse_models where stock <> 0'
+
+  
 }
 
 module.exports = CommonQueries;
