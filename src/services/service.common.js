@@ -138,9 +138,6 @@ class CommonServiceStatisticData {
 
   // Get Combine Result
   static combineResult (stf_inform, sm_inform, warehouse_inform){
-    // console.log('stf : ', stf_inform);
-    console.log('sm : ', sm_inform);
-    // console.log('wh : ', warehouse_inform);
     let return_data = {}
     // Combine Data STF
     for(let i of stf_inform){
@@ -156,9 +153,7 @@ class CommonServiceStatisticData {
     if(warehouse_inform.length){
       return_data.warehouse_inform = warehouse_inform[0]?.count
     }
-    console.log('return data : ',return_data);
-
-    return 'OK';
+    return return_data;
   }
   
 }
