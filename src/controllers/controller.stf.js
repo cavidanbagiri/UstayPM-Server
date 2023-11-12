@@ -52,9 +52,9 @@ class STFController {
 
   // Get Provide Material Who Created By Current User
   static async fetchProvidedDataForUser(req, res, next) {
-    const user_id = req.params.department_id;
+    const department_id = req.params.department_id;
     tryCatch(
-      await FetchProvidedData.fetchProvidedDataForUser(user_id)
+      await FetchProvidedData.fetchProvidedDataForUser(department_id)
       .then((respond)=>{
         return res.status(200).send(respond)
       })

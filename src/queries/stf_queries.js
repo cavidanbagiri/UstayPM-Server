@@ -47,6 +47,7 @@ class STFQUeries {
     from provided_models
     left join warehouse_models on provided_models."warehouseId" = warehouse_models.id
     left join sm_models on warehouse_models."smId" = sm_models.id
+    where provided_models."departmentId" = ${departmentId}
     `;
     return string_query;
   }

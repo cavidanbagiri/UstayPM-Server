@@ -41,7 +41,7 @@ class CommonServiceFilterWarehouse {
 class CommonServiceFilterProvided {
   // Fetch Warehouse Data
   static async filterProvided (query) {
-    const where_query = WhereQuery.WarehouseWhereQuery("where", query, "provided_models");
+    const where_query = WhereQuery.ProvidedWhereQuery("where", query, "provided_models");
     const string_query = `
     ${CommonQueries.fetch_provide_data}
       ${where_query}

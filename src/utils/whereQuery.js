@@ -228,8 +228,8 @@ class WhereQuery {
         else if (key === "sm_num") {
           where_query += `${key} LIKE '%${filtered_object[key]}' `;
         }
-        else if (key === "user" && key != "") {
-          where_query += `stf_models."userId" = '${filtered_object[key]}' `;
+        else if (key === "department" && key != "") {
+          where_query += `provided_models."departmentId" = '${filtered_object[key]}' `;
         }
         else if (key === "createdAt") {
           where_query += `${table_name}."${key}"::date = '${filtered_object[key]}' `;
@@ -261,7 +261,6 @@ class WhereQuery {
 
     // Add Ascending Or Descending
     where_query += time_query;
-
     return where_query;
   }
 
