@@ -53,6 +53,26 @@ app.use('/common', CommonRouter);
 app.use(errorHandler);
 
 // Listen Server
-app.listen(process.env.PORT,()=>{
+const server = app.listen(process.env.PORT,()=>{
     console.log(`Server is running in ${process.env.PORT} port`);
+})
+
+// Create Socket
+const io = require("socket.io")(server,{
+  cors:{
+    credentials: true,
+    origin: ['http://localhost:5173','https://ustaypm-client.onrender.com']
+  }
+})
+
+// Create Socket Connection
+io.on('connection', (socket)=>{
+  console.log(`Connection Created By Socket ${socket.id}`);
+
+  socket.on('first',(data)=>{
+    // console.log('data is : ', data);
+    // socket.broadcast.emit("returnfirst", 'I accept Your Message From Server and am realtime');
+    socket.emit('returnfirst',{name:"cavidan"})
+  })
+
 })
