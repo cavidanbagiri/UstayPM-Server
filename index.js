@@ -6,6 +6,9 @@ const app = express();
 // Use .env variables
 require('dotenv').config();
 
+// Create Socket IO Variables
+
+
 // Activate Database Connection
 // require('./src/configs/database');
 const { sequelize } = require('./models');
@@ -57,22 +60,30 @@ const server = app.listen(process.env.PORT,()=>{
     console.log(`Server is running in ${process.env.PORT} port`);
 })
 
-// Create Socket
-const io = require("socket.io")(server,{
-  cors:{
-    credentials: true,
-    origin: ['http://localhost:5173','https://ustaypm-client.onrender.com']
-  }
-})
+
+const { initializeSocket, getSocketInstance } = require('./src/utils/io');
+
+initializeSocket(server);
+
 
 // Create Socket Connection
-io.on('connection', (socket)=>{
-  console.log(`Connection Created By Socket ${socket.id}`);
+const io = getSocketInstance();
 
-  socket.on('first',(data)=>{
-    // console.log('data is : ', data);
-    // socket.broadcast.emit("returnfirst", 'I accept Your Message From Server and am realtime');
-    socket.emit('returnfirst',{name:"cavidan"})
+// Socket Option
+io.on('connection', (socket)=>{
+  
+  // Create Socket Connection With Client
+  console.log(`Connection Created By Socket a new ${socket.id}`);
+
+  /*
+    Name setup connection coming from client and
+    Create socket with user id
+  */
+  socket.on('setup', (userData)=>{
+    socket.join(userData.id);
+    console.log('user data by socket is : ', userData.id);
   })
+
+  
 
 })
