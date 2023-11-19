@@ -1,6 +1,7 @@
 const CommonQueries = require("../queries/common_queries");
 const WhereQuery = require("../utils/whereQuery");
 const { sequelize, FieldsModel } = require("../../models");
+const {getSocketInstance} = require('../utils/io');
 
 class CommonServiceFilterSTF {
   static async filterSTF(query) {
@@ -117,10 +118,14 @@ class CommonServiceFetchSTFRowInform {
 
 class CommonServiceStatisticData {
   // Combine Result
-  static async getStatisticData() {
+  static async getStatisticData(user_id) {
+    // Fetch Statistic Result Data
     const stf_inform = await this.getSTFStatisticData();
     const sm_inform = await this.getSMStatisticData();
     const warehouse_inform = await this.getWarehouseStatisticResult();
+
+    // Create Socket Emit for New STF Notification
+    await CommonServiceNewSTFNotification.getNewSTFNotification(user_id);
 
     return this.combineResult(stf_inform, sm_inform, warehouse_inform);
   }
@@ -170,8 +175,9 @@ class CommonServiceNewSTFNotification {
   // Get New STF Notification
   static async getNewSTFNotification(user_id) {
     const result = await sequelize.query(CommonQueries.get_new_stf_notification_result + user_id);
-    console.log('notification result is : ', result[0]);
-    return result[0];
+    const io = getSocketInstance();
+    io.emit('newstfnotification', result[0]);
+    // return result[0];
   }
 }
 
