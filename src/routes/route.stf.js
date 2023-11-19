@@ -16,5 +16,4 @@ router.get('/warehouse/:user_id', STFController.fetchWarehouseDataForUser);
 // Get Warehouse Material Who Created By Current User
 router.get('/provided/:department_id', STFController.fetchProvidedDataForUser);
 
-
 module.exports = router

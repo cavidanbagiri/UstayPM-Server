@@ -25,17 +25,6 @@ module.exports = {
       onDelete: 'cascade',
       onUpdate: 'cascade'
     });
-    await queryInterface.addConstraint('new_stf_notification_models', {
-      fields: ['stfId'],
-      type: 'foreign key',
-      name: 'stfId',
-      references: {
-        table: 'stf_models',
-        field: 'id'
-      },
-      onDelete: 'cascade',
-      onUpdate: 'cascade'
-    })
     /**
      * Add altering commands here.
      *

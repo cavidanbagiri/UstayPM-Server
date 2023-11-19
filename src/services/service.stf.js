@@ -1,4 +1,4 @@
-const { sequelize, STFModel, ProjectModel } = require("../../models");
+const { sequelize, STFModel, ProjectModel, NewSTFNotificationModel } = require("../../models");
 const STFQueries = require("../queries/stf_queries");
 const EmptyFieldError = require("../exceptions/EmptyFieldError");
 // const WhereQuery = require("../utils/whereQuery");
@@ -8,18 +8,29 @@ const {getSocketInstance} = require('../utils/io');
 class STFServiceCreate {
   // Create STF
   static async createSTF(data) {
-    // Validate All Column that, Each row and common information is true || not
+
+    // Step 1 -> Validate All Column that, Each row and common information is true || not
     try {
       this.#checkValidation(data);
     } catch (err) {
       throw new Error(err)
     }
 
-    // Set STF Num inside of data and insert to table -> SRU.RS.07.10003
+    // Step 2 -> Set STF Num inside of data and insert to table -> SRU.RS.07.10003
     data.stf_num = await this.#createSTFNUMSForm(data);
+
+    // Step 3 -> Foreach users entering orders and create one-by-one 
     for (let i of data.orders) {
       await this.#createEachRow(data, i);
     }
+
+    // Step 4 -> Create New Row In NewSTFNotification Model and set as false and show +1 bell to procurement and warehouse users
+    let notify_data = {
+      stf_num : data.stf_num,
+      create_user_id: data.user.id
+    }; 
+    await SetSNewUserNoticication.setNotificationRow(1, notify_data);
+
     return "OK";
   }
 
@@ -77,6 +88,8 @@ class STFServiceCreate {
       });
   }
 
+  
+
   // Check Validation for importing data
   static #checkValidation(data) {
     if (!data.user.projectId)throw new EmptyFieldError("Project Cant Be null", 400);
@@ -119,6 +132,48 @@ class STFServiceCreate {
         throw new EmptyFieldError("Field Cant Be Empty", 400);
     }
   }
+
+}
+
+// Set New STF Notification  
+class SetSNewUserNoticication {
+
+  // Set New STF Notification 
+  static async setNotificationRow(projectId, data){
+
+    // 1 - Find All Procurement and Warehouse Users
+    const result = await this.#findProWarehouseUsers(projectId)
+    
+    // 2 - Create NewSTFNotification Model
+    // - Selecting Users have
+    if(result.length){
+      // Iterate Users
+      for(let i = 0 ; i < result.length; i++){
+        // Create and Save Users To NewSTFNotificationModels
+        const new_notification = await NewSTFNotificationModel.create({
+          read: false,
+          stfno: data.stf_num,
+          createUserId: data.create_user_id,
+          notifyUserId: result[i].id
+        });
+      }
+    }
+    
+  }
+
+  // Find Procurement and Warehouse Users
+  static async #findProWarehouseUsers(projectId) {
+
+    // Cretae Query and return procuremnt and warehouse users
+    const string_query = `select id, name || ' ' || surname as username from users_models where "projectId" = ${projectId} and  "departmentId" in (2,3)`
+
+    // Find From Users  
+    const result = await sequelize.query(string_query);
+    // console.log('res is : ',result[0]);
+    return result[0];
+
+  }
+
 }
 
 class FetchUserSTF {
@@ -154,7 +209,7 @@ module.exports = {
   STFServiceCreate,
   FetchUserSTF,
   FetchWarehouseData,
-  FetchProvidedData
+  FetchProvidedData,
 };
 
 // const res = await STFModel.findAll({

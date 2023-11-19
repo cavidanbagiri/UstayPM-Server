@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate({UserModel, STFModel}) {
       this.belongsTo(UserModel,  {foreignKey: 'createUserId'} )
       this.belongsTo(UserModel,  {foreignKey: 'notifyUserId'} )
-      this.belongsTo(STFModel,  {foreignKey: 'stfId'} )
     }
   }
   new_stf_notification_model.init(
@@ -19,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: true
+      },
+      stfno: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
     },
     {

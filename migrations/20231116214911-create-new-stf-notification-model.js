@@ -12,8 +12,8 @@ module.exports = {
       read: {
         type: Sequelize.BOOLEAN
       },
-      stfId: {
-        type: Sequelize.INTEGER
+      stfno: {
+        type: Sequelize.STRING
       },
       createUserId: {
         type: Sequelize.INTEGER

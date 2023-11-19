@@ -1,7 +1,12 @@
 const tryCatch = require("../utils/trycatch");
 
-const { STFServiceCreate, FetchUserSTF, FetchWarehouseData,
-  FetchProvidedData } = require("../services/service.stf");
+const { 
+  STFServiceCreate,
+  FetchUserSTF,
+  FetchWarehouseData,
+  FetchProvidedData,
+  SetSNewUserNoticication
+ } = require("../services/service.stf");
 
 class STFController {
 
