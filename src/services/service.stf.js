@@ -29,7 +29,7 @@ class STFServiceCreate {
       stf_num : data.stf_num,
       create_user_id: data.user.id
     }; 
-    await SetSNewUserNoticication.setNotificationRow(1, notify_data);
+    await CreateNewSTFNotification.createNewSTFNotification(1, notify_data);
 
     return "OK";
   }
@@ -136,10 +136,10 @@ class STFServiceCreate {
 }
 
 // Set New STF Notification  
-class SetSNewUserNoticication {
+class CreateNewSTFNotification {
 
   // Set New STF Notification 
-  static async setNotificationRow(projectId, data){
+  static async createNewSTFNotification(projectId, data){
 
     // 1 - Find All Procurement and Warehouse Users
     const result = await this.#findProWarehouseUsers(projectId)

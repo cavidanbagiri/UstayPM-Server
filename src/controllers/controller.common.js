@@ -9,7 +9,8 @@ const {
   CommonServiceFetchDepartments,
   CommonServiceFetchSTFRowInform,
   CommonServiceFilterProvided,
-  CommonServiceStatisticData
+  CommonServiceStatisticData,
+  CommonServiceNewSTFNotification
 } = require("../services/service.common");
 const tryCatch = require("../utils/trycatch");
 
@@ -177,6 +178,22 @@ class CommonController {
         next(err);
       })
     )
+  }
+
+  // Get New STF Notification
+  static async getNewSTFNotification (req, res, next) {
+    const user_id = req.params.user_id;
+    tryCatch(
+      await CommonServiceNewSTFNotification.getNewSTFNotification(user_id)
+      .then((respond) => {
+        return res.send(respond);
+      })
+      .catch((err) => {
+        console.log("Fetch Notification Result is : ", err);
+        next(err);
+      })
+    )
+
   }
 
 }
