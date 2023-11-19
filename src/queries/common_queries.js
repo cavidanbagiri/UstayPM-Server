@@ -119,6 +119,9 @@ class CommonQueries {
     left join users_models on new_stf_notification_models."createUserId" = users_models.id
     where read=false and "notifyUserId" = 
   `
+  static read_notification = `
+    update new_stf_notification_models set read = true where read = false and "notifyUserId" = 
+  `
   
 }
 

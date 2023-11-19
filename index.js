@@ -81,7 +81,7 @@ io.on('connection', (socket)=>{
   */
   socket.on('setup', (userData)=>{
     socket.join(userData.id);
-    console.log('user data by socket is : ', userData.id);
+    // console.log('user data by socket is : ', socket);
   })
 
   

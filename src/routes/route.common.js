@@ -36,8 +36,8 @@ router.get('/fetchstfrowinform/:stf_id', CommonController.fetchSTFRowInform);
 // Get Statistic Data
 router.get('/statisticdata/:user_id', CommonController.getStatisticData);
 
-// Fetch New STF Notification Model
-router.get('/newstfnotification/:user_id', CommonController.getNewSTFNotification)
+// Post Nofitication Reading
+router.post('/readnotification/:user_id', CommonController.readNotification);
 
 
 

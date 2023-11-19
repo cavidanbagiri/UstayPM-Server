@@ -177,8 +177,17 @@ class CommonServiceNewSTFNotification {
     const result = await sequelize.query(CommonQueries.get_new_stf_notification_result + user_id);
     const io = getSocketInstance();
     io.emit('newstfnotification', result[0]);
-    // return result[0];
   }
+}
+
+class CommonServiceReadNotification {
+
+  // Set Notification as Readed
+  static async readNotification(user_id) {
+    await sequelize.query(CommonQueries.read_notification + user_id);
+    return 'OK';
+  }
+
 }
 
 module.exports = {
@@ -193,5 +202,5 @@ module.exports = {
   CommonServiceFetchSTFRowInform,
   CommonServiceFilterProvided,
   CommonServiceStatisticData,
-  CommonServiceNewSTFNotification,
+  CommonServiceReadNotification
 };
