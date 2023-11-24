@@ -115,7 +115,7 @@ class CommonQueries {
   static get_sm_statistic_result = 'select status_name, count("situationId") from conditions_models left join situation_models on conditions_models."situationId" = situation_models.id group by "situationId", status_name'
   static get_warehouse_statistic_result = ' select count(id) from warehouse_models where stock <> 0'
   static get_new_stf_notification_result = `
-    select stfno, Initcap(Concat(users_models.name, ' ', users_models.surname )) as username from new_stf_notification_models 
+    select stfno, Initcap(Concat(users_models.name, ' ', users_models.surname )) as username, new_stf_notification_models."createdAt" from new_stf_notification_models 
     left join users_models on new_stf_notification_models."createUserId" = users_models.id
     where read=false and "notifyUserId" = 
   `
