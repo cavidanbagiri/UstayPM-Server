@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       message_text: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.STRING
       },
       senderId: {
         type: Sequelize.INTEGER

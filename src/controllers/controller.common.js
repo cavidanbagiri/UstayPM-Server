@@ -11,7 +11,8 @@ const {
   CommonServiceFilterProvided,
   CommonServiceStatisticData,
   CommonServiceReadNotification,
-  CommonServiceFetchAllUsers
+  CommonServiceFetchAllUsers,
+  CommonServiceSendMessage
 } = require("../services/service.common");
 const tryCatch = require("../utils/trycatch");
 
@@ -210,6 +211,20 @@ class CommonController {
     )
   }
 
+  // Send Message
+  static async sendMessage (req, res, next) {
+    tryCatch(
+      await CommonServiceSendMessage.sendMessage(req.body)
+      .then((respond) => {
+        return res.send(respond);
+      })
+      .catch((err) => {
+        console.log("Read Notification Error : ", err);
+        next(err);
+      })
+    )
+    return 'OK'
+  }
 
 }
 

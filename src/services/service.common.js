@@ -1,6 +1,6 @@
 const CommonQueries = require("../queries/common_queries");
 const WhereQuery = require("../utils/whereQuery");
-const { sequelize, FieldsModel } = require("../../models");
+const { sequelize, FieldsModel, MessageModel } = require("../../models");
 const {getSocketInstance} = require('../utils/io');
 
 class CommonServiceFilterSTF {
@@ -196,6 +196,20 @@ class CommonServiceFetchAllUsers {
   }
 }
 
+class CommonServiceSendMessage {
+  
+  // Send Message
+  static async sendMessage(data){
+    const result = await MessageModel.create({
+      senderId: data.sender_id,
+      receiverId: data.current_id,
+      message_text: data.message_text,
+      read: false
+    }) 
+    return 'OK';
+  }
+}
+
 module.exports = {
   CommonServiceFilterSTF,
   CommonServiceFilterSM,
@@ -210,5 +224,6 @@ module.exports = {
   CommonServiceStatisticData,
   CommonServiceReadNotification,
   CommonServiceNewSTFNotification,
-  CommonServiceFetchAllUsers
+  CommonServiceFetchAllUsers,
+  CommonServiceSendMessage
 };
