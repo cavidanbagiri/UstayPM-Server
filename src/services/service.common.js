@@ -181,13 +181,19 @@ class CommonServiceNewSTFNotification {
 }
 
 class CommonServiceReadNotification {
-
   // Set Notification as Readed
   static async readNotification(user_id) {
     await sequelize.query(CommonQueries.read_notification + user_id);
     return 'OK';
   }
+}
 
+class CommonServiceFetchAllUsers {
+  // Fetch All Users
+  static async fetchAllUsers(){
+    const result = await sequelize.query(CommonQueries.fetch_all_users)
+    return result[0]
+  }
 }
 
 module.exports = {
@@ -204,4 +210,5 @@ module.exports = {
   CommonServiceStatisticData,
   CommonServiceReadNotification,
   CommonServiceNewSTFNotification,
+  CommonServiceFetchAllUsers
 };

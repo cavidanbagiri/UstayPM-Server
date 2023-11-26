@@ -52,6 +52,7 @@ app.use('/warehouse', WarehouseRouter);
 app.use('/provides', ProvideRouter);
 app.use('/common', CommonRouter);
 
+
 // Handle Error
 app.use(errorHandler);
 
@@ -72,8 +73,6 @@ const io = getSocketInstance();
 // Socket Option
 io.on('connection', (socket)=>{
 
-  console.log('socket id ',socket.id);
-
   /*
     Name setup connection coming from client and
     Create socket with user id
@@ -81,17 +80,14 @@ io.on('connection', (socket)=>{
   socket.on('setup', (userData)=>{
     socket.join(userData.id);
     socket.data.user_id = userData.id;
-    // console.log('user data by socket is : ', socket);
-    // console.log('user data by socket is dat : ', socket.data);
-    console.log('rooms : ', socket.rooms);
   })
 
+  /*
+    Fetch New STF Notifications and send to client side
+  */
   socket.on("newstfnotification", async ()=>{
     console.log('-> ',socket.data.user_id);
-    // await CommonServiceNewSTFNotification.getNewSTFNotification(socket.data.user_id)
-    // console.log('news emit : ',userData);
-    await CommonServiceNewSTFNotification.getNewSTFNotification(socket.data.user_id);
-    // socket.emit("newstfnotification",)
+    await CommonServiceNewSTFNotification.getNewSTFNotification(socket.data.user_id);  
   })  
 
 })

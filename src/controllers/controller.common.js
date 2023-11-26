@@ -10,7 +10,8 @@ const {
   CommonServiceFetchSTFRowInform,
   CommonServiceFilterProvided,
   CommonServiceStatisticData,
-  CommonServiceReadNotification
+  CommonServiceReadNotification,
+  CommonServiceFetchAllUsers
 } = require("../services/service.common");
 const tryCatch = require("../utils/trycatch");
 
@@ -103,6 +104,19 @@ class CommonController {
         })
     );
     return "OK";
+  }
+
+  static async fetchAllUsers (req, res, next) {
+    tryCatch(
+      await CommonServiceFetchAllUsers.fetchAllUsers()
+      .then((respond) => {
+        res.status(200).send(respond);
+      })
+      .catch((err) => {
+        console.log("Fetch All Users Error in Common : ",err);
+        next(err);
+      })
+  );
   }
 
   // Fetch Procurement Users

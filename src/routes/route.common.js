@@ -12,7 +12,7 @@ router.get('/filtersm', CommonController.filterSM);
 // Filter Warehouse
 router.get('/filterwarehouse', CommonController.filterWarehouse);
 
-// Filter Warehouse
+// Filter Provided Materials
 router.get('/filterprovided', CommonController.filterProvided);
 
 // Fetch Field Names
@@ -20,6 +20,9 @@ router.get('/fetchfields/:project_id', CommonController.fetchfields);
 
 // Fetch Companies
 router.get('/fetchcompanies', CommonController.fetchCompanies);
+
+// Fetch All Users
+router.get('/fetchallusers', CommonController.fetchAllUsers);
 
 // Fetch Procurment Users
 router.get('/procurementusers', CommonController.fetchProcurementUsers);

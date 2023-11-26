@@ -59,6 +59,16 @@ class CommonQueries {
     SELECT id as company_id, vendor_name  FROM vendors_models
   `
 
+  // Fetch All Users
+  static fetch_all_users = `
+    SELECT users_models.id, INITCAP(concat(users_models.name , ' ', users_models.surname)) as username,
+    department_models.department_name,
+    status_models.status_name 
+    from users_models
+    LEFT JOIN department_models on users_models."departmentId" = department_models.id
+    LEFT JOIN status_models on users_models."statusId" = status_models.id 
+  `
+
   // Fetch All Procurement Users
   static select_procurement_users = `
     select id as user_id, INITCAP(concat(name, ' ', surname)) as procurement_users from users_models where "departmentId" = 2
