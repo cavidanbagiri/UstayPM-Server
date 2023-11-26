@@ -3,6 +3,7 @@ const STFQueries = require("../queries/stf_queries");
 const EmptyFieldError = require("../exceptions/EmptyFieldError");
 // const WhereQuery = require("../utils/whereQuery");
 const {getSocketInstance} = require('../utils/io');
+const {CommonServiceNewSTFNotification} = require('./service.common');
 
 // Create STF Class
 class STFServiceCreate {
@@ -158,6 +159,10 @@ class CreateNewSTFNotification {
         });
       }
     }
+    // Step 3 Emit that function
+    const io = getSocketInstance();
+    // CommonServiceNewSTFNotification.getNewSTFNotification(0);
+    io.emit('createstf');
     
   }
 
