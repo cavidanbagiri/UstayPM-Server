@@ -39,9 +39,11 @@ router.get('/fetchstfrowinform/:stf_id', CommonController.fetchSTFRowInform);
 // Get Statistic Data
 router.get('/statisticdata/:user_id', CommonController.getStatisticData);
 
-
 // Send Message To User
 router.post('/sendmessage', CommonController.sendMessage);
+
+// Fetch Message
+router.get('/fetchmessage/:current_id', CommonController.fetchMessage);
 
 // Post Nofitication Reading
 // router.post('/readnotification/:user_id', CommonController.readNotification);

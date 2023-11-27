@@ -210,6 +210,15 @@ class CommonServiceSendMessage {
   }
 }
 
+class CommonServiceFetchMessage {
+  
+  // Fetch Message
+  static async fetchMessage (current_id, selected_id) {
+    const result = await sequelize.query(CommonQueries.fetchMessageQuery(current_id, selected_id));
+    return result[0];
+  }
+}
+
 module.exports = {
   CommonServiceFilterSTF,
   CommonServiceFilterSM,
@@ -225,5 +234,6 @@ module.exports = {
   CommonServiceReadNotification,
   CommonServiceNewSTFNotification,
   CommonServiceFetchAllUsers,
-  CommonServiceSendMessage
+  CommonServiceSendMessage,
+  CommonServiceFetchMessage
 };

@@ -12,7 +12,8 @@ const {
   CommonServiceStatisticData,
   CommonServiceReadNotification,
   CommonServiceFetchAllUsers,
-  CommonServiceSendMessage
+  CommonServiceSendMessage,
+  CommonServiceFetchMessage
 } = require("../services/service.common");
 const tryCatch = require("../utils/trycatch");
 
@@ -219,12 +220,30 @@ class CommonController {
         return res.send(respond);
       })
       .catch((err) => {
-        console.log("Read Notification Error : ", err);
+        console.log("Send Message Error : ", err);
         next(err);
       })
     )
     return 'OK'
   }
+
+  // Fetch Message
+  static async fetchMessage (req, res, next) {
+    const current_id = req.params.current_id;
+    const selected_id = req.query.selected_id;
+    tryCatch(
+      await CommonServiceFetchMessage.fetchMessage(current_id, selected_id)
+      .then((respond) => {
+        return res.send(respond);
+      })
+      .catch((err) => {
+        console.log("Fetch Message Error : ", err);
+        next(err);
+      })
+    )
+
+  }
+
 
 }
 
