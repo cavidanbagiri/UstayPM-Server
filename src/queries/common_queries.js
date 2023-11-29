@@ -133,10 +133,17 @@ class CommonQueries {
     update new_stf_notification_models set read = true where read = false and "notifyUserId" = 
   `
   
-  static fetchMessageQuery(current_id, selected_id){
+  // static fetchMessageQuery(current_id, selected_id){
+  //   const  fetch_message = `
+  //     SELECT "roomId", "receiverId", "senderId", message_text, "createdAt" from message_models
+  //     where  ("receiverId" = ${current_id} and "senderId" = ${selected_id}) or ("receiverId" = ${selected_id} and "senderId" = ${current_id}) 
+  //   `
+  //   return fetch_message;
+  // }
+  static fetchMessageQuery(room_id){
     const  fetch_message = `
       SELECT "roomId", "receiverId", "senderId", message_text, "createdAt" from message_models
-      where  ("receiverId" = ${current_id} and "senderId" = ${selected_id}) or ("receiverId" = ${selected_id} and "senderId" = ${current_id}) 
+      where  "roomId" = ${room_id}
     `
     return fetch_message;
   }

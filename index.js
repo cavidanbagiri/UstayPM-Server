@@ -93,24 +93,25 @@ io.on('connection', (socket)=>{
   /*
     Socket room will be selected user id
   */
-  socket.on('join_room', async(current, selected) => {
-    const fetch_messages = await CommonServiceFetchMessage.fetchMessage(current, selected);
-    socket.join('cavidan');
-    socket.emit('fetch_messages', fetch_messages);
+  socket.on('join_room', async(current, selected, roomId) => {
+    // const fetch_messages = await CommonServiceFetchMessage.fetchMessage(current, selected);
+    socket.join(roomId);
+    console.log('room id is work and room id is : ',roomId);
+    // socket.emit('fetch_messages', fetch_messages);
   })
 
   /*
     Send Message 
   */
   socket.on('send_message', async(message_data)=>{
-    console.log('socket send messade data room id : ', message_data.roomid);
+    console.log('socket send messade data room id : ', message_data.room_id);
     // console.log('message data room id : ', message_data.room1);
     // console.log('message data room id : ', message_data.room2);
     await CommonServiceSendMessage.sendMessage(message_data);
     const fetch_messages = await CommonServiceFetchMessage.fetchMessage(socket.data.user_id, message_data.sender_id);
-    // await socket.to(message_data.room1).emit('fetch_messages', fetch_messages); // -> notify to selected
+    await socket.to(message_data.room_id).emit('fetch_messages', fetch_messages); // -> notify to selected
     // await socket.to(message_data.room2).emit('fetch_messages', fetch_messages); // -> notify to selected
-    socket.to('cavidan').emit('fetch_messages', fetch_messages);
+    // socket.to('cavidan').emit('fetch_messages', fetch_messages);
     // await socket.to(message_data.current_id).emit('fetch_messages', fetch_messages); // -> notify to selected
     // await socket.emit('fetch_messages', fetch_messages); // -> notify to selected
     // await socket.emit('fetch_messages', fetch_messages); // -> notify to own
