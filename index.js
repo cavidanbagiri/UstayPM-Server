@@ -7,7 +7,7 @@ const app = express();
 require('dotenv').config();
 
 // Import Socket Functions
-const {CommonServiceNewSTFNotification} = require("./src/services/service.common");
+const {CommonServiceNewSTFNotification, CommonServiceFetchMessage, CommonServiceSendMessage} = require("./src/services/service.common");
 
 // Activate Database Connection
 // require('./src/configs/database');
@@ -79,6 +79,7 @@ io.on('connection', (socket)=>{
   */
   socket.on('setup', (userData)=>{
     socket.join(userData.id);
+    console.log('setup room ', socket.rooms);
     socket.data.user_id = userData.id;
   })
 
@@ -86,8 +87,39 @@ io.on('connection', (socket)=>{
     Fetch New STF Notifications and send to client side
   */
   socket.on("newstfnotification", async ()=>{
-    console.log('-> ',socket.data.user_id);
     await CommonServiceNewSTFNotification.getNewSTFNotification(socket.data.user_id);  
   })  
+
+  /*
+    Socket room will be selected user id
+  */
+  socket.on('join_room', async(room) => {
+    socket.join(room);
+    console.log('join room ', socket.rooms);
+    const fetch_messages = await CommonServiceFetchMessage.fetchMessage(socket.data.user_id, room);
+    socket.emit('fetch_messages', fetch_messages);
+  })
+
+  /*
+    Send Message 
+  */
+  socket.on('send_message', async(message_data)=>{
+    console.log('message data is : ',message_data);
+    await CommonServiceSendMessage.sendMessage(message_data);
+    const fetch_messages = await CommonServiceFetchMessage.fetchMessage(socket.data.user_id, message_data.sender_id);
+    console.log('common room ',socket.rooms);
+    await socket.in(message_data.current_id).emit('fetch_messages', fetch_messages); // -> notify to selected
+    await socket.emit('fetch_messages', fetch_messages); // -> notify to selected
+    // await socket.emit('fetch_messages', fetch_messages); // -> notify to own
+  
+  })
+
+  /*
+    Fetch Chats
+  */
+//  socket.on("sendmessage", async () => {
+//   console.log('send message emit work ');
+  // await CommonServiceFetchMessage.fetchMessage()
+//  })
 
 })
