@@ -3,10 +3,10 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.addConstraint('message_models',{
-      fields: ['senderId'],
+    await queryInterface.addConstraint('room_models',{
+      fields: ['firstuserId'],
       type: 'foreign key',
-      name:'senderId',
+      name:'firstuserId',
       references: {
         table: 'users_models',
         field: 'id'
@@ -14,10 +14,10 @@ module.exports = {
       onDelete: 'cascade',
       onUpdate: 'cascade'
     })
-    await queryInterface.addConstraint('message_models',{
-      fields: ['receiverId'],
+    await queryInterface.addConstraint('room_models',{
+      fields: ['seconduserId'],
       type: 'foreign key',
-      name:'receiverId',
+      name:'seconduserId',
       references: {
         table: 'users_models',
         field: 'id'

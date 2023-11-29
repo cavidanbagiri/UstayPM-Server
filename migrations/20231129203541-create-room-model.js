@@ -2,23 +2,20 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('message_models', {
+    await queryInterface.createTable('room_models', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      read: {
-        type: Sequelize.BOOLEAN
-      },
-      message_text: {
+      room_name: {
         type: Sequelize.STRING
       },
-      senderId: {
+      firstuserId: {
         type: Sequelize.INTEGER
       },
-      receiverId: {
+      seconduserId: {
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -32,6 +29,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('message_models');
+    await queryInterface.dropTable('room_models');
   }
 };

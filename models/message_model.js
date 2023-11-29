@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class message_models extends Model {
+  class message_model extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -12,11 +12,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate({UserModel}) {
       this.belongsTo(UserModel, {foreignKey: 'senderId'})
       this.belongsTo(UserModel, {foreignKey: 'receiverId'})
+      this.belongsTo(UserModel, {foreignKey: 'roomId'})
     }
   }
-  message_models.init({
-    message_text:{
-      type: DataTypes.STRING,
+  message_model.init({
+    message_text: {
+      type: DataTypes.STRING
     },
     read: {
       type: DataTypes.BOOLEAN
@@ -26,5 +27,5 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'message_models',
     modelName: 'MessageModel',
   });
-  return message_models;
+  return message_model;
 };

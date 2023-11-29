@@ -1,6 +1,6 @@
 const CommonQueries = require("../queries/common_queries");
 const WhereQuery = require("../utils/whereQuery");
-const { sequelize, FieldsModel, MessageModel } = require("../../models");
+const { sequelize, FieldsModel, MessageModel, RoomModel } = require("../../models");
 const {getSocketInstance} = require('../utils/io');
 
 class CommonServiceFilterSTF {
@@ -200,10 +200,12 @@ class CommonServiceSendMessage {
   
   // Send Message
   static async sendMessage(data){
+    console.log('send message work');
     const result = await MessageModel.create({
       senderId: data.sender_id,
       receiverId: data.current_id,
       message_text: data.message_text,
+      roomId: data.room_id,
       read: false
     }) 
     return 'OK';
@@ -214,8 +216,48 @@ class CommonServiceFetchMessage {
   
   // Fetch Message
   static async fetchMessage (current_id, selected_id) {
-    const result = await sequelize.query(CommonQueries.fetchMessageQuery(current_id, selected_id));
-    return result[0];
+
+    /* 
+      *************** 1 Step
+      First Find Room Id if these users have roomid or not, if not create new room id
+    */
+    const find_room = `SELECT * from room_models where 
+      ("firstuserId" = ${current_id} and "seconduserId" = ${selected_id} )
+      OR
+      ("firstuserId" = ${selected_id} and "seconduserId" = ${current_id})
+    `
+    const find_room_result = await sequelize.query(find_room);
+    if(find_room_result[0].length){
+      const result = await sequelize.query(CommonQueries.fetchMessageQuery(current_id, selected_id));
+      return result[0];
+    }
+    else{
+      /*
+        ************ 2 Step
+        Create Room Model 
+        and
+        Message Model
+      */
+      // Creating Room Model
+      const room_model = await RoomModel.create({
+        firstuserId: current_id,
+        seconduserId: selected_id,
+        room_name: current_id+'_'+selected_id
+      });
+      // Creating Message Model
+      const message_model = await MessageModel.create({
+        message_text: 'Create New Chat',
+        read: true,
+        roomId: room_model.dataValues.id,
+        receiverId: current_id,
+        senderId: selected_id,
+      })
+      console.log('message model : ', message_model);
+    } 
+    return 'OK'
+
+    // const result = await sequelize.query(CommonQueries.fetchMessageQuery(current_id, selected_id));
+    // return result[0];
   }
 }
 
