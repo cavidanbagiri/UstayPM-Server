@@ -228,7 +228,6 @@ class CommonServiceFetchMessage {
     `
     const find_room_result = await sequelize.query(find_room);
     if(find_room_result[0].length){
-      console.log('find_room_result : ',find_room_result);
       const result = await sequelize.query(CommonQueries.fetchMessageQuery(find_room_result[0][0].id));
       return result[0];
     }
