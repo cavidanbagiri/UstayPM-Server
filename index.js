@@ -95,6 +95,7 @@ io.on('connection', (socket)=>{
   */
   socket.on('join_room', async(current, selected, roomId) => {
     socket.join(roomId);
+    console.log('rooms ', socket.rooms);
     // console.log(current, ' joined chat with room id : ', roomId);
     // const result = await CommonServiceFetchMessage.fetchMessage(current, selected);
     // console.log('join and fetch message result : ', result);
