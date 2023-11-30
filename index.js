@@ -79,8 +79,8 @@ io.on('connection', (socket)=>{
   */
   socket.on('setup', (userData)=>{
     socket.join(userData.id);
-    console.log('setup room ', socket.rooms);
     socket.data.user_id = userData.id;
+    socket.emit('connected')
   })
 
   /*
@@ -95,34 +95,16 @@ io.on('connection', (socket)=>{
   */
   socket.on('join_room', async(current, selected, roomId) => {
     socket.join(roomId);
-    console.log('rooms ', socket.rooms);
-    // console.log(current, ' joined chat with room id : ', roomId);
-    // const result = await CommonServiceFetchMessage.fetchMessage(current, selected);
-    // console.log('join and fetch message result : ', result);
-    // socket.to(roomId).emit('fetchmessages', result);
+   })
+
+  socket.on('typing', (room_id) => {
+    socket.in(room_id).emit('typing', room_id);
   })
-
-  /*
-    Send Message 
-  */
-  // socket.on('send_message', async(message_data)=>{
-  //   await CommonServiceSendMessage.sendMessage(message_data);
-  //   const fetch_messages = await CommonServiceFetchMessage.fetchMessage(socket.data.user_id, message_data.sender_id);
-  //   // console.log('sen data to roomid : ',message_data.room_id);
-  //   console.log('rooms ', socket.rooms);
-  //   await socket.in(message_data.room_id).emit('fetch_messages', fetch_messages); // -> notify to selected
-  // })
-
 
   socket.on('new_messages', async(message_data)=>{
     const fetch_messages = await CommonServiceFetchMessage.fetchMessage(socket.data.user_id, message_data.sender_id);
-    // console.log('sen data to roomid : ',message_data.room_id);
-    console.log('rooms ', socket.rooms);
     await socket.in(message_data.room_id).emit('fetch_messages', fetch_messages); // -> notify to selected
   })
 
-  // socket.on('new_messages', data){
-  
-  // }
 
 })
