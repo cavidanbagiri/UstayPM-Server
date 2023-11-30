@@ -226,7 +226,6 @@ class CommonServiceFetchMessage {
     if(find_room_result[0].length){
       // const result = await sequelize.query(CommonQueries.fetchMessageQuery(find_room_result[0][0].id));
       const result = await this.#fetchAlreadyHasMessage(find_room_result);
-      console.log('has room id : ', result[0]);
       return result[0];
     }
     else{
@@ -249,7 +248,6 @@ class CommonServiceFetchMessage {
         senderId: selected_id,
       })
       const result = await this.#fetchNewCreatedMessage(room_model.dataValues.id);
-      console.log('new room id : ', result[0]);
       return result[0];
       // console.log('message model : ', message_model);
     } 
