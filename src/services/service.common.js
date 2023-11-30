@@ -221,22 +221,18 @@ class CommonServiceFetchMessage {
       *************** 1 Step
       First Find Room Id if these users have roomid or not, if not create new room id
     */
-    const find_room = `SELECT * from room_models where 
-      ("firstuserId" = ${current_id} and "seconduserId" = ${selected_id} )
-      OR
-      ("firstuserId" = ${selected_id} and "seconduserId" = ${current_id})
-    `
-    const find_room_result = await sequelize.query(find_room);
+    const find_room_result = await this.#getRoom(current_id, selected_id);
+
     if(find_room_result[0].length){
-      const result = await sequelize.query(CommonQueries.fetchMessageQuery(find_room_result[0][0].id));
+      // const result = await sequelize.query(CommonQueries.fetchMessageQuery(find_room_result[0][0].id));
+      const result = await this.#fetchAlreadyHasMessage(find_room_result);
+      console.log('has room id : ', result[0]);
       return result[0];
     }
     else{
       /*
         ************ 2 Step
-        Create Room Model 
-        and
-        Message Model
+        Create Room Model and Message Model
       */
       // Creating Room Model
       const room_model = await RoomModel.create({
@@ -246,19 +242,45 @@ class CommonServiceFetchMessage {
       });
       // Creating Message Model
       const message_model = await MessageModel.create({
-        message_text: 'Create New Chat',
+        message_text: '',
         read: true,
         roomId: room_model.dataValues.id,
         receiverId: current_id,
         senderId: selected_id,
       })
+      const result = await this.#fetchNewCreatedMessage(room_model.dataValues.id);
+      console.log('new room id : ', result[0]);
+      return result[0];
       // console.log('message model : ', message_model);
     } 
     return 'OK'
 
-    // const result = await sequelize.query(CommonQueries.fetchMessageQuery(current_id, selected_id));
-    // return result[0];
   }
+
+  // Check The Users has room or not
+  static async #getRoom(current_id, selected_id){
+    const find_room = `SELECT * from room_models where 
+      ("firstuserId" = ${current_id} and "seconduserId" = ${selected_id} )
+      OR
+      ("firstuserId" = ${selected_id} and "seconduserId" = ${current_id})
+    `
+    const find_room_result = await sequelize.query(find_room);
+    return find_room_result;
+  }
+
+  // If Room Has, Fetch Messages
+  static async #fetchAlreadyHasMessage(find_room_result) {
+    const result = await sequelize.query(CommonQueries.fetchMessageQuery(find_room_result[0][0].id));
+
+    return result;
+  }
+
+  // If Room New Created
+  static async #fetchNewCreatedMessage(room_id) {
+    const result = await sequelize.query(CommonQueries.fetchMessageQuery(room_id));
+    return result;
+  }
+
 }
 
 module.exports = {
