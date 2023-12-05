@@ -16,9 +16,12 @@ class STFServiceCreate {
     } catch (err) {
       throw new Error(err)
     }
-
+    
     // Step 2 -> Set STF Num inside of data and insert to table -> SRU.RS.07.10003
-    data.stf_num = await this.#createSTFNUMSForm(data);
+    // data.stf_num = await this.#createSTFNUMSForm(data);
+    data.stf_num = await this.#newcreateSTFNUMSForm(data).then((respond)=>{
+      return respond;
+    })
 
     // Step 3 -> Foreach users entering orders and create one-by-one 
     for (let i of data.orders) {
@@ -33,6 +36,45 @@ class STFServiceCreate {
     await CreateNewSTFNotification.createNewSTFNotification(1, notify_data);
 
     return "OK";
+  }
+
+  // Return stf_nums form for STFModel [DEPRECATED]
+  static async #createSTFNUMSForm(data) {
+    // Get Last STFNums value // 10003
+    const last_created_stf_num = await this.#getLastNumsAddAndCreateSTFNums(
+      data.user.projectId
+    );
+    // Get Project code_name // SRU.RS.07 + 10003 = SRU.RS.07.10003
+    const project_code_name = await this.#getProjectCodeName(
+      data.user.projectId
+    );
+    // Create stf_nums accoring to STFModel
+    let stf_num = project_code_name + last_created_stf_num.toString();
+    return stf_num;
+  }
+
+  // Return stf_nums form for STFModel
+  static async #newcreateSTFNUMSForm(data) {
+    // Get Last STFNums value // 10003
+    let stf_num = ''
+    const last_created_stf_num = await this.#getLastNumsAddAndCreateSTFNums(
+      data.user.projectId
+    ).then(async (respond)=>{
+      // Get Project code_name // SRU.RS.07 + 10003 = SRU.RS.07.10003
+      const project_code_name = await this.#getProjectCodeName(
+        data.user.projectId
+      ).then((respond2)=>{
+        // Create stf_nums accoring to STFModel
+        stf_num = respond2 + respond.toString();
+        return stf_num;
+      })
+      .catch((err)=>{
+        throw new Error("Project Code Name Cant Get It : ",err)
+      })
+    }).catch((err)=>{
+      throw new Error("Last STFNums Cant Get : ", err)
+    })
+    return stf_num;
   }
 
   // Get Last Nums and Add +1  stf_nums table and return last stf_nums
@@ -53,21 +95,6 @@ class STFServiceCreate {
     return result[0].dataValues.code_name;
   }
 
-  // Return stf_nums form for STFModel
-  static async #createSTFNUMSForm(data) {
-    // Get Last STFNums value // 10003
-    const last_created_stf_num = await this.#getLastNumsAddAndCreateSTFNums(
-      data.user.projectId
-    );
-    // Get Project code_name // SRU.RS.07 + 10003 = SRU.RS.07.10003
-    const project_code_name = await this.#getProjectCodeName(
-      data.user.projectId
-    );
-    // Create stf_nums accoring to STFModel
-    let stf_num = project_code_name + last_created_stf_num.toString();
-    return stf_num;
-  }
-
   // Create Each Row For STF
   static async #createEachRow(data, each) {
     return await STFModel.create({
@@ -84,12 +111,33 @@ class STFServiceCreate {
       .then((respond) => {
         return respond;
       })
-      .catch((err) => {
+      .catch(async(err) => {
+
+        await this.#deleteLastSTFNums(data.user.projectId, data.stf_num.slice(-4));
+        await this.#deleteLastSTFModelRows(data.user.projectId, data.stf_num);
         throw new EmptyFieldError(err.message, 400);
       });
   }
 
-  
+  // If Error Happen, Delete Last Created STF nums by current user
+  static async #deleteLastSTFNums(projectId, stf_num){
+    const result = await sequelize.query(STFQueries.deleteSTFNumFromSTFNums(projectId, stf_num))
+    .then((respond)=>{})
+    .catch((err)=>{
+      throw new Error(`Error Delete After Create STF Numm from stf_nums table ${err}`);
+    })
+    return result;
+  }
+
+  // If Error Happen, Delete Last Created Rows From STF_Models accoring to STF nums
+  static async #deleteLastSTFModelRows(projectId, stf_num){
+    const result = await sequelize.query(STFQueries.deleteSTFNumFromSTFRows(projectId, stf_num))
+    .then((respond)=>{})
+    .catch((err)=>{
+      throw new Error(`Error Delete After Create STF Rows from stf_models table ${err}`);
+    })
+    return result;
+  }
 
   // Check Validation for importing data
   static #checkValidation(data) {
@@ -162,6 +210,7 @@ class CreateNewSTFNotification {
     // Step 3 Emit that function
     const io = getSocketInstance();
     // CommonServiceNewSTFNotification.getNewSTFNotification(0);
+    console.log('socket emit is worked');
     io.emit('createstf');
     
   }
@@ -174,7 +223,7 @@ class CreateNewSTFNotification {
 
     // Find From Users  
     const result = await sequelize.query(string_query);
-    // console.log('res is : ',result[0]);
+    console.log('notification res is : ',result[0]);
     return result[0];
 
   }

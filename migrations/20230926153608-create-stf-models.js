@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       stf_num: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       material_type: {

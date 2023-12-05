@@ -19,7 +19,7 @@ class STFController {
         return res.status(201).send(respond)
       })
       .catch((err)=>{
-        console.log('here work');
+        console.log('here work : ',err); 
         next(err);
       })
     )

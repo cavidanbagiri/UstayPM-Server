@@ -9,6 +9,17 @@ class STFQUeries {
     return create_stf_nums_and_return;
   }
 
+  // Delete stf_num from stf_nums table
+  static deleteSTFNumFromSTFNums(projectId, stf_num){
+    const string_query = `delete from stf_nums where stf_nums = ${stf_num} and "projectId" = ${projectId} `;
+    return string_query;
+  }
+  // Delete stf_num from stf_nums table
+  static deleteSTFNumFromSTFRows(projectId, stf_num){
+    const string_query = `delete from stf_models where stf_num = '${stf_num}' and "projectId" = ${projectId} `;
+    return string_query;
+  }
+
   // Fetch ALl STF For User
   static fetchUserSTFAll(user_id) {
     const string_query = `
