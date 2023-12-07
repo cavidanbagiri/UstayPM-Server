@@ -10,12 +10,28 @@ class CommonQueries {
   `;
 
   // Fetch All SM
+  // static select_all_sm_query = `
+  // select sm_models.id as sm_id, sm_models."stfId" as stf_id, sm_models.sm_num, stf_models.stf_num, situation_models.status_name as situation, sm_models.sm_material_name,
+  // sm_models.sm_material_amount, sm_models.sm_material_unit, sm_models.price, sm_models.total, sm_models.currency, sm_models.left_over, sm_models.approximate_date,
+  // sm_models."createdAt", sm_models."projectId" as project_id, sm_models."departmentId" as department_id,
+  // INITCAP(concat(users_models.name , ' ', users_models.surname) ) as orderer,
+  // INITCAP(concat(um.name, ' ', um.surname )) as supplier,
+  // vendors_models.vendor_name
+  // from sm_models
+  // left join stf_models on sm_models."stfId"=stf_models.id
+  // left join users_models on users_models.id = stf_models."userId"
+  // left join users_models as um on um.id = sm_models."supplierId"
+  // left join conditions_models on conditions_models."smId" = sm_models.id
+  // left join situation_models on situation_models.id =  conditions_models."situationId"
+  // left join vendors_models on sm_models."vendorId" = vendors_models.id
+  // `;
+
   static select_all_sm_query = `
   select sm_models.id as sm_id, sm_models."stfId" as stf_id, sm_models.sm_num, stf_models.stf_num, situation_models.status_name as situation, sm_models.sm_material_name,
-  sm_models.sm_material_amount, sm_models.sm_material_unit, sm_models.price, sm_models.total, sm_models.currency, sm_models.left_over, sm_models.approximate_date,
+  sm_models.sm_material_amount as amount, sm_models.sm_material_unit as unit, sm_models.price, sm_models.total, sm_models.currency, sm_models.left_over, sm_models.approximate_date,
   sm_models."createdAt", sm_models."projectId" as project_id, sm_models."departmentId" as department_id,
-  INITCAP(concat(users_models.name , ' ', users_models.surname) ) as orderer,
-  INITCAP(concat(um.name, ' ', um.surname )) as supplier,
+  Initcap(concat(users_models.name , ' ', users_models.surname))  as orderer,
+  Initcap(concat(um.name, ' ', um.surname )) as supplier,
   vendors_models.vendor_name
   from sm_models
   left join stf_models on sm_models."stfId"=stf_models.id
@@ -24,7 +40,7 @@ class CommonQueries {
   left join conditions_models on conditions_models."smId" = sm_models.id
   left join situation_models on situation_models.id =  conditions_models."situationId"
   left join vendors_models on sm_models."vendorId" = vendors_models.id
-  `;
+  `
 
   // Fetch Data From Warehouse
   static received_sms_from_warehouse_query = `
