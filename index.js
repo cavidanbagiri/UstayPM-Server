@@ -86,8 +86,9 @@ io.on('connection', (socket)=>{
   /*
     Fetch New STF Notifications and send to client side
   */
-  socket.on("newstfnotification", async ()=>{
-    await CommonServiceNewSTFNotification.getNewSTFNotification(socket.data.user_id);  
+  socket.on("newstfnotification", async (userData)=>{
+    await CommonServiceNewSTFNotification.getNewSTFNotification(userData.id);
+    console.log('this is working');
   })  
 
   /*
@@ -102,7 +103,8 @@ io.on('connection', (socket)=>{
   })
 
   socket.on('new_messages', async(message_data)=>{
-    const fetch_messages = await CommonServiceFetchMessage.fetchMessage(socket.data.user_id, message_data.sender_id);
+    // const fetch_messages = await CommonServiceFetchMessage.fetchMessage(socket.data.user_id, message_data.sender_id);
+    const fetch_messages = await CommonServiceFetchMessage.fetchMessage(message_data.current_id, message_data.sender_id);
     await socket.in(message_data.room_id).emit('fetch_messages', fetch_messages); // -> notify to selected
   })
 
