@@ -45,6 +45,9 @@ router.post('/sendmessage', CommonController.sendMessage);
 // Fetch Message
 router.get('/fetchmessage/:current_id', CommonController.fetchMessage);
 
+// Fetch Filtered Vendornames
+router.get('/filtervendornames', CommonController.filterVendorName);
+
 // Post Nofitication Reading
 // router.post('/readnotification/:user_id', CommonController.readNotification);
 

@@ -278,8 +278,19 @@ class CommonServiceFetchMessage {
     const result = await sequelize.query(CommonQueries.fetchMessageQuery(room_id));
     return result;
   }
+}
+
+class CommonServiceFilteredVendorNames {
+
+  static async filterVendorName(selected_text){
+    const result = await sequelize.query(CommonQueries.filterVendorName(selected_text));
+    console.log('result is : ',result[0]);
+    return result[0];
+  }
 
 }
+
+
 
 module.exports = {
   CommonServiceFilterSTF,
@@ -297,5 +308,7 @@ module.exports = {
   CommonServiceNewSTFNotification,
   CommonServiceFetchAllUsers,
   CommonServiceSendMessage,
-  CommonServiceFetchMessage
+  CommonServiceFetchMessage,
+  CommonServiceFilteredVendorNames,
+
 };

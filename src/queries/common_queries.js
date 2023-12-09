@@ -164,6 +164,14 @@ class CommonQueries {
     return fetch_message;
   }
 
+  static filterVendorName(selected_text){
+    return `SELECT id, vendor_name from vendors_models where vendor_name ILIKE '%${selected_text}%'`; 
+  }
+
+  // static selected_text_vendor_name = `
+  //   SELECT id, vendor_name from vendors_models where vendor_name LIKE % 
+  // `
+
 }
 
 module.exports = CommonQueries;

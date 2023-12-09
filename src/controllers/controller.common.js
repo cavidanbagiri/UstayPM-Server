@@ -13,7 +13,8 @@ const {
   CommonServiceReadNotification,
   CommonServiceFetchAllUsers,
   CommonServiceSendMessage,
-  CommonServiceFetchMessage
+  CommonServiceFetchMessage,
+  CommonServiceFilteredVendorNames
 } = require("../services/service.common");
 const tryCatch = require("../utils/trycatch");
 
@@ -241,7 +242,21 @@ class CommonController {
         next(err);
       })
     )
+  }
 
+  static async filterVendorName(req, res, next) {
+    const selected_text = req.query.selected_text;
+    console.log('selected text is : ',selected_text);
+    tryCatch(
+      await CommonServiceFilteredVendorNames.filterVendorName(selected_text)
+      .then((respond) => {
+        return res.send(respond);
+      })
+      .catch((err) => {
+        console.log("Filtered Vendor Name Error : ", err);
+        next(err);
+      })    
+    )
   }
 
 
