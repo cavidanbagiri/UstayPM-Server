@@ -88,7 +88,6 @@ io.on('connection', (socket)=>{
   */
   socket.on("newstfnotification", async (userData)=>{
     await CommonServiceNewSTFNotification.getNewSTFNotification(userData.id);
-    console.log('this is working');
   })  
 
   /*

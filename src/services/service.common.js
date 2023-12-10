@@ -80,6 +80,14 @@ class CommonServiceFetchCompanies {
   }
 }
 
+
+class CommonServiceFilteredVendorNames {
+  static async filterVendorName(selected_text){
+    const result = await sequelize.query(CommonQueries.filterVendorName(selected_text));
+    return result[0];
+  }
+}
+
 class CommonServiceFetchProcurementUsers {
   // Fetch Procurement Users
   static async fetchProcurementUsers() {
@@ -200,7 +208,6 @@ class CommonServiceSendMessage {
   
   // Send Message
   static async sendMessage(data){
-    console.log('send message work');
     const result = await MessageModel.create({
       senderId: data.sender_id,
       receiverId: data.current_id,
@@ -249,7 +256,6 @@ class CommonServiceFetchMessage {
       })
       const result = await this.#fetchNewCreatedMessage(room_model.dataValues.id);
       return result[0];
-      // console.log('message model : ', message_model);
     } 
     return 'OK'
 
@@ -280,15 +286,17 @@ class CommonServiceFetchMessage {
   }
 }
 
-class CommonServiceFilteredVendorNames {
+class CommonServiceFetchUnreadMessages {
 
-  static async filterVendorName(selected_text){
-    const result = await sequelize.query(CommonQueries.filterVendorName(selected_text));
-    console.log('result is : ',result[0]);
+  static async fetchUnreadMessages (user_id){
+
+    const result = await sequelize.query(CommonQueries.fetchUnreadMessages(user_id));
+    console.log('result is : ', result[0]);
     return result[0];
   }
 
 }
+
 
 
 
@@ -309,6 +317,7 @@ module.exports = {
   CommonServiceFetchAllUsers,
   CommonServiceSendMessage,
   CommonServiceFetchMessage,
+  CommonServiceFetchUnreadMessages,
   CommonServiceFilteredVendorNames,
 
 };

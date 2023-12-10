@@ -14,6 +14,7 @@ const {
   CommonServiceFetchAllUsers,
   CommonServiceSendMessage,
   CommonServiceFetchMessage,
+  CommonServiceFetchUnreadMessages,
   CommonServiceFilteredVendorNames
 } = require("../services/service.common");
 const tryCatch = require("../utils/trycatch");
@@ -244,9 +245,23 @@ class CommonController {
     )
   }
 
+  // Fetch Unread Messages
+  static async fetchUnreadMessages(req, res, next) {
+    const current_id = req.params.current_id;
+    tryCatch(
+      await CommonServiceFetchUnreadMessages.fetchUnreadMessages(current_id)
+      .then((respond) => {
+        return res.send(respond);
+      })
+      .catch((err) => {
+        console.log("Fetch Unread Message Error : ", err);
+        next(err);
+      })
+    )
+  }
+
   static async filterVendorName(req, res, next) {
     const selected_text = req.query.selected_text;
-    console.log('selected text is : ',selected_text);
     tryCatch(
       await CommonServiceFilteredVendorNames.filterVendorName(selected_text)
       .then((respond) => {

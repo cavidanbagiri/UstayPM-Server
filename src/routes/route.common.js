@@ -21,6 +21,9 @@ router.get('/fetchfields/:project_id', CommonController.fetchfields);
 // Fetch Companies
 router.get('/fetchcompanies', CommonController.fetchCompanies);
 
+// Fetch Filtered Vendornames
+router.get('/filtervendornames', CommonController.filterVendorName);
+
 // Fetch All Users
 router.get('/fetchallusers', CommonController.fetchAllUsers);
 
@@ -45,11 +48,11 @@ router.post('/sendmessage', CommonController.sendMessage);
 // Fetch Message
 router.get('/fetchmessage/:current_id', CommonController.fetchMessage);
 
-// Fetch Filtered Vendornames
-router.get('/filtervendornames', CommonController.filterVendorName);
+// Fetch Unread Message
+router.get('/fetchunreadmessages/:current_id', CommonController.fetchUnreadMessages)
 
 // Post Nofitication Reading
-// router.post('/readnotification/:user_id', CommonController.readNotification);
+router.post('/readnotification/:user_id', CommonController.readNotification);
 
 
 

@@ -9,22 +9,6 @@ class CommonQueries {
   left join fields_models on fields_models.id = "fieldId"
   `;
 
-  // Fetch All SM
-  // static select_all_sm_query = `
-  // select sm_models.id as sm_id, sm_models."stfId" as stf_id, sm_models.sm_num, stf_models.stf_num, situation_models.status_name as situation, sm_models.sm_material_name,
-  // sm_models.sm_material_amount, sm_models.sm_material_unit, sm_models.price, sm_models.total, sm_models.currency, sm_models.left_over, sm_models.approximate_date,
-  // sm_models."createdAt", sm_models."projectId" as project_id, sm_models."departmentId" as department_id,
-  // INITCAP(concat(users_models.name , ' ', users_models.surname) ) as orderer,
-  // INITCAP(concat(um.name, ' ', um.surname )) as supplier,
-  // vendors_models.vendor_name
-  // from sm_models
-  // left join stf_models on sm_models."stfId"=stf_models.id
-  // left join users_models on users_models.id = stf_models."userId"
-  // left join users_models as um on um.id = sm_models."supplierId"
-  // left join conditions_models on conditions_models."smId" = sm_models.id
-  // left join situation_models on situation_models.id =  conditions_models."situationId"
-  // left join vendors_models on sm_models."vendorId" = vendors_models.id
-  // `;
 
   static select_all_sm_query = `
   select sm_models.id as sm_id, sm_models."stfId" as stf_id, sm_models.sm_num, stf_models.stf_num, situation_models.status_name as situation, sm_models.sm_material_name,
@@ -162,6 +146,22 @@ class CommonQueries {
       where  "roomId" = ${room_id}
     `
     return fetch_message;
+  }
+
+  static fetchUnreadMessages(user_id) {
+    const string_query = `
+    select "receiverId", count("receiverId"),
+    INITCAP(concat(users_models.name , ' ', users_models.surname)) as username,
+    status_models.status_name 
+    from message_models
+    left join users_models on users_models.id = "receiverId"
+    LEFT JOIN department_models on users_models."departmentId" = department_models.id
+    LEFT JOIN status_models on users_models."statusId" = status_models.id 
+    where "senderId" = ${user_id} and read = false
+    group by "receiverId", users_models.name, users_models.surname, department_models.department_name, status_models.status_name 
+    
+    `
+    return string_query;
   }
 
   static filterVendorName(selected_text){
