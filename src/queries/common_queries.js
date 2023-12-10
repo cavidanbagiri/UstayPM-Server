@@ -150,15 +150,16 @@ class CommonQueries {
 
   static fetchUnreadMessages(user_id) {
     const string_query = `
-    select "receiverId" as id, count("receiverId"),
-    INITCAP(concat(users_models.name , ' ', users_models.surname)) as username,
+    select "receiverId" as id, count("receiverId"),room_models.id as roomId, 
+    INITCAP(concat(users_models.name , ' ', users_models.surname))  as username,
     status_models.status_name 
     from message_models
     left join users_models on users_models.id = "receiverId"
     LEFT JOIN department_models on users_models."departmentId" = department_models.id
     LEFT JOIN status_models on users_models."statusId" = status_models.id 
+    left join room_models on message_models."roomId"=room_models.id
     where "senderId" = ${user_id} and read = false
-    group by "receiverId", users_models.name, users_models.surname, department_models.department_name, status_models.status_name 
+    group by "receiverId", users_models.name, users_models.surname, department_models.department_name, status_models.status_name, room_models.id
     
     `
     return string_query;

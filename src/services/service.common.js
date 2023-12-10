@@ -299,7 +299,9 @@ class CommonServiceFetchUnreadMessages {
 class CommonServiceFetchUnreadMessagesAndUsers {
   // Combine unread messages and users list
   static async fetchUnreadMessagesAndUsers(current_id){
+    // Get All Users
     let all_users = await CommonServiceFetchAllUsers.fetchAllUsers();
+    // Get All Unread Messages
     let unread_messages = await CommonServiceFetchUnreadMessages.fetchUnreadMessages(current_id);
 
     if(all_users?.length && unread_messages?.length ){
