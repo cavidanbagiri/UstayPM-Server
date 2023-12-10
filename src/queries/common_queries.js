@@ -150,7 +150,7 @@ class CommonQueries {
 
   static fetchUnreadMessages(user_id) {
     const string_query = `
-    select "receiverId", count("receiverId"),
+    select "receiverId" as id, count("receiverId"),
     INITCAP(concat(users_models.name , ' ', users_models.surname)) as username,
     status_models.status_name 
     from message_models

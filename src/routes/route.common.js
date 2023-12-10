@@ -24,8 +24,6 @@ router.get('/fetchcompanies', CommonController.fetchCompanies);
 // Fetch Filtered Vendornames
 router.get('/filtervendornames', CommonController.filterVendorName);
 
-// Fetch All Users
-router.get('/fetchallusers', CommonController.fetchAllUsers);
 
 // Fetch Procurment Users
 router.get('/procurementusers', CommonController.fetchProcurementUsers);
@@ -48,8 +46,15 @@ router.post('/sendmessage', CommonController.sendMessage);
 // Fetch Message
 router.get('/fetchmessage/:current_id', CommonController.fetchMessage);
 
+// Fetch All Users
+router.get('/fetchallusers', CommonController.fetchAllUsers);
+
 // Fetch Unread Message
 router.get('/fetchunreadmessages/:current_id', CommonController.fetchUnreadMessages)
+
+// Fetch Unread Messages and All Users
+router.get('/fetchunreadmessagesandusers/:current_id', CommonController.fetchUnreadMessagesAndUsers);
+
 
 // Post Nofitication Reading
 router.post('/readnotification/:user_id', CommonController.readNotification);

@@ -196,14 +196,6 @@ class CommonServiceReadNotification {
   }
 }
 
-class CommonServiceFetchAllUsers {
-  // Fetch All Users
-  static async fetchAllUsers(){
-    const result = await sequelize.query(CommonQueries.fetch_all_users)
-    return result[0]
-  }
-}
-
 class CommonServiceSendMessage {
   
   // Send Message
@@ -286,10 +278,17 @@ class CommonServiceFetchMessage {
   }
 }
 
+class CommonServiceFetchAllUsers {
+  // Fetch All Users
+  static async fetchAllUsers(){
+    const result = await sequelize.query(CommonQueries.fetch_all_users)
+    return result[0]
+  }
+}
+
 class CommonServiceFetchUnreadMessages {
-
+  // Fetch Unread Messages
   static async fetchUnreadMessages (user_id){
-
     const result = await sequelize.query(CommonQueries.fetchUnreadMessages(user_id));
     console.log('result is : ', result[0]);
     return result[0];
@@ -297,7 +296,23 @@ class CommonServiceFetchUnreadMessages {
 
 }
 
+class CommonServiceFetchUnreadMessagesAndUsers {
+  // Combine unread messages and users list
+  static async fetchUnreadMessagesAndUsers(current_id){
+    let all_users = await CommonServiceFetchAllUsers.fetchAllUsers();
+    let unread_messages = await CommonServiceFetchUnreadMessages.fetchUnreadMessages(current_id);
 
+    if(all_users?.length && unread_messages?.length ){
+      for(let i of unread_messages){
+        all_users = all_users.filter((item)=>{
+          return item.id != i.id
+        })
+      }
+      all_users.unshift(...unread_messages)
+    }
+    return all_users;
+  } 
+}
 
 
 module.exports = {
@@ -319,5 +334,5 @@ module.exports = {
   CommonServiceFetchMessage,
   CommonServiceFetchUnreadMessages,
   CommonServiceFilteredVendorNames,
-
+  CommonServiceFetchUnreadMessagesAndUsers
 };

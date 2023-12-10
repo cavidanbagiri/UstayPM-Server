@@ -15,7 +15,8 @@ const {
   CommonServiceSendMessage,
   CommonServiceFetchMessage,
   CommonServiceFetchUnreadMessages,
-  CommonServiceFilteredVendorNames
+  CommonServiceFilteredVendorNames,
+  CommonServiceFetchUnreadMessagesAndUsers
 } = require("../services/service.common");
 const tryCatch = require("../utils/trycatch");
 
@@ -108,19 +109,6 @@ class CommonController {
         })
     );
     return "OK";
-  }
-
-  static async fetchAllUsers (req, res, next) {
-    tryCatch(
-      await CommonServiceFetchAllUsers.fetchAllUsers()
-      .then((respond) => {
-        res.status(200).send(respond);
-      })
-      .catch((err) => {
-        console.log("Fetch All Users Error in Common : ",err);
-        next(err);
-      })
-  );
   }
 
   // Fetch Procurement Users
@@ -245,6 +233,19 @@ class CommonController {
     )
   }
 
+  static async fetchAllUsers (req, res, next) {
+    tryCatch(
+      await CommonServiceFetchAllUsers.fetchAllUsers()
+      .then((respond) => {
+        res.status(200).send(respond);
+      })
+      .catch((err) => {
+        console.log("Fetch All Users Error in Common : ",err);
+        next(err);
+      })
+    );
+  }
+
   // Fetch Unread Messages
   static async fetchUnreadMessages(req, res, next) {
     const current_id = req.params.current_id;
@@ -255,6 +256,21 @@ class CommonController {
       })
       .catch((err) => {
         console.log("Fetch Unread Message Error : ", err);
+        next(err);
+      })
+    )
+  }
+
+  // Fetch Unread Messages and All Users
+  static async fetchUnreadMessagesAndUsers(req, res, next) {
+    const current_id = req.params.current_id;
+    tryCatch(
+      await CommonServiceFetchUnreadMessagesAndUsers.fetchUnreadMessagesAndUsers(current_id)
+      .then((respond) => {
+        return res.send(respond);
+      })
+      .catch((err) => {
+        console.log("Fetch Unread Messages and Users Error : ", err);
         next(err);
       })
     )
