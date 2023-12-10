@@ -33,6 +33,18 @@ class ProcurementQueries {
     return create_sms_nums_and_return;
   }
 
+  // Delete sm_num 
+  static deleteSMNum(sm_num, projectId) {
+    const string_query = `delete from sms_nums where sms_nums = ${sm_num} and "projectId" = ${projectId} `;
+    return string_query;
+  }
+
+  // Delete sm_num 
+  static deleteSMModel(sm_num, projectId) {
+    const string_query = `delete from sm_models where sm_num = '${sm_num}' `;
+    return string_query;
+  }
+
 }
 
 module.exports = ProcurementQueries;

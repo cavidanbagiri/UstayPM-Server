@@ -54,11 +54,6 @@ class CommonQueries {
     left join sm_models on warehouse_models."smId" = sm_models.id
   `;
 
-  // Fetch All Companies
-  static select_companies = `
-    SELECT id as company_id, vendor_name  FROM vendors_models
-  `
-
   // Fetch All Procurement Users
   static select_procurement_users = `
     select id as user_id, INITCAP(concat(name, ' ', surname)) as procurement_users from users_models where "departmentId" = 2
@@ -170,8 +165,14 @@ class CommonQueries {
     update message_models set read = true where read = false and "roomId" =  
   `
 
+  // Fetch All Companies
+  static select_companies = `
+    SELECT id as company_id, vendor_name  FROM vendors_models
+  `
+
+
   static filterVendorName(selected_text){
-    return `SELECT id, vendor_name from vendors_models where vendor_name ILIKE '%${selected_text}%'`; 
+    return `SELECT id as company_id, vendor_name from vendors_models where vendor_name ILIKE '%${selected_text}%'`; 
   }
 
   // static selected_text_vendor_name = `

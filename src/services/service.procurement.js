@@ -33,22 +33,31 @@ class ProcurementServiceFetchSM {
 class ProcurementServiceCreateSM {
   // Create SM
   static async createSM(data) {
+
+    // --------------------------------------------------- 1 Step - Check Validation
     try {
       this.#checkValidation(data);
     } catch (err) {
       throw new Error(err);
     }
 
+    
     if (data.length) {
+      
       // Take Project Id
       const projectId = data[0].project_id;
+      
+      // --------------------------------------------------- 2 Step - Create SM Num
       // Create SM_Num form
       const sm_num = await this.#createSMNumForm(projectId);
+
       // Create SM Model
       for (let i of data) {
+        // --------------------------------------------------- 3 Step - Create SM Model 
         const result = await this.#createSMDataModel(sm_num, i)
-          .then(async (respond) => {
-            await this.#createConditionModelSM(respond.dataValues);
+        .then(async (respond) => {
+            // --------------------------------------------------- 4 Step - Create Condition Model 
+            await this.#createConditionModelSM(respond.dataValues); 
           })
           .catch((err) => {
             throw new Error(err);
@@ -119,6 +128,26 @@ class ProcurementServiceCreateSM {
     return result[0]?.dataValues?.code_name;
   }
 
+  // Delete Last SM num if error happen
+  static async #deleteLastSMNum(sm_num, projectId){
+    const result = await sequelize.query(ProcurementQueries.deleteSMNum(sm_num, projectId))
+    .then((respond)=>{})
+    .catch((err)=>{
+      console.log('Delete Error SM num : ',err);
+    })
+    return result;
+  }
+
+  // Delete creating sm models with same sm_nums
+  static async #deleteLastSMModelRow(sm_num){
+    const result = await sequelize.query(ProcurementQueries.deleteSMModel(sm_num))
+    .then((respond)=>{})
+    .catch((err)=>{
+      console.log('Delete Error SM Model : ',err);
+    })
+    return result;
+  }
+
   // Create SM Data Model
   static async #createSMDataModel(sm_num, each) {
     // Change Procurement Date time to database with moment js
@@ -138,7 +167,17 @@ class ProcurementServiceCreateSM {
       stfId: each.stfId,
       approximate_date: each.ProcurementComingDate,
       createdBy: each.createdBy
-    });
+    })
+    .then((respond)=>{
+      return respond;
+    })
+    .catch(async(err)=>{
+      // Delete Last Create sm_nums
+      await this.#deleteLastSMNum(sm_num.slice(-5), each.project_id);
+      // Delere Last Create SMModels Row
+      await this.#deleteLastSMModelRow(sm_num);
+      throw new EmptyFieldError('New SMS Cant Create', 400);
+    })
     return result;
   }
 
@@ -150,6 +189,7 @@ class ProcurementServiceCreateSM {
       projectId: respond.projectId,
     });
   }
+
 }
 
 
