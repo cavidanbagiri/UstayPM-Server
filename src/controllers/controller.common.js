@@ -16,7 +16,8 @@ const {
   CommonServiceFetchMessage,
   CommonServiceFetchUnreadMessages,
   CommonServiceFilteredVendorNames,
-  CommonServiceFetchUnreadMessagesAndUsers
+  CommonServiceFetchUnreadMessagesAndUsers,
+  CommonServiceSetTrueReadingMessages
 } = require("../services/service.common");
 const tryCatch = require("../utils/trycatch");
 
@@ -274,6 +275,23 @@ class CommonController {
         next(err);
       })
     )
+  }
+
+  static async setTrueReadingMessages(req, res, next) {
+
+    const room_id = req.params.room_id;
+    
+    tryCatch(
+      await CommonServiceSetTrueReadingMessages.setTrueReadingMessages(room_id)
+      .then((respond) => {
+        return res.send(respond);
+      })
+      .catch((err) => {
+        console.log("Set True Room chat Error : ", err);
+        next(err);
+      })
+    )
+
   }
 
   static async filterVendorName(req, res, next) {

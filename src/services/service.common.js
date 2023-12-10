@@ -290,7 +290,6 @@ class CommonServiceFetchUnreadMessages {
   // Fetch Unread Messages
   static async fetchUnreadMessages (user_id){
     const result = await sequelize.query(CommonQueries.fetchUnreadMessages(user_id));
-    console.log('result is : ', result[0]);
     return result[0];
   }
 
@@ -316,6 +315,19 @@ class CommonServiceFetchUnreadMessagesAndUsers {
   } 
 }
 
+class CommonServiceSetTrueReadingMessages {
+
+  static async setTrueReadingMessages (room_id){
+    const string_query = CommonQueries.set_reading_messages_true + room_id;
+//    console.log('string query : ',string_query);
+    const result = await sequelize.query(CommonQueries.set_reading_messages_true + room_id)
+//    console.log('set true is working : ',room_id);
+console.log('result is : ', result);    
+return result;
+  }
+
+}
+
 
 module.exports = {
   CommonServiceFilterSTF,
@@ -336,5 +348,6 @@ module.exports = {
   CommonServiceFetchMessage,
   CommonServiceFetchUnreadMessages,
   CommonServiceFilteredVendorNames,
-  CommonServiceFetchUnreadMessagesAndUsers
+  CommonServiceFetchUnreadMessagesAndUsers,
+  CommonServiceSetTrueReadingMessages
 };

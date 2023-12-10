@@ -59,16 +59,6 @@ class CommonQueries {
     SELECT id as company_id, vendor_name  FROM vendors_models
   `
 
-  // Fetch All Users
-  static fetch_all_users = `
-    SELECT users_models.id, INITCAP(concat(users_models.name , ' ', users_models.surname)) as username,
-    department_models.department_name,
-    status_models.status_name 
-    from users_models
-    LEFT JOIN department_models on users_models."departmentId" = department_models.id
-    LEFT JOIN status_models on users_models."statusId" = status_models.id 
-  `
-
   // Fetch All Procurement Users
   static select_procurement_users = `
     select id as user_id, INITCAP(concat(name, ' ', surname)) as procurement_users from users_models where "departmentId" = 2
@@ -148,6 +138,17 @@ class CommonQueries {
     return fetch_message;
   }
 
+  
+  // Fetch All Users
+  static fetch_all_users = `
+    SELECT users_models.id, users_models.id-users_models.id as count, INITCAP(concat(users_models.name , ' ', users_models.surname)) as username,
+    department_models.department_name,
+    status_models.status_name 
+    from users_models
+    LEFT JOIN department_models on users_models."departmentId" = department_models.id
+    LEFT JOIN status_models on users_models."statusId" = status_models.id 
+  `
+
   static fetchUnreadMessages(user_id) {
     const string_query = `
     select "receiverId" as id, count("receiverId"),room_models.id as roomId, 
@@ -164,6 +165,10 @@ class CommonQueries {
     `
     return string_query;
   }
+
+  static set_reading_messages_true = `
+    update message_models set read = true where read = false and "roomId" =  
+  `
 
   static filterVendorName(selected_text){
     return `SELECT id, vendor_name from vendors_models where vendor_name ILIKE '%${selected_text}%'`; 

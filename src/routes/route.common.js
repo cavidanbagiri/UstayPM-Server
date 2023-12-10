@@ -55,6 +55,8 @@ router.get('/fetchunreadmessages/:current_id', CommonController.fetchUnreadMessa
 // Fetch Unread Messages and All Users
 router.get('/fetchunreadmessagesandusers/:current_id', CommonController.fetchUnreadMessagesAndUsers);
 
+// Set True unread messages
+router.post('/settruemessages/:room_id', CommonController.setTrueReadingMessages);
 
 // Post Nofitication Reading
 router.post('/readnotification/:user_id', CommonController.readNotification);
