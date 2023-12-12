@@ -81,17 +81,17 @@ class CommonQueries {
   // Fetch stf_row_inform 
   static fetch_stf_row_inform = `
   SELECT stf_models.id as stf_id, stf_models.stf_num, stf_models.material_type, stf_models.material_name, stf_models.material_amount,
-  stf_models.material_unit, stf_models.material_link, stf_models.material_comment, stf_models.completed, stf_models."createdAt",
+  stf_models.material_unit, stf_models.material_link, stf_models.material_comment, stf_models.completed, stf_models."createdAt" as stf_createdAt,
   INITCAP(CONCAT(users_models.name, ' ', users_models.surname)) as Ordered_by, 
   department_models.department_name,
   fields_models.field_name,
   sm_models.sm_num, sm_models.sm_material_name, sm_models.sm_material_amount, sm_models.sm_material_unit, sm_models.price,
-  sm_models.total, sm_models.currency, sm_models.left_over, sm_models.approximate_date, sm_models."createdAt",
+  sm_models.total, sm_models.currency, sm_models.left_over, sm_models.approximate_date, sm_models."createdAt" as sm_createdAt,
   vendors_models.vendor_name,
   warehouse_models.delivery_material_name, warehouse_models.delivery_material_amount, warehouse_models.delivery_material_unit,
   warehouse_models.delivery_material_price, warehouse_models.delivery_material_total, warehouse_models.delivery_material_currency,
   warehouse_models.doc_number, warehouse_models.doc_date, warehouse_models.certificate, warehouse_models.passport, warehouse_models.stock,
-  warehouse_models.doc_number, warehouse_models.doc_date, warehouse_models.certificate, warehouse_models.passport, warehouse_models.stock, 
+  warehouse_models.doc_number, warehouse_models.doc_date, warehouse_models.certificate, warehouse_models.passport, warehouse_models.stock, warehouse_models."createdAt" as warehouse_createdAt,
   INITCAP(CONCAT(us_mod.name, ' ', us_mod.surname)) as Supplier_name,
   INITCAP(CONCAT(u_m.name, ' ',u_m.surname)) as Accepted_by
   FROM stf_models 

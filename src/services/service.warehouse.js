@@ -13,6 +13,11 @@ const WhereQuery = require("../utils/whereQuery");
 class WarehouseServiceAcceptSMS {
   // Accept SMS To Warehouse
   static async acceptSMS(data) {
+    // First Check 
+    // for (let i = 0; i < data.checked_values.length; i++) {
+    //   const res = await this.#withdrowSMAmount(data, i);
+    // }
+
     for (let i = 0; i < data.checked_values.length; i++) {
       const res = await this.#withdrowSMAmount(data, i);
     }
@@ -21,20 +26,34 @@ class WarehouseServiceAcceptSMS {
 
   // Withdrow From SMS LeftOver
   static async #withdrowSMAmount(data, each) {
+    /*
+      ******************* Step 1 - Take Entering Amount 
+    */
     // Get Current SM Amount
     const entering_amount = Number(
       data.table_data[each].entering_delivery_amount
     );
     let max_accepting_amount = 0;
+    /*
+      ******************* Step 2 - Find Same Material With sm id 
+    */
     // Find SM with id
     const result = await this.#findSMById(data.checked_values[each].sm_id)
       .then(async (respond) => {
         if (respond) {
+          /*
+            ******************* Step 3 - Take Left Over Values 
+          */
           const sm_amount = Number(respond?.dataValues?.left_over);
-
+          /*
+            ******************* Step 4 - Compare Left Over Values 1 - If Entering amount greater than sm material left over value
+          */
           // If Entering Amount Greater Than SM AMount
           if (entering_amount > sm_amount) {
             // Find Max Accepting Value
+            /*
+              ******************* Step 4.1 - Find Max Values for left over value
+            */
             max_accepting_amount = sm_amount + (sm_amount * 0, 1);
             // If Greater Than Max Accepting Value Return Error
             if (entering_amount > max_accepting_amount) {
