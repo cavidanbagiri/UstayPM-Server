@@ -16,7 +16,7 @@ class WarehouseController {
     tryCatch(
       await WarehouseServiceAcceptSMS.acceptSMS(data)
         .then((respond) => {
-          return res.send("OK");
+          return res.send(respond);
           // return res.send(respond);
         })
         .catch((err) => {

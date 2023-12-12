@@ -5,18 +5,41 @@ const {
   ProvidedModel,
   ConditionModel,
 } = require("../../models");
+const EmptyFieldError = require("../exceptions/EmptyFieldError");
 
 const WarehouseQueries = require("../queries/warehouse.queries");
 const WhereQuery = require("../utils/whereQuery");
 
 // Accept SM
 class WarehouseServiceAcceptSMS {
+
+  // Check Entering Warehouse Data
+  static #checkBeforeForComingData(data){
+    // console.log('data. checked values ', data.checked_values[0]);
+    // First Check 
+    for (let i = 0; i < data.checked_values.length; i++) {
+      
+      let max_entering_value = data.checked_values[i].left_over + (data.checked_values[i].left_over * 0.1) ;
+      
+      if(data.table_data[i].entering_delivery_amount > max_entering_value ){
+        throw new EmptyFieldError(`${i} Index, Error Happen, Entering Value Greater Than Left Over Value`, 400);
+
+      }
+
+    }
+
+  }
+
   // Accept SMS To Warehouse
   static async acceptSMS(data) {
-    // First Check 
-    // for (let i = 0; i < data.checked_values.length; i++) {
-    //   const res = await this.#withdrowSMAmount(data, i);
-    // }
+
+    try {
+      this.#checkBeforeForComingData(data);
+    } catch (err) {
+      throw new Error(err)
+    }
+
+        
 
     for (let i = 0; i < data.checked_values.length; i++) {
       const res = await this.#withdrowSMAmount(data, i);
