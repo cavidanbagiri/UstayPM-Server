@@ -68,7 +68,11 @@ app.use("/common", CommonRouter);
 app.use(errorHandler);
 
 // Listen Server
-const server = app.listen(process.env.PORT, () => {
+// const server = app.listen(process.env.PORT, () => {
+//   console.log(`Server is running in ${process.env.PORT} port`);
+// });
+
+const server = app.listen(3000, () => {
   console.log(`Server is running in ${process.env.PORT} port`);
 });
 
@@ -116,6 +120,7 @@ io.on("connection", (socket) => {
     When User Send New Messages, This will show new message to sender
   */
   socket.on("new_messages", async (message_data) => {
+    // console.log(object);
     // const fetch_messages = await CommonServiceFetchMessage.fetchMessage(socket.data.user_id, message_data.sender_id);
     const fetch_messages = await CommonServiceFetchMessage.fetchMessage(
       message_data.current_id,

@@ -221,23 +221,34 @@ class CommonServiceFetchMessage {
       First Find Room Id if these users have roomid or not, if not create new room id
     */
     const find_room_result = await this.#getRoom(current_id, selected_id);
-
+    /*
+      *************** 2 Step, If room id has fetch messages if not go to ************* 3 Step create new room and return back to new messages
+    */
     if(find_room_result[0].length){
-      // const result = await sequelize.query(CommonQueries.fetchMessageQuery(find_room_result[0][0].id));
+      /* 
+        *************** Step 2.1 Fetch Room id and Messages
+      */
+      // These two users has any message and room, this will return back the messages from according to roomid
       const result = await this.#fetchAlreadyHasMessage(find_room_result);
       return result[0];
     }
     else{
       /*
-        ************ 2 Step
+        ************ Come to 3 Step
         Create Room Model and Message Model
       */
+     /*
+        ************* 3.1 Step, Create new Room
+     */ 
       // Creating Room Model
       const room_model = await RoomModel.create({
         firstuserId: current_id,
         seconduserId: selected_id,
         room_name: current_id+'_'+selected_id
       });
+      /*
+        ************* 3.2 Step, Create new Message
+      */ 
       // Creating Message Model
       const message_model = await MessageModel.create({
         message_text: '',
@@ -246,6 +257,9 @@ class CommonServiceFetchMessage {
         receiverId: current_id,
         senderId: selected_id,
       })
+      /*
+        ************* 3.3 Step, Fetch New Creating Messages
+      */
       const result = await this.#fetchNewCreatedMessage(room_model.dataValues.id);
       return result[0];
     } 
