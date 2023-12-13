@@ -40,7 +40,6 @@ class ProcurementServiceCreateSM {
     } catch (err) {
       throw new Error(err);
     }
-
     
     if (data.length) {
       
