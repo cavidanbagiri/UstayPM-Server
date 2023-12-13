@@ -245,8 +245,30 @@ class WarehouseServiceFetchWarehouseData {
 
 // Provide Sm From Warehouse To Area
 class WarehouseServiceProvideSM {
+  static async #checkStock(data) {
+    let rows = 0;
+    for(let i of data.data){
+      rows++;
+      const res = await this.#findWarehouseItemById(i.warehouse_id);
+      if(res){
+        if(res.stock - i.provide_amount < 0){
+          throw new Error(`${rows} Row Stock Is Not Enough`)
+        }
+      }
+    }
+
+    return 'OK';
+  }
   // Provide Material
   static async provideMaterial(data) {
+
+    try{
+      await this.#checkStock(data);
+    }
+    catch(err){
+      throw new Error(err);
+    }
+
     for (let i of data.data) {
       // Find Selectinf row from warehouse models
       const each = await this.#findWarehouseItemById(i.warehouse_id);
