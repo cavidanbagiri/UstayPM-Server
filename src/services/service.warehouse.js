@@ -39,8 +39,6 @@ class WarehouseServiceAcceptSMS {
       throw new Error(err)
     }
 
-        
-
     for (let i = 0; i < data.checked_values.length; i++) {
       const res = await this.#withdrowSMAmount(data, i);
     }
