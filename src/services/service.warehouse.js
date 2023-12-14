@@ -14,27 +14,34 @@ const WhereQuery = require("../utils/whereQuery");
 class WarehouseServiceAcceptSMS {
 
   // Check Entering Warehouse Data
-  static #checkBeforeForComingData(data){
-    // console.log('data. checked values ', data.checked_values[0]);
+  static async #checkBeforeForComingData(data){
+    // console.log('data : ', data);
     // First Check 
-    for (let i = 0; i < data.checked_values.length; i++) {
-      
-      let max_entering_value = data.checked_values[i].left_over + (data.checked_values[i].left_over * 0.1) ;
-      
-      if(data.table_data[i].entering_delivery_amount > max_entering_value ){
-        throw new EmptyFieldError(`${i} Index, Error Happen, Entering Value Greater Than Left Over Value`, 400);
+    // for (let i = 0; i < data.checked_values.length; i++) {
+    //   let max_entering_value = data.checked_values[i].left_over + (data.checked_values[i].left_over * 0.1) ;
+    //   if(data.table_data[i].entering_delivery_amount > max_entering_value ){
+    //     throw new EmptyFieldError(`${i} Index, Error Happen, Entering Value Greater Than Left Over Value`, 400);
+    //   }
+    // }
 
+    for(let i = 0 ; i < data.checked_values.length; i++){
+      // Find Material With Id;
+      const result = await SMModel.findByPk(data.checked_values[i].sm_id);
+      const left_over_amount = result.dataValues.left_over;
+      // Count First Max Can Entering Value
+      let max_entering_value = left_over_amount + (left_over_amount * 0.1);
+      // Compare entering value and finding material left over amount
+      if(data.table_data[i].entering_delivery_amount > max_entering_value){
+          throw new EmptyFieldError(`${i} Index, Error Happen, Entering ${data.table_data[i].entering_delivery_amount} Greater Than ${left_over_amount} Left Over Value and you can enter max ${max_entering_value}`, 400);
       }
-
     }
-
   }
 
   // Accept SMS To Warehouse
   static async acceptSMS(data) {
 
     try {
-      this.#checkBeforeForComingData(data);
+      await this.#checkBeforeForComingData(data);
     } catch (err) {
       throw new Error(err)
     }
