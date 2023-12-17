@@ -10,6 +10,7 @@ const {
   CommonServiceNewSTFNotification,
   CommonServiceFetchMessage,
   CommonServiceSendMessage,
+  CommonServiceFetchMessagesUnreadCounting
 } = require("./src/services/service.common");
 
 // Activate Database Connection
@@ -120,14 +121,23 @@ io.on("connection", (socket) => {
     When User Send New Messages, This will show new message to sender
   */
   socket.on("new_messages", async (message_data) => {
-    // console.log(object);
-    // const fetch_messages = await CommonServiceFetchMessage.fetchMessage(socket.data.user_id, message_data.sender_id);
+    
+    /*
+      -----------This Fetching Operation and Emiting For Common Messages Notification and realtime chatting
+    */
     const fetch_messages = await CommonServiceFetchMessage.fetchMessage(
       message_data.current_id,
       message_data.sender_id
     );
-    await socket
-      .in(message_data.room_id)
-      .emit("fetch_messages", fetch_messages); // -> notify to selected
+    await socket.in(message_data.room_id).emit("fetch_messages", fetch_messages); // -> notify to selected
+  
+    socket.broadcast.emit("broadcastmessage", fetch_messages);
+    /*
+      ----------- This Emitting Unread Messages Count
+    */
+    const fetch_messages_unread_counting = await CommonServiceFetchMessagesUnreadCounting.fetchMessagesUnreadCounting(fetch_messages[0].roomId, fetch_messages[0].receiverId);
+    socket.broadcast.emit("broadcastunreadcountingmessages", fetch_messages_unread_counting);
+  
+  
   });
 });

@@ -133,6 +133,15 @@ class CommonQueries {
     return fetch_message;
   }
 
+  static fetchMessagesUnreadCounting(roomid, receiverId){
+    const string_query = `
+      SELECT count("receiverId") as count, "roomId", "receiverId", "senderId" from message_models
+      where  "roomId" = ${roomid} and read = false and "receiverId" = ${receiverId}
+      group by read, "roomId", "receiverId", "senderId"
+    `
+    return string_query;
+  }
+
   
   // Fetch All Users
   static fetch_all_users = `
@@ -156,7 +165,6 @@ class CommonQueries {
     left join room_models on message_models."roomId"=room_models.id
     where "senderId" = ${user_id} and read = false
     group by "receiverId", users_models.name, users_models.surname, department_models.department_name, status_models.status_name, room_models.id
-    
     `
     return string_query;
   }

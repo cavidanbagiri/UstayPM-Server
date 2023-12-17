@@ -302,6 +302,16 @@ class CommonServiceFetchMessage {
   }
 }
 
+class CommonServiceFetchMessagesUnreadCounting{
+
+  // Fetch Unread Messages Count For Receiver
+  static async fetchMessagesUnreadCounting(room_id, receiverId){
+    const result = await sequelize.query(CommonQueries.fetchMessagesUnreadCounting(room_id, receiverId));
+    return result[0]
+  }
+
+}
+
 class CommonServiceFetchAllUsers {
   // Fetch All Users
   static async fetchAllUsers() {
@@ -395,5 +405,6 @@ module.exports = {
   CommonServiceFilteredVendorNames,
   CommonServiceFetchUnreadMessagesAndUsers,
   CommonServiceSetTrueReadingMessages,
+  CommonServiceFetchMessagesUnreadCounting,
   CommonServiceChangeSTFStatus,
 };
