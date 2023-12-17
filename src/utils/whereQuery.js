@@ -12,15 +12,15 @@ class WhereQuery {
 
     for (let [key, value] of Object.entries(filtered_object)) {
       if (filtered_object[key] !== "" && filtered_object[key] !== "All") {
-        // If Key name is material name or material type, like query will work will start wil entering value
+        // If Key name is material name or material type, ILIKE query will work will start wil entering value
         if (key === "material_name") {
-          where_query += `${key} LIKE '${filtered_object[key]}%' `;
+          where_query += `${key} ILIKE '%${filtered_object[key]}%' `;
         }
         else if (key === "usernames") {
           where_query += `users_models.id = ${filtered_object[key]} `
         }
         else if (key === "stf_num") {
-          where_query += `${key} LIKE '%${filtered_object[key]}' `;
+          where_query += `${key} ILIKE '%${filtered_object[key]}' `;
         } 
         else if (key === "createdAt") {
           where_query += `stf_models."${key}"::date = '${filtered_object[key]}' `;
@@ -74,10 +74,10 @@ class WhereQuery {
 
     for (let [key, value] of Object.entries(filtered_object)) {
       if (filtered_object[key] !== "" && filtered_object[key] !== "All") {
-        // If Key name is material name or material type, like query will work will start wil entering value
+        // If Key name is material name or material type, IILIKE query will work will start wil entering value
         if (key === "sm_material_name") {
-          where_query += `${key} LIKE '${filtered_object[key]}%' `;
-          // where_query += ` or sm_material_name LIKE '${filtered_object[key]}%' `
+          where_query += `${key} ILIKE '%${filtered_object[key]}%' `;
+          // where_query += ` or sm_material_name ILIKE '${filtered_object[key]}%' `
         } 
         else if (key === "usernames" && filtered_object[key] !== "All") {
           where_query += `users_models.id = ${filtered_object[key]} `
@@ -86,10 +86,10 @@ class WhereQuery {
           where_query += `vendors_models.id = ${filtered_object[key]} `
         }
         else if (key === "stf_num") {
-          where_query += `${key} LIKE '%${filtered_object[key]}' `;
+          where_query += `${key} ILIKE '%${filtered_object[key]}' `;
         }
         else if (key === "sm_num") {
-          where_query += `${key} LIKE '%${filtered_object[key]}' `;
+          where_query += `${key} ILIKE '%${filtered_object[key]}' `;
         }
         else if (key === "createdAt") {
           where_query += `${table_name}."${key}"::date = '${filtered_object[key]}' `;
@@ -142,10 +142,10 @@ class WhereQuery {
 
     for (let [key, value] of Object.entries(filtered_object)) {
       if (filtered_object[key] !== "" && filtered_object[key] !== "All") {
-        // If Key name is material name or material type, like query will work will start wil entering value
+        // If Key name is material name or material type, ILIKE query will work will start wil entering value
         if (key === "sm_material_name") {
-          where_query += `${key} LIKE '${filtered_object[key]}%' `;
-          // where_query += ` or sm_material_name LIKE '${filtered_object[key]}%' `
+          where_query += `${key} ILIKE '${filtered_object[key]}%' `;
+          // where_query += ` or sm_material_name ILIKE '${filtered_object[key]}%' `
         } 
         else if (key === "usernames" && filtered_object[key] !== "All") {
           where_query += `users_models.id = ${filtered_object[key]} `
@@ -154,10 +154,10 @@ class WhereQuery {
           where_query += `vendors_models.id = ${filtered_object[key]} `
         }
         else if (key === "stf_num") {
-          where_query += `${key} LIKE '%${filtered_object[key]}' `;
+          where_query += `${key} ILIKE '%${filtered_object[key]}' `;
         }
         else if (key === "sm_num") {
-          where_query += `${key} LIKE '%${filtered_object[key]}' `;
+          where_query += `${key} ILIKE '%${filtered_object[key]}' `;
         }
         else if (key === "user" && key != "") {
           where_query += `stf_models."userId" = '${filtered_object[key]}' `;
@@ -211,10 +211,10 @@ class WhereQuery {
 
     for (let [key, value] of Object.entries(filtered_object)) {
       if (filtered_object[key] !== "" && filtered_object[key] !== "All") {
-        // If Key name is material name or material type, like query will work will start wil entering value
+        // If Key name is material name or material type, ILIKE query will work will start wil entering value
         if (key === "sm_material_name") {
-          where_query += `${key} LIKE '${filtered_object[key]}%' `;
-          // where_query += ` or sm_material_name LIKE '${filtered_object[key]}%' `
+          where_query += `${key} ILIKE '${filtered_object[key]}%' `;
+          // where_query += ` or sm_material_name ILIKE '${filtered_object[key]}%' `
         } 
         else if (key === "usernames" && filtered_object[key] !== "All") {
           where_query += `users_models.id = ${filtered_object[key]} `
@@ -223,10 +223,10 @@ class WhereQuery {
           where_query += `vendors_models.id = ${filtered_object[key]} `
         }
         else if (key === "stf_num") {
-          where_query += `${key} LIKE '%${filtered_object[key]}' `;
+          where_query += `${key} ILIKE '%${filtered_object[key]}' `;
         }
         else if (key === "sm_num") {
-          where_query += `${key} LIKE '%${filtered_object[key]}' `;
+          where_query += `${key} ILIKE '%${filtered_object[key]}' `;
         }
         else if (key === "department" && key != "") {
           where_query += `provided_models."departmentId" = '${filtered_object[key]}' `;

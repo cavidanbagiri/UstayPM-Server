@@ -355,7 +355,6 @@ class CommonServiceSetTrueReadingMessages {
 
 class CommonServiceChangeSTFStatus {
   static async setStfStatus(body) {
-    console.log('body : ', body);
     try {
       const res = await STFModel.update(
         {
@@ -367,7 +366,6 @@ class CommonServiceChangeSTFStatus {
           },
         }
       );
-      console.log("res : ", res);
       return "OK";
     } catch (err) {
       console.log("Change STF Error : ", err);
