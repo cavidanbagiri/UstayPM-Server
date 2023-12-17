@@ -121,9 +121,8 @@ io.on("connection", (socket) => {
     When User Send New Messages, This will show new message to sender
   */
   socket.on("new_messages", async (message_data) => {
-    
     /*
-      -----------This Fetching Operation and Emiting For Common Messages Notification and realtime chatting
+    -----------This Fetching Operation and Emiting For Common Messages Notification and realtime chatting
     */
     const fetch_messages = await CommonServiceFetchMessage.fetchMessage(
       message_data.current_id,
@@ -133,9 +132,9 @@ io.on("connection", (socket) => {
   
     socket.broadcast.emit("broadcastmessage", fetch_messages);
     /*
-      ----------- This Emitting Unread Messages Count
+    ----------- This Emitting Unread Messages Count
     */
-    const fetch_messages_unread_counting = await CommonServiceFetchMessagesUnreadCounting.fetchMessagesUnreadCounting(fetch_messages[0].roomId, fetch_messages[0].receiverId);
+    const fetch_messages_unread_counting = await CommonServiceFetchMessagesUnreadCounting.fetchMessagesUnreadCounting(fetch_messages[0].roomId, fetch_messages[fetch_messages.length-1].receiverId);
     socket.broadcast.emit("broadcastunreadcountingmessages", fetch_messages_unread_counting);
   
   

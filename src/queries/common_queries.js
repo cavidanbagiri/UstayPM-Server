@@ -128,7 +128,7 @@ class CommonQueries {
   static fetchMessageQuery(room_id){
     const  fetch_message = `
       SELECT "roomId", "receiverId", "senderId", message_text, "createdAt" from message_models
-      where  "roomId" = ${room_id}
+      where  "roomId" = ${room_id} order by "createdAt"
     `
     return fetch_message;
   }

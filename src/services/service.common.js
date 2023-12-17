@@ -352,14 +352,20 @@ class CommonServiceFetchUnreadMessagesAndUsers {
 }
 
 class CommonServiceSetTrueReadingMessages {
-  static async setTrueReadingMessages(room_id) {
-    const string_query = CommonQueries.set_reading_messages_true + room_id;
-    //    console.log('string query : ',string_query);
-    const result = await sequelize.query(
-      CommonQueries.set_reading_messages_true + room_id
-    );
-    //    console.log('set true is working : ',room_id);
-    return result;
+  static async setTrueReadingMessages(room_id, current_id) {
+    console.log(room_id, current_id);
+    const string_query = `
+      update message_models set read = true where read = false and "roomId" = ${room_id} and "senderId" = ${current_id}  
+    `
+    const result = await sequelize.query(string_query);
+    // const string_query = CommonQueries.set_reading_messages_true + room_id;
+    // //    console.log('string query : ',string_query);
+    // const result = await sequelize.query(
+    //   CommonQueries.set_reading_messages_true + room_id
+    // );
+    // //    console.log('set true is working : ',room_id);
+    // return result;
+    return 'OK';
   }
 }
 

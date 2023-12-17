@@ -281,10 +281,10 @@ class CommonController {
   }
 
   static async setTrueReadingMessages(req, res, next) {
-    const room_id = req.params.room_id;
-
+    const room_id = req.body.room_id;
+    const current_id = req.body.current_id;
     tryCatch(
-      await CommonServiceSetTrueReadingMessages.setTrueReadingMessages(room_id)
+      await CommonServiceSetTrueReadingMessages.setTrueReadingMessages(room_id, current_id)
         .then((respond) => {
           return res.send(respond);
         })
