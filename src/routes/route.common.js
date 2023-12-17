@@ -61,6 +61,7 @@ router.post('/settruemessages/:room_id', CommonController.setTrueReadingMessages
 // Post Nofitication Reading
 router.post('/readnotification/:user_id', CommonController.readNotification);
 
-
+// Change STF Statis
+router.post('/changestatus', CommonController.setStfStatus)
 
 module.exports = router;
