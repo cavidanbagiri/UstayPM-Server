@@ -6,6 +6,7 @@ const {
   MessageModel,
   RoomModel,
   STFModel,
+  CanceledSTFModel
 } = require("../../models");
 const { getSocketInstance } = require("../utils/io");
 
@@ -390,6 +391,26 @@ class CommonServiceChangeSTFStatus {
   }
 }
 
+// Cancel STF Class
+class CommonServiceCancelSTF {
+
+  static async cancelSTF (data) {
+    console.log('from frontend side coming data : ', data);
+    //return 'OK';
+    const respond = await CanceledSTFModel.create({
+      stfId: data.stf_id,
+      canceledbyId: data.user_id,
+      comment: data.comment
+    }).then((respond)=>{
+      return respond;
+    }).catch((err)=>{
+      console.log('Canceled STF Models Error');
+      throw new Error(err);
+    })
+  }
+
+}
+
 module.exports = {
   CommonServiceFilterSTF,
   CommonServiceFilterSM,
@@ -413,4 +434,5 @@ module.exports = {
   CommonServiceSetTrueReadingMessages,
   CommonServiceFetchMessagesUnreadCounting,
   CommonServiceChangeSTFStatus,
+  CommonServiceCancelSTF
 };

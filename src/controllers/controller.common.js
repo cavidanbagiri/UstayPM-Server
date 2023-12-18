@@ -19,6 +19,7 @@ const {
   CommonServiceFetchUnreadMessagesAndUsers,
   CommonServiceSetTrueReadingMessages,
   CommonServiceChangeSTFStatus,
+  CommonServiceCancelSTF
 } = require("../services/service.common");
 const tryCatch = require("../utils/trycatch");
 
@@ -322,6 +323,23 @@ class CommonController {
         })
     );
   }
+
+  // CancelSTF
+  static async cancelSTF(req, res, next){
+    const body = req.body;
+    tryCatch(
+      await CommonServiceCancelSTF.cancelSTF(body)
+      .then((respond)=>{
+        return res.send(respond);
+      })
+      .catch((err)=>{
+        console.log('Canceled STF Operation Error : ', err);
+        next(err);
+      })
+    )
+  }
+
+
 }
 
 module.exports = CommonController;

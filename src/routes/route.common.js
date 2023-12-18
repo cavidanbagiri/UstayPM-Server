@@ -62,6 +62,10 @@ router.post('/settruemessages', CommonController.setTrueReadingMessages);
 router.post('/readnotification/:user_id', CommonController.readNotification);
 
 // Change STF Statis
-router.post('/changestatus', CommonController.setStfStatus)
+router.post('/changestatus', CommonController.setStfStatus);
+
+
+// Cancel STF
+router.post('/cancelstf', CommonController.cancelSTF);
 
 module.exports = router;
