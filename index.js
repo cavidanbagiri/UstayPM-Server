@@ -28,6 +28,7 @@ const cookieParser = require("cookie-parser");
 // Import ErrorHandler
 const errorHandler = require("./src/middleware/errorHandler");
 
+
 // Import Routers
 const {
   HomeRouter,
@@ -54,6 +55,9 @@ app.use(
     origin: ["https://www.ustaypm.site", "ustaypm.site", "http://localhost:5173", "https://ustaypm-client.onrender.com"],
   })
 );
+
+// Get Node Static files
+app.use(express.static("./src/public"));
 
 // Use Routers
 app.use("/index", HomeRouter);

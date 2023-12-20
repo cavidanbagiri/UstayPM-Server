@@ -1,5 +1,5 @@
 
-const UserService = require('../services/service.user');
+const { UserService, UploadImage } = require('../services/service.user');
 
 const tryCatch = require('../utils/trycatch');
 const hashPassowrd = require('../helpers/hash_password');
@@ -34,6 +34,25 @@ class UserController {
           next(err);
         })
     );
+
+  }
+
+  // Upload Images To Database
+  static async uploadImage(req, res, next) {
+
+    const user_id = req.body.id;
+    const file = req.file;
+    
+    tryCatch(
+      await UploadImage.uploadImage(user_id, file)
+      .then((respond)=>{
+        console.log('image added');
+        return res.send(respond)
+      })
+      .catch((err)=>{
+        console.log('Upload image Error : ', err);
+      })
+    )
 
   }
 
