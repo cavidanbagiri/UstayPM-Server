@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const CommonController = require('../controllers/controller.common');
+const cancelSTF = require('../middleware/cancelstf_middleware');
 
 // Filter All STF
 router.get('/filterstf', CommonController.filterSTF);
@@ -66,6 +67,6 @@ router.post('/changestatus', CommonController.setStfStatus);
 
 
 // Cancel STF
-router.post('/cancelstf', CommonController.cancelSTF);
+router.post('/cancelstf', cancelSTF, CommonController.cancelSTF);
 
 module.exports = router;

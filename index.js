@@ -51,7 +51,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: ["https://www.ustaypm.site", "http://localhost:5173", "https://ustaypm-client.onrender.com"],
+    origin: ["https://www.ustaypm.site", "ustaypm.site", "http://localhost:5173", "https://ustaypm-client.onrender.com"],
   })
 );
 
