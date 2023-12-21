@@ -8,7 +8,7 @@ const initializeSocket = (server) => {
   io = new Server(server, {
     cors:{
       credentials: true,
-      origin: ['http://localhost:5173','https://ustaypm-client.onrender.com']
+      origin: ["https://www.ustaypm.site", "ustaypm.site", "http://localhost:5173","https://ustaypm-client.onrender.com"]
     }
   });
 };
