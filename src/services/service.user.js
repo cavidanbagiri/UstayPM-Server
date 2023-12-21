@@ -31,11 +31,11 @@ class UploadImage {
 
     const ext = MIME_TYPE_MAP[file.mimetype];
     const file_name = '/profileimages/' + user_id + "." + ext;
+    const user = await UserModel.findByPk(user_id);
+    await user.update({image_url:file_name})
+    await user.save(); 
 
-
-    console.log('service file name is : ', file_name);
-
-    return 'OK';
+    return file_name;
 
   }
 

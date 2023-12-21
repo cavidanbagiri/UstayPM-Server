@@ -46,7 +46,6 @@ class UserController {
     tryCatch(
       await UploadImage.uploadImage(user_id, file)
       .then((respond)=>{
-        console.log('image added');
         return res.send(respond)
       })
       .catch((err)=>{
