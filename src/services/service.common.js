@@ -25,8 +25,7 @@ class CommonServiceFilterSM {
   static async filterSM(query) {
     const where_query = WhereQuery.SMWhereQuery("where", query, "sm_models");
     const string_query = `
-    ${CommonQueries.select_all_sm_query}
-      ${where_query}
+    ${CommonQueries.select_all_sm_query} ${where_query}
     `;
     const result = await sequelize.query(string_query);
     return result[0];

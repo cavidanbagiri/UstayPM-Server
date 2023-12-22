@@ -101,6 +101,13 @@ io.on("connection", (socket) => {
   });
 
   /*
+    Socket Disconnect
+    User WIll Leave From Socket
+  */
+//  socket.on("disconnect", )
+
+
+  /*
     Fetch New STF Notifications and send to client side
   */
   socket.on("newstfnotification", async (userData) => {

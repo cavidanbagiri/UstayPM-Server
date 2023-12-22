@@ -55,13 +55,11 @@ class WhereQuery {
 
     // Add Ascending Or Descending
     where_query += time_query;
-    console.log('Where query is : ', where_query);
     return where_query;
   }
 
   // Where Query For STF
   static SMWhereQuery(start_keyword, filtered_object, table_name) {
-    // console.log('Sm Filtered Object : ',filtered_object);
     start_keyword = start_keyword.trim();
     /*
       Where Query For Filtering Data For STF's 
@@ -96,7 +94,6 @@ class WhereQuery {
         }
         else if (key === "date_order") {
           where_query = where_query.slice(0, -4);
-
           if (filtered_object[key] === "Ascending") {
             time_query += ` ORDER BY ${table_name}."createdAt" ASC `;
           } else if (filtered_object[key] === "Descending") {
@@ -122,8 +119,7 @@ class WhereQuery {
     // Add Ascending Or Descending
     where_query += time_query;
 
-    console.log('where query is : -> ', where_query);
-
+    
     return where_query;
   }
 
