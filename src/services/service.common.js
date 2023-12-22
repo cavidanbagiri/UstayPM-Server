@@ -318,6 +318,13 @@ class CommonServiceFetchAllUsers {
     const result = await sequelize.query(CommonQueries.fetch_all_users);
     return result[0];
   }
+
+  // Fetch All Users Except Current User
+  static async fetchAllUsersExceptCurrent(current_id) {
+    const result = await sequelize.query(CommonQueries.fetch_all_users+ ` where users_models.id != ${current_id}`);
+    return result[0];
+  }
+
 }
 
 class CommonServiceFetchUnreadMessages {
@@ -334,7 +341,7 @@ class CommonServiceFetchUnreadMessagesAndUsers {
   // Combine unread messages and users list
   static async fetchUnreadMessagesAndUsers(current_id) {
     // Get All Users
-    let all_users = await CommonServiceFetchAllUsers.fetchAllUsers();
+    let all_users = await CommonServiceFetchAllUsers.fetchAllUsersExceptCurrent(current_id);
     // Get All Unread Messages
     let unread_messages =
       await CommonServiceFetchUnreadMessages.fetchUnreadMessages(current_id);
