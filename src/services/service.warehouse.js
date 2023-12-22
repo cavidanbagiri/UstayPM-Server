@@ -10,6 +10,8 @@ const EmptyFieldError = require("../exceptions/EmptyFieldError");
 const WarehouseQueries = require("../queries/warehouse.queries");
 const WhereQuery = require("../utils/whereQuery");
 
+const {getSocketInstance} = require('../utils/io');
+
 // Accept SM
 class WarehouseServiceAcceptSMS {
 
@@ -49,7 +51,21 @@ class WarehouseServiceAcceptSMS {
     for (let i = 0; i < data.checked_values.length; i++) {
       const res = await this.#withdrowSMAmount(data, i);
     }
+
+    console.log('data is : ', data);
+    // Step 3 Emit that function
+    const emit_socket_inform = {
+      sm_num: data.checked_values[0].sm_num,
+      orderer_id: data.checked_values[0].orderer_id,
+      orderer_name: data.checked_values[0].orderer,
+    }
+    console.log('emit data : ', emit_socket_inform);
+    const io = getSocketInstance();
+    // CommonServiceNewSTFNotification.getNewSTFNotification(0);
+    console.log('socket emit is worked');
+    io.emit('accept_sms', emit_socket_inform);
     return "OK";
+    
   }
 
   // Withdrow From SMS LeftOver
@@ -176,6 +192,7 @@ class WarehouseServiceAcceptSMS {
                 );
               });  
           }
+
         }
       })
       .catch((err) => {

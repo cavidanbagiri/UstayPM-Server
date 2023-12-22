@@ -14,6 +14,7 @@ class ProcurementQueries {
   sm_models.sm_material_amount as amount, sm_models.sm_material_unit as unit, sm_models.price, sm_models.total, sm_models.currency, sm_models.left_over, sm_models.approximate_date,
   sm_models."createdAt", sm_models."projectId" as project_id, sm_models."departmentId" as department_id,
   Initcap(concat(users_models.name , ' ', users_models.surname))  as orderer,
+  users_models.id as orderer_id,
   Initcap(concat(um.name, ' ', um.surname )) as supplier,
   vendors_models.vendor_name
   from sm_models

@@ -209,8 +209,6 @@ class CreateNewSTFNotification {
     }
     // Step 3 Emit that function
     const io = getSocketInstance();
-    // CommonServiceNewSTFNotification.getNewSTFNotification(0);
-    console.log('socket emit is worked');
     io.emit('createstf');
     
   }
