@@ -125,8 +125,9 @@ class CommonServiceFetchDepartments {
 class CommonServiceFetchSTFRowInform {
   static async fetchSTFRowInform(stf_id) {
     const res = await sequelize.query(
-      CommonQueries.fetch_stf_row_inform + stf_id
+      CommonQueries.fetchSTFRowInform(stf_id)
     );
+    console.log('getting row inform data : ', res[0]);
     return res[0];
   }
 }
