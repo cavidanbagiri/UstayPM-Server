@@ -73,13 +73,13 @@ app.use("/common", CommonRouter);
 app.use(errorHandler);
 
 // Listen Server
-// const server = app.listen(process.env.PORT, () => {
-//   console.log(`Server is running in ${process.env.PORT} port`);
-// });
-
-const server = app.listen(3000, () => {
+const server = app.listen(process.env.PORT, () => {
   console.log(`Server is running in ${process.env.PORT} port`);
 });
+
+// const server = app.listen(3000, () => {
+//   console.log(`Server is running in ${process.env.PORT} port`);
+// });
 
 const { initializeSocket, getSocketInstance } = require("./src/utils/io");
 
