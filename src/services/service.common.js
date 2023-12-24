@@ -12,7 +12,7 @@ const { getSocketInstance } = require("../utils/io");
 
 class CommonServiceFilterSTF {
   static async filterSTF(query) {
-    const where_query = WhereQuery.STFWhereQuery("where", query, "stf_models");
+    const where_query = WhereQuery.STFWhereQueryTest("where", query, "stf_models");
     const string_query = `
     ${CommonQueries.select_all_stf_query} ${where_query}
     `;

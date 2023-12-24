@@ -4,6 +4,10 @@ class WhereQuery {
   
 // Where Query For STF
 static STFWhereQueryTest(start_keyword, filtered_object, table_name) {
+
+  // Add query for remove canceled stf's
+  const remove_canceled_stf = ` ${table_name}.id not in (select "stfId" from canceledstf_models) `;
+
   start_keyword = start_keyword.trim();
   /*Where Query For Filtering Data For STF's */
   let time_query = "";
@@ -45,7 +49,6 @@ static STFWhereQueryTest(start_keyword, filtered_object, table_name) {
       where_query += "and ";
     }
   }
-
   if (where_query.trim().length === start_keyword.length) {
     where_query = where_query.slice(0, -(start_keyword.length + 1));
   }
@@ -54,8 +57,30 @@ static STFWhereQueryTest(start_keyword, filtered_object, table_name) {
   where_query = where_query.slice(0, -4);
 
   // Add Ascending Or Descending
+  // where_query += time_query;
+  let temp = where_query;
+
+  // If Where Query is empty, add canceled stf
+  if(where_query.trim().length === 0 ){
+    where_query += ' where ' + remove_canceled_stf;
+    temp = where_query;
+  }
+  else{
+
+    where_query += ' and '+ remove_canceled_stf;
+
+  }
+
+
+  console.log('--------------------------------------------------------where query is : ', temp);
+  
+  // Add Ascending Or Descending
   where_query += time_query;
+  
+  console.log('--------------------------------------------------------second where query is : ', where_query);
+
   return where_query;
+
 }
 
   // Where Query For STF
