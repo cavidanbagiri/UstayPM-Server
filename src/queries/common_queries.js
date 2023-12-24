@@ -180,13 +180,15 @@ class CommonQueries {
   
   // Fetch All Users
   static fetch_all_users = `
-    SELECT users_models.id, users_models.id-users_models.id as count, INITCAP(concat(users_models.name , ' ', users_models.surname)) as username,
+    SELECT users_models.id, users_models.id-users_models.id as count, INITCAP(concat(users_models.name , ' ', users_models.surname)) as username, users_models.image_url, 
     department_models.department_name,
-    status_models.status_name 
+    status_models.status_name,
+    project_models.project_name
     from users_models
     LEFT JOIN department_models on users_models."departmentId" = department_models.id
     LEFT JOIN status_models on users_models."statusId" = status_models.id 
-  `
+    LEFT JOIN project_models on users_models."projectId" = project_models.id
+    `
 
   static fetchUnreadMessages(user_id) {
     const string_query = `
