@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(UserModel, {foreignKey: 'userId'})
       this.belongsTo(WarehouseDeliveryTypeModel, {foreignKey: 'typeId'})
       this.belongsTo(DepartmentModel, {foreignKey: 'departmentId'})
+      this.belongsTo(UserModel, {foreignKey: 'returnbyId'})
     }
   }
   provided_models.init({
@@ -38,6 +39,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     unique_id: {
       type: DataTypes.STRING,
+    },
+    return_date: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    returnbyId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     }
   }, {
     sequelize,
