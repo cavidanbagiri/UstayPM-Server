@@ -52,7 +52,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: ["https://www.ustaypm.site", "ustaypm.site", "http://localhost:5173", "https://ustaypm-client.onrender.com"],
+    origin: ["https://www.ustaypm.site", "ustaypm.site", "http://localhost:5173", "http://localhost:4173", "https://ustaypm-client.onrender.com"],
   })
 );
 
@@ -60,14 +60,14 @@ app.use(
 app.use(express.static("./src/public"));
 
 // Use Routers
-app.use("/index", HomeRouter);
-app.use("/admin", AdminRouter);
-app.use("/user", UserRouter);
-app.use("/stf", STFRouter);
-app.use("/procurement", ProcurementRouter);
-app.use("/warehouse", WarehouseRouter);
-app.use("/provides", ProvideRouter);
-app.use("/common", CommonRouter);
+app.use("/api/index", HomeRouter);
+app.use("/api/admin", AdminRouter);
+app.use("/api/user", UserRouter);
+app.use("/api/stf", STFRouter);
+app.use("/api/procurement", ProcurementRouter);
+app.use("/api/warehouse", WarehouseRouter);
+app.use("/api/provides", ProvideRouter);
+app.use("/api/common", CommonRouter);
 
 // Handle Error
 app.use(errorHandler);
