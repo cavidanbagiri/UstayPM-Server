@@ -106,41 +106,6 @@ class CommonQueries {
   WHERE stf_models.id = 
   `
 
-  static fetchSTFRowInform = (stf_id) =>{
-    const fetch_stf_row_inform = `
-    SELECT stf_models.id as stf_id, stf_models.stf_num, 
-    canceledstf_models."stfId" as canceled_id, canceledstf_models."createdAt" as canceled_date, canceledstf_models.comment as canceled_comment,
-    INITCAP(CONCAT(users_m.name, ' ', users_m.surname)) as canceled_by,
-    stf_models.material_type, stf_models.material_name, stf_models.material_amount,
-    stf_models.material_unit, stf_models.material_link, stf_models.material_comment, stf_models.completed, stf_models."createdAt" as stf_createdAt,
-    INITCAP(CONCAT(users_models.name, ' ', users_models.surname)) as Ordered_by, 
-    department_models.department_name,
-    fields_models.field_name,
-    sm_models.sm_num, sm_models.sm_material_name, sm_models.sm_material_amount, sm_models.sm_material_unit, sm_models.price,
-    sm_models.total, sm_models.currency, sm_models.left_over, sm_models.approximate_date, sm_models."createdAt" as sm_createdAt,
-    vendors_models.vendor_name,
-    warehouse_models.delivery_material_name, warehouse_models.delivery_material_amount, warehouse_models.delivery_material_unit,
-    warehouse_models.delivery_material_price, warehouse_models.delivery_material_total, warehouse_models.delivery_material_currency,
-    warehouse_models.doc_number, warehouse_models.doc_date, warehouse_models.certificate, warehouse_models.passport, warehouse_models.stock,
-    warehouse_models.doc_number, warehouse_models.doc_date, warehouse_models.certificate, warehouse_models.passport, warehouse_models.stock, warehouse_models."createdAt" as warehouse_createdAt,
-    INITCAP(CONCAT(us_mod.name, ' ', us_mod.surname)) as Supplier_name,
-    INITCAP(CONCAT(u_m.name, ' ',u_m.surname)) as Accepted_by
-    FROM stf_models 
-    LEFT JOIN users_models ON  stf_models."userId" = users_models.id
-    LEFT JOIN department_models ON stf_models."departmentId"=department_models.id
-    LEFT JOIN fields_models ON stf_models."fieldId" = fields_models.id
-    LEFT JOIN sm_models ON sm_models."stfId" = stf_models.id
-    LEFT JOIN vendors_models ON sm_models."vendorId" = vendors_models.id
-    LEFT JOIN users_models as us_mod ON sm_models."supplierId" = us_mod.id
-    LEFT JOIN warehouse_models ON warehouse_models."smId" = sm_models.id
-    LEFT JOIN users_models as u_m ON warehouse_models."acceptedBy" = u_m.id
-    LEFT JOIN canceledstf_models ON canceledstf_models."stfId" = ${stf_id}
-    LEFT JOIN users_models as users_m ON canceledstf_models."canceledbyId" = users_m.id 
-    WHERE stf_models.id = ${stf_id}
-    `
-    return fetch_stf_row_inform;
-  }
-
   static get_stf_statistic_result = 'SELECT completed, count(completed) from stf_models group by completed'
   static get_sm_statistic_result = 'select status_name, count("situationId") from conditions_models left join situation_models on conditions_models."situationId" = situation_models.id group by "situationId", status_name'
   static get_warehouse_statistic_result = ' select count(id) from warehouse_models where stock <> 0'

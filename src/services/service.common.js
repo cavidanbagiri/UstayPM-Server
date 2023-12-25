@@ -6,7 +6,13 @@ const {
   MessageModel,
   RoomModel,
   STFModel,
-  CanceledSTFModel
+  CanceledSTFModel,
+  ProjectModel,
+  UserModel,
+  DepartmentModel,
+  SMModel,
+  VendorModel,
+  WarehouseModel
 } = require("../../models");
 const { getSocketInstance } = require("../utils/io");
 
@@ -124,11 +130,99 @@ class CommonServiceFetchDepartments {
 
 class CommonServiceFetchSTFRowInform {
   static async fetchSTFRowInform(stf_id) {
-    const res = await sequelize.query(
-      CommonQueries.fetchSTFRowInform(stf_id)
+    let return_result = {
+      canceled_stf: '',
+      stf_result : '',
+      sm_result : '',
+      warehouse_result : []
+    };
+
+    // 1 - Check This STF Canceled Or Not
+    const canceledstf_result = await CanceledSTFModel.findAll(
+      {
+        where:{
+          "stfId":stf_id
+        },
+        include:{
+          model: UserModel,
+          attributes: ["name", "surname"]
+        }
+      }
     );
-    console.log('getting row inform data : ', res[0]);
-    return res[0];
+
+    // 2 - Get STF Inform Data
+    const stf_result = await STFModel.findByPk(stf_id, {
+      attributes:["id", "stf_num", "material_type", "material_name", "material_amount", "material_unit", "material_link", "material_comment","completed","createdAt"],
+      include:[
+        {
+          model: ProjectModel,
+          attributes:["project_name"],
+        },
+        {
+          model: UserModel,
+          attributes:["name", "surname"],
+        },
+        {
+          model: DepartmentModel,
+          attributes:["department_name"],
+        },
+        {
+          model: FieldsModel,
+          attributes:["field_name"],
+        },
+        // {
+        //   model: CanceledSTFModel,
+        //   attributes:["canceledbyId", "comment", "createdAt"],
+        // },
+      ]
+    });
+
+    // 3 - Get SM Inform Data
+    const sm_result = await SMModel.findAll({
+      where: {
+        "stfId":stf_result.id
+      },
+      attributes:["id", "sm_num", "sm_material_name", "sm_material_amount", "sm_material_unit", "price", "total","currency","left_over","approximate_date",],
+      include:[
+        {
+          model: ProjectModel,
+          attributes:["project_name"],
+        },
+        {
+          model: UserModel,
+          attributes:["name", "surname"],
+        },
+        {
+          model: VendorModel,
+          attributes:["vendor_name"],
+        },
+      ]
+    });
+
+    // 4 - Get Warehouse Inform Data
+    for(let i of sm_result){
+      const warehouse_result = await WarehouseModel.findAll({
+        where: {
+          "smId":i.id
+        },
+        attributes:["id", "delivery_material_name", "delivery_material_amount", "delivery_material_unit", "delivery_material_price", "delivery_material_total","delivery_material_currency",
+        "doc_number","doc_date","certificate","passport","stock", "providing_date", "createdAt" ],
+        include:[
+          {
+            model: UserModel,
+            attributes:["name", "surname"],
+          },
+        ]
+      });
+      return_result.warehouse_result.push(warehouse_result);
+    }    
+
+    return_result.canceled_stf = canceledstf_result;
+    return_result.stf_result = stf_result;
+    return_result.sm_result = sm_result;
+    
+    return return_result;
+  
   }
 }
 
