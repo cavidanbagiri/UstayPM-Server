@@ -310,6 +310,9 @@ static STFWhereQueryTest(start_keyword, filtered_object, table_name) {
         else if (key === "material_type") {
           where_query += `stf_models.${key} ILIKE '%${filtered_object[key]}' `;
         }
+        else if (key === "delivery_type") {
+          where_query += `warehouse_delivery_types.id = '${filtered_object[key]}' `;
+        }
         else if (key === "department" && key != "") {
           where_query += `provided_models."departmentId" = '${filtered_object[key]}' `;
         }
