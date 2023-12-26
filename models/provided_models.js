@@ -42,7 +42,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     return_date: {
       type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
     },
     returnbyId: {
       type: DataTypes.INTEGER,

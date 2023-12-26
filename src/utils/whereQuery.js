@@ -221,7 +221,7 @@ static STFWhereQueryTest(start_keyword, filtered_object, table_name) {
       if (filtered_object[key] !== "" && filtered_object[key] !== "All") {
         // If Key name is material name or material type, ILIKE query will work will start wil entering value
         if (key === "sm_material_name") {
-          where_query += `${key} ILIKE '${filtered_object[key]}%' `;
+          where_query += `${key} ILIKE '%${filtered_object[key]}%' `;
           // where_query += ` or sm_material_name ILIKE '${filtered_object[key]}%' `
         } 
         else if (key === "usernames" && filtered_object[key] !== "All") {

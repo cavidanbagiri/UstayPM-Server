@@ -5,12 +5,44 @@ const {
   ProvidedModel,
   ConditionModel,
 } = require("../../models");
+
+const moment = require('moment');
+
 const EmptyFieldError = require("../exceptions/EmptyFieldError");
 
 const WarehouseQueries = require("../queries/warehouse.queries");
-const WhereQuery = require("../utils/whereQuery");
+
 
 const {getSocketInstance} = require('../utils/io');
+
+// Fetch Received Warehouse
+class WarehouseServiceFetchWarehouseData {
+  // Fetch Received SM From Warehouse
+  static async fetchWarehouseData() {
+    const result = await sequelize.query(
+      WarehouseQueries.received_sms_from_warehouse_query
+    );
+    return result[0];
+  }
+}
+
+// Fetch Departments
+class WarehouseServiceFetchDepartments {
+  static async fetchDepartments() {
+    const res = await sequelize.query(WarehouseQueries.fetch_departments);
+    return res[0];
+  }
+}
+
+// Fetch Departments
+class WarehouseServiceFetchWarehouseDeliveryTypes {
+  static async fetchWarehouseDeliveryTypes() {
+    const res = await sequelize.query(
+      WarehouseQueries.fetch_warehouse_delivery_types
+    );
+    return res[0];
+  }
+}
 
 // Accept SM
 class WarehouseServiceAcceptSMS {
@@ -52,17 +84,14 @@ class WarehouseServiceAcceptSMS {
       const res = await this.#withdrowSMAmount(data, i);
     }
 
-    console.log('data is : ', data);
     // Step 3 Emit that function
     const emit_socket_inform = {
       sm_num: data.checked_values[0].sm_num,
       orderer_id: data.checked_values[0].orderer_id,
       orderer_name: data.checked_values[0].orderer,
     }
-    console.log('emit data : ', emit_socket_inform);
     const io = getSocketInstance();
     // CommonServiceNewSTFNotification.getNewSTFNotification(0);
-    console.log('socket emit is worked');
     io.emit('accept_sms', emit_socket_inform);
     return "OK";
     
@@ -254,17 +283,6 @@ class WarehouseServiceAcceptSMS {
   }
 }
 
-// Fetch Received Warehouse
-class WarehouseServiceFetchWarehouseData {
-  // Fetch Received SM From Warehouse
-  static async fetchWarehouseData() {
-    const result = await sequelize.query(
-      WarehouseQueries.received_sms_from_warehouse_query
-    );
-    return result[0];
-  }
-}
-
 // Provide Sm From Warehouse To Area
 class WarehouseServiceProvideSM {
   static async #checkStock(data) {
@@ -372,22 +390,44 @@ class WarehouseServiceProvideSM {
   }
 }
 
-// Fetch Departments
-class WarehouseServiceFetchDepartments {
-  static async fetchDepartments() {
-    const res = await sequelize.query(WarehouseQueries.fetch_departments);
-    return res[0];
-  }
-}
+class WarehouseServiceReturnMaterial {
 
-// Fetch Departments
-class WarehouseServiceFetchWarehouseDeliveryTypes {
-  static async fetchWarehouseDeliveryTypes() {
-    const res = await sequelize.query(
-      WarehouseQueries.fetch_warehouse_delivery_types
-    );
-    return res[0];
+  static async returnMaterial (data){
+
+    console.log('returned materials ', data);
+
+    for(let i of data.materials){
+
+      // 1 - Step, Find Material from Provided Model With pk and update it
+      const finded_material = await this.#findMaterialPk(i.provided_id);
+      finded_material.provided_amount = finded_material.provided_amount - i.amount;
+      finded_material.returnbyId = data.user;
+      finded_material.return_date = new Date();
+      await finded_material.save(); 
+
+      // 2 - find material from warehouse
+      const warehouse_material = await this.#findFromWarehouse(finded_material.warehouseId);
+      warehouse_material.stock = warehouse_material.stock + i.amount;
+      await warehouse_material.save();
+
+    }
+
+
+    return 'OK';
   }
+  
+  // Find Material with PK;
+  static async #findMaterialPk(provided_id){
+    const finded_material = await ProvidedModel.findByPk(provided_id);
+    return finded_material;
+  }
+
+  // Find Warehouse Row
+  static async #findFromWarehouse(warehouse_id) {
+    const finded_warehouse_material = await WarehouseModel.findByPk(warehouse_id);
+    return finded_warehouse_material;
+  }
+
 }
 
 module.exports = {
@@ -396,4 +436,5 @@ module.exports = {
   WarehouseServiceProvideSM,
   WarehouseServiceFetchDepartments,
   WarehouseServiceFetchWarehouseDeliveryTypes,
+  WarehouseServiceReturnMaterial
 };

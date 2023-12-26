@@ -6,6 +6,7 @@ const {
   WarehouseServiceProvideSM,
   WarehouseServiceFetchDepartments,
   WarehouseServiceFetchWarehouseDeliveryTypes,
+  WarehouseServiceReturnMaterial
 } = require("../services/service.warehouse");
 
 class WarehouseController {
@@ -86,6 +87,24 @@ class WarehouseController {
         })
     );
   }
+
+  // Return Material From Area To Warehouse
+  static async returnMaterial (req, res, next) {
+    const data = req.body;
+    tryCatch(
+      await WarehouseServiceReturnMaterial.returnMaterial(data)
+      .then((respond) => {
+        return res.send(respond);
+        // return res.send(respond);
+      })
+      .catch((err) => {
+        console.log("Accept SMS Error : ", err);
+        next(err);
+      })
+    )
+  }
+
+
 }
 
 module.exports = WarehouseController;

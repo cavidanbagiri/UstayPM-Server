@@ -5,9 +5,6 @@ const {UserModel} = require('../../models');
 const warehouseMiddleware = async (req, res, next) => {
 
   const body = req.body;
-
-  
-
   let current_user = '';
 
   if(typeof body.user === 'object'){
