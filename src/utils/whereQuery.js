@@ -290,38 +290,30 @@ static STFWhereQueryTest(start_keyword, filtered_object, table_name) {
       if (filtered_object[key] !== "" && filtered_object[key] !== "All") {
         // If Key name is material name or material type, ILIKE query will work will start wil entering value
         if (key === "sm_material_name") {
-          where_query += `${key} ILIKE '${filtered_object[key]}%' `;
-          // where_query += ` or sm_material_name ILIKE '${filtered_object[key]}%' `
+          where_query += `sm_models.${key} ILIKE '%${filtered_object[key]}%' `;
         } 
-        else if (key === "usernames" && filtered_object[key] !== "All") {
-          where_query += `users_models.id = ${filtered_object[key]} `
+        else if (key === "deliver_to") {
+          where_query += `${key} ILIKE '%${filtered_object[key]}%' `;
         }
-        else if (key === "vendor_name" && filtered_object[key] !== "All" ) {
-          where_query += `vendors_models.id = ${filtered_object[key]} `
+        else if (key === "card_number") {
+          where_query += `${key} ILIKE '%${filtered_object[key]}%' `;
         }
-        else if (key === "stf_num") {
-          where_query += `${key} ILIKE '%${filtered_object[key]}' `;
+        else if (key === "serial_no") {
+          where_query += `${key} ILIKE '%${filtered_object[key]}%' `;
+        }
+        else if (key === "unique_id") {
+          where_query += `${key} ILIKE '%${filtered_object[key]}%' `;
         }
         else if (key === "sm_num") {
-          where_query += `${key} ILIKE '%${filtered_object[key]}' `;
+          where_query += `sm_models.${key} ILIKE '%${filtered_object[key]}' `;
+        }
+        else if (key === "material_type") {
+          where_query += `stf_models.${key} ILIKE '%${filtered_object[key]}' `;
         }
         else if (key === "department" && key != "") {
           where_query += `provided_models."departmentId" = '${filtered_object[key]}' `;
         }
-        else if (key === "createdAt") {
-          where_query += `${table_name}."${key}"::date = '${filtered_object[key]}' `;
-        }
-        else if (key === "date_order") {
-          where_query = where_query.slice(0, -4);
-
-          if (filtered_object[key] === "Ascending") {
-            time_query += ` ORDER BY ${table_name}."createdAt" ASC `;
-          } else if (filtered_object[key] === "Descending") {
-            time_query += ` ORDER BY ${table_name}."createdAt" DESC `;
-          } else {
-            time_query = "";
-          }
-        } else {
+        else {
           where_query += `${key} = '${filtered_object[key]}' `;
         }
 

@@ -52,6 +52,7 @@ class CommonQueries {
     from provided_models
     left join warehouse_models on provided_models."warehouseId" = warehouse_models.id
     left join sm_models on warehouse_models."smId" = sm_models.id
+    left join stf_models on sm_models."stfId" = stf_models.id 
   `;
 
   // Fetch All Procurement Users
