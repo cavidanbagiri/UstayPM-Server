@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     returnbyId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     }
   }, {
     sequelize,

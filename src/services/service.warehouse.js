@@ -274,7 +274,7 @@ class WarehouseServiceProvideSM {
       const res = await this.#findWarehouseItemById(i.warehouse_id);
       if(res){
         if(res.stock - i.provide_amount < 0){
-          throw new Error(`${rows} Row Stock Is Not Enough`)
+          throw new Error(`${rows} Row Stock Is Not Enough`);
         }
       }
     }
@@ -365,7 +365,8 @@ class WarehouseServiceProvideSM {
       deliver_to: data.provide_user,
       card_number: data.provide_user_card_number,
       serial_no: data.serial_no,
-      unique_id: data.unique_id
+      unique_id: data.unique_id,
+      returnbyId: data.returnbyId
     });
     return res;
   }

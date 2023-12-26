@@ -8,6 +8,7 @@ module.exports = {
     await queryInterface.addConstraint('provided_models', {
       fields: ['returnbyId'],
       type: 'foreign key',
+      null: true,
       name: 'returnbyId',
       references: {
         table: 'users_models',
