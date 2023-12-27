@@ -6,7 +6,7 @@ const {
   StatusModel,
 } = require("../../models");
 
-const s3 = require('../../storage/storage');
+// const s3 = require('../../storage/storage');
 
 class UserService {
   static async loginUser(user_data) {
@@ -41,19 +41,19 @@ class UserService {
 }
 
 class UploadImage {
-  static async uploadImageToStorage(user_id, file) {
-    console.log('Upload Image Start To Work : ', file)
-    const file_buffer = Buffer.alloc(file)
-    console.log('buffer is : ', file_buffer);
-    let upload = await s3.Upload(
-      {
-        buffer: file_buffer,
-        name: 'lolkek.png',
-      },
-      '/profile_images/'
-    );
-    console.log('upload is : ', upload);
-  }
+  // static async uploadImageToStorage(user_id, file) {
+  //   console.log('Upload Image Start To Work : ', file)
+  //   const file_buffer = Buffer.alloc(file)
+  //   console.log('buffer is : ', file_buffer);
+  //   let upload = await s3.Upload(
+  //     {
+  //       buffer: file_buffer,
+  //       name: 'lolkek.png',
+  //     },
+  //     '/profile_images/'
+  //   );
+  //   console.log('upload is : ', upload);
+  // }
 
   // static async uploadImage(user_id, file){
 
