@@ -46,7 +46,8 @@ router.post("/login", UserController.loginUser);
 //   console.log(req.file);
 //});
 
-router.post("/upload", AddProfileImage.addProfileImage().single("file"), UserController.uploadImage);
+// router.post("/upload", AddProfileImage.addProfileImage().single("file"), UserController.uploadImage);
+router.post("/upload", UserController.uploadImage);
 
 
 module.exports = router;

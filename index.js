@@ -1,6 +1,7 @@
 // Import Express
 const express = require("express");
 const app = express();
+// const path = require("path");
 
 // Use .env variables
 require("dotenv").config();
@@ -9,7 +10,6 @@ require("dotenv").config();
 const {
   CommonServiceNewSTFNotification,
   CommonServiceFetchMessage,
-  CommonServiceSendMessage,
   CommonServiceFetchMessagesUnreadCounting
 } = require("./src/services/service.common");
 
