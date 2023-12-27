@@ -5,7 +5,7 @@ const hashPassowrd = require("../helpers/hash_password");
 
 const { generateToken, refreshToken } = require("../helpers/tokens");
 
-const {formidable} = require("formidable");
+// const {formidable} = require("formidable");
 
 class UserController {
   // User Login
@@ -38,33 +38,33 @@ class UserController {
 
   // Upload Images To Database
   static async uploadImage(req, res, next) {
-    const user_id = req.body.id;
+    // const user_id = req.body.id;
     // const file = req.file;
 
-    const form = formidable({});
-    let imgPath = ''
+    // const form = formidable({});
+    // let imgPath = ''
 
-    form.parse(req, (err, fields, files) => {
-      if (err) {
-        console.log('Form Error : ', err)
-        next(err);
-        return;
-      }
-      console.log('files : ', files);
-      // imgPath = files.someExpressFiles.path;
-      // console.log('img path : ', imgPath);
-      // uploadFile(bucket, imgPath).catch(console.error);
-      res.json({ fields, files });
-    });
-    tryCatch(
-      await UploadImage.uploadImageToStorage(user_id, files)
-        .then((respond) => {
-          return res.send(respond);
-        })
-        .catch((err) => {
-          console.log("Upload image Error : ", err);
-        })
-    );
+    // form.parse(req, (err, fields, files) => {
+    //   if (err) {
+    //     console.log('Form Error : ', err)
+    //     next(err);
+    //     return;
+    //   }
+    //   console.log('files : ', files);
+    //   // imgPath = files.someExpressFiles.path;
+    //   // console.log('img path : ', imgPath);
+    //   // uploadFile(bucket, imgPath).catch(console.error);
+    //   res.json({ fields, files });
+    // });
+    // tryCatch(
+    //   await UploadImage.uploadImageToStorage(user_id, files)
+    //     .then((respond) => {
+    //       return res.send(respond);
+    //     })
+    //     .catch((err) => {
+    //       console.log("Upload image Error : ", err);
+    //     })
+    // );
 
   }
 }
