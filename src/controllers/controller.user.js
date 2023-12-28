@@ -38,33 +38,25 @@ class UserController {
 
   // Upload Images To Database
   static async uploadImage(req, res, next) {
-    // const user_id = req.body.id;
-    // const file = req.file;
+    const user_id = req.body.id;
+    const file = req.file;
+    
+    
+    // console.log('0req : ', req.file);
+    // console.log('1req : ', req.body);
+    // console.log('2req : ', req.body.file);
 
-    // const form = formidable({});
-    // let imgPath = ''
+    tryCatch(
+      await UploadImage.uploadImageToStorage(user_id, file)
+        .then((respond) => {
+          return res.send(respond);
+        })
+        .catch((err) => {
+          console.log("Upload image Error : ", err);
+        })
+    );
 
-    // form.parse(req, (err, fields, files) => {
-    //   if (err) {
-    //     console.log('Form Error : ', err)
-    //     next(err);
-    //     return;
-    //   }
-    //   console.log('files : ', files);
-    //   // imgPath = files.someExpressFiles.path;
-    //   // console.log('img path : ', imgPath);
-    //   // uploadFile(bucket, imgPath).catch(console.error);
-    //   res.json({ fields, files });
-    // });
-    // tryCatch(
-    //   await UploadImage.uploadImageToStorage(user_id, files)
-    //     .then((respond) => {
-    //       return res.send(respond);
-    //     })
-    //     .catch((err) => {
-    //       console.log("Upload image Error : ", err);
-    //     })
-    // );
+    return 'OK';
 
   }
 }

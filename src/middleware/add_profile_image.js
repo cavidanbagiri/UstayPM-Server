@@ -1,6 +1,7 @@
 const multer = require("multer");
-
 const fs = require("fs");
+
+const s3 = require("../../storage/storage");
 
 class AddProfileImage {
   // Check folder is exits or not
@@ -20,7 +21,7 @@ class AddProfileImage {
         destination: function (req, file, cb) {
           cb(null, "./src/public/profileimages");
         },
-        filename: function (req, file, cb) {
+        filename: async function (req, file, cb) {
           //const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
           const MIME_TYPE_MAP = {
             "image/png": "png",
@@ -30,13 +31,21 @@ class AddProfileImage {
           // cb(null, file.originalname)
           const ext = MIME_TYPE_MAP[file.mimetype];
           const file_name = req.body.id + "." + ext;
+
+          let upload = await s3.Upload(
+            {
+              buffer: file
+            },
+            "/profile_images/"
+          );
+
           cb(null, file_name);
         },
       });
 
       // Second Add Storage For Multer
-      const upload = multer({ storage: storage });
-      return upload;
+      // const upload = multer({ storage: storage });
+      // return upload;
     }
     console.log("none find");
     return "null";
