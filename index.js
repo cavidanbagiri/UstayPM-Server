@@ -1,7 +1,7 @@
 // Import Express
 const express = require("express");
 const app = express();
-// const path = require("path");
+const helmet = require('helmet');
 
 // Use .env variables
 require("dotenv").config();
@@ -46,6 +46,11 @@ const cors = require("cors");
 
 // Use User Sending values
 app.use(express.json());
+app.use(helmet());
+app.use((req, res, next) => {
+  res.setHeader("X-Powered-By", "Are You Kidding Me?");
+  next();
+});
 
 // Using Cors Policy
 app.use(cookieParser());
@@ -73,13 +78,13 @@ app.use("/api/common", CommonRouter);
 app.use(errorHandler);
 
 // Listen Server
-// const server = app.listen(process.env.PORT, () => {
-//   console.log(`Server is running in ${process.env.PORT} port`);
-// });
-
-const server = app.listen(3000, () => {
+const server = app.listen(process.env.PORT, () => {
   console.log(`Server is running in ${process.env.PORT} port`);
 });
+
+// const server = app.listen(3000, () => {
+//   console.log(`Server is running in ${process.env.PORT} port`);
+// });
 
 const { initializeSocket, getSocketInstance } = require("./src/utils/io");
 
