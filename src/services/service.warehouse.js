@@ -393,25 +393,33 @@ class WarehouseServiceProvideSM {
 class WarehouseServiceReturnMaterial {
 
   static async returnMaterial (data){
-
-    console.log('returned materials ', data);
-
-    for(let i of data.materials){
-
-      // 1 - Step, Find Material from Provided Model With pk and update it
-      const finded_material = await this.#findMaterialPk(i.provided_id);
-      finded_material.provided_amount = finded_material.provided_amount - i.amount;
-      finded_material.returnbyId = data.user;
-      finded_material.return_date = new Date();
-      await finded_material.save(); 
-
-      // 2 - find material from warehouse
-      const warehouse_material = await this.#findFromWarehouse(finded_material.warehouseId);
-      warehouse_material.stock = warehouse_material.stock + i.amount;
-      await warehouse_material.save();
-
+    // console.log('data is : ', data);
+    try{
+      for(let i of data.materials){
+        await this.#checkPossibleAmount(i);
+      }
+    }
+    catch(err){
+      throw new Error(err);
     }
 
+    console.log('after error work');
+
+    // for(let i of data.materials){
+
+    //   // 1 - Step, Find Material from Provided Model With pk and update it
+    //   const finded_material = await this.#findMaterialPk(i.provided_id);
+    //   finded_material.provided_amount = finded_material.provided_amount - i.amount;
+    //   finded_material.returnbyId = data.user;
+    //   finded_material.return_date = new Date();
+    //   await finded_material.save(); 
+
+    //   // 2 - find material from warehouse
+    //   const warehouse_material = await this.#findFromWarehouse(finded_material.warehouseId);
+    //   warehouse_material.stock = warehouse_material.stock + i.amount;
+    //   await warehouse_material.save();
+
+    // }
 
     return 'OK';
   }
@@ -426,6 +434,18 @@ class WarehouseServiceReturnMaterial {
   static async #findFromWarehouse(warehouse_id) {
     const finded_warehouse_material = await WarehouseModel.findByPk(warehouse_id);
     return finded_warehouse_material;
+  }
+
+  // Check Before Operation, Possible Withdrow Or Not
+  static async #checkPossibleAmount(i){
+
+    const finded_material = await this.#findMaterialPk(i.provided_id);
+    console.log('finded : ', finded_material.dataValues);
+    if(i.amount > finded_material.provided_amount){
+      console.log('entering amoun : ', i.amount, ' possible amount : ', finded_material.provided_amount);
+      throw new Error('Entering Amount Cant Be Greater Than Possible Amount ')
+    }
+    return 'OK';
   }
 
 }

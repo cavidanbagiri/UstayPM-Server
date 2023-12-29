@@ -95,7 +95,6 @@ class WarehouseController {
       await WarehouseServiceReturnMaterial.returnMaterial(data)
       .then((respond) => {
         return res.send(respond);
-        // return res.send(respond);
       })
       .catch((err) => {
         console.log("Accept SMS Error : ", err);
