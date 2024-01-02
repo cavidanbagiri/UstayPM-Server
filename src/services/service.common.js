@@ -12,7 +12,9 @@ const {
   DepartmentModel,
   SMModel,
   VendorModel,
-  WarehouseModel
+  WarehouseModel,
+  SituationModel,
+  ConditionModel
 } = require("../../models");
 const { getSocketInstance } = require("../utils/io");
 
@@ -195,6 +197,10 @@ class CommonServiceFetchSTFRowInform {
         {
           model: VendorModel,
           attributes:["vendor_name"],
+        },
+        {
+          model: ConditionModel,
+          attributes:["situationId"],
         },
       ]
     });
