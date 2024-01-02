@@ -160,7 +160,7 @@ class CommonServiceFetchSTFRowInform {
         },
         {
           model: UserModel,
-          attributes:["name", "surname"],
+          attributes:["name", "surname", "image_url"],
         },
         {
           model: DepartmentModel,
@@ -182,7 +182,7 @@ class CommonServiceFetchSTFRowInform {
       where: {
         "stfId":stf_result.id
       },
-      attributes:["id", "sm_num", "sm_material_name", "sm_material_amount", "sm_material_unit", "price", "total","currency","left_over","approximate_date",],
+      attributes:["id", "sm_num", "sm_material_name", "sm_material_amount", "sm_material_unit", "price", "total","currency","left_over","approximate_date", "createdAt"],
       include:[
         {
           model: ProjectModel,
@@ -190,7 +190,7 @@ class CommonServiceFetchSTFRowInform {
         },
         {
           model: UserModel,
-          attributes:["name", "surname"],
+          attributes:["name", "surname", "image_url"],
         },
         {
           model: VendorModel,
@@ -210,7 +210,7 @@ class CommonServiceFetchSTFRowInform {
         include:[
           {
             model: UserModel,
-            attributes:["name", "surname"],
+            attributes:["name", "surname", "image_url"],
           },
         ]
       });
