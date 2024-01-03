@@ -77,10 +77,6 @@ app.use("/api/common", CommonRouter);
 // Handle Error
 app.use(errorHandler);
 
-// Listen Server
-// const server = app.listen(process.env.PORT, () => {
-//   console.log(`Server is running in ${process.env.PORT} port`);
-// });
 
 const server = app.listen(3000, () => {
   console.log(`Server is running in ${process.env.PORT} port`);
@@ -101,7 +97,7 @@ io.on("connection", (socket) => {
   */
   socket.on("setup", (userData) => {
     socket.join(userData.id);
-    socket.data.user_id = userData.id;
+    // socket.data.user_id = userData.id;
     socket.emit("connected");
   });
 
@@ -137,19 +133,29 @@ io.on("connection", (socket) => {
     When User Send New Messages, This will show new message to sender
   */
   socket.on("new_messages", async (message_data) => {
+
     /*
     -----------This Fetching Operation and Emiting For Common Messages Notification and realtime chatting
     */
+
+    // 1 STEP = Message Data sending to sender user, this function is not work with emit, after sending emit function working and sending message execute by 
+    // -> CommonController.sendMessage function
+
+    // 2 STEP - Fetch All Message between two users and send to client
     const fetch_messages = await CommonServiceFetchMessage.fetchMessage(
       message_data.current_id,
       message_data.sender_id
     );
-    await socket.in(message_data.room_id).emit("fetch_messages", fetch_messages); // -> notify to selected
+    // This emit work for frontend Chatsection, fetch_messages watcheffect
+    await socket.in(message_data.room_id).emit("fetch_messages", fetch_messages);
   
+    // 3 STEP - Send fetching message to user
     socket.broadcast.emit("broadcastmessage", fetch_messages);
+
     /*
     ----------- This Emitting Unread Messages Count
     */
+    // 4 STEP - This emit will send and inform to client that, if user is selected user, set unread messages as true and set count as 0
     const fetch_messages_unread_counting = await CommonServiceFetchMessagesUnreadCounting.fetchMessagesUnreadCounting(fetch_messages[0].roomId, fetch_messages[fetch_messages.length-1].receiverId);
     socket.broadcast.emit("broadcastunreadcountingmessages", fetch_messages_unread_counting);
   

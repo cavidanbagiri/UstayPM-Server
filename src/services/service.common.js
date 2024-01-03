@@ -382,7 +382,6 @@ class CommonServiceFetchMessage {
       );
       return result[0];
     }
-    return "OK";
   }
 
   // Check The Users has room or not
@@ -424,21 +423,6 @@ class CommonServiceFetchMessagesUnreadCounting{
 
 }
 
-class CommonServiceFetchAllUsers {
-  // Fetch All Users
-  static async fetchAllUsers() {
-    const result = await sequelize.query(CommonQueries.fetch_all_users);
-    return result[0];
-  }
-
-  // Fetch All Users Except Current User
-  static async fetchAllUsersExceptCurrent(current_id) {
-    const result = await sequelize.query(CommonQueries.fetch_all_users+ ` where users_models.id != ${current_id}`);
-    return result[0];
-  }
-
-}
-
 class CommonServiceFetchUnreadMessages {
   // Fetch Unread Messages
   static async fetchUnreadMessages(user_id) {
@@ -470,6 +454,21 @@ class CommonServiceFetchUnreadMessagesAndUsers {
   }
 }
 
+class CommonServiceFetchAllUsers {
+  // Fetch All Users
+  static async fetchAllUsers() {
+    const result = await sequelize.query(CommonQueries.fetch_all_users);
+    return result[0];
+  }
+
+  // Fetch All Users Except Current User
+  static async fetchAllUsersExceptCurrent(current_id) {
+    const result = await sequelize.query(CommonQueries.fetch_all_users+ ` where users_models.id != ${current_id}`);
+    return result[0];
+  }
+
+}
+
 class CommonServiceSetTrueReadingMessages {
   static async setTrueReadingMessages(room_id, current_id) {
     console.log(room_id, current_id);
@@ -477,13 +476,6 @@ class CommonServiceSetTrueReadingMessages {
       update message_models set read = true where read = false and "roomId" = ${room_id} and "senderId" = ${current_id}  
     `
     const result = await sequelize.query(string_query);
-    // const string_query = CommonQueries.set_reading_messages_true + room_id;
-    // //    console.log('string query : ',string_query);
-    // const result = await sequelize.query(
-    //   CommonQueries.set_reading_messages_true + room_id
-    // );
-    // //    console.log('set true is working : ',room_id);
-    // return result;
     return 'OK';
   }
 }

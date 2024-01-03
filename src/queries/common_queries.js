@@ -165,6 +165,7 @@ class CommonQueries {
     const string_query = `
     select "receiverId" as id, count("receiverId"),room_models.id as roomId, 
     INITCAP(concat(users_models.name , ' ', users_models.surname))  as username,
+    users_models.image_url,
     status_models.status_name 
     from message_models
     left join users_models on users_models.id = "receiverId"
@@ -172,7 +173,7 @@ class CommonQueries {
     LEFT JOIN status_models on users_models."statusId" = status_models.id 
     left join room_models on message_models."roomId"=room_models.id
     where "senderId" = ${user_id} and read = false
-    group by "receiverId", users_models.name, users_models.surname, department_models.department_name, status_models.status_name, room_models.id
+    group by "receiverId", users_models.name, users_models.surname, users_models.image_url, department_models.department_name, status_models.status_name, room_models.id
     `
     return string_query;
   }
