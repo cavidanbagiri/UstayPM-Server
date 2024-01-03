@@ -237,18 +237,25 @@ class CommonServiceStatisticData {
   static async getStatisticData(user_id) {
     // Fetch Statistic Result Data
     const stf_inform = await this.getSTFStatisticData();
+    const canceled_stf = await this.getCanceledSTF();
     const sm_inform = await this.getSMStatisticData();
     const warehouse_inform = await this.getWarehouseStatisticResult();
 
     // Create Socket Emit for New STF Notification
     await CommonServiceNewSTFNotification.getNewSTFNotification(user_id);
 
-    return this.combineResult(stf_inform, sm_inform, warehouse_inform);
+    return this.combineResult(stf_inform, canceled_stf, sm_inform, warehouse_inform);
   }
 
   // Get STF Statistic Data
   static async getSTFStatisticData() {
     const res = await sequelize.query(CommonQueries.get_stf_statistic_result);
+    return res[0];
+  }
+
+  // Get Canceled STF Count
+  static async getCanceledSTF() {
+    const res = await sequelize.query(CommonQueries.get_canceled_stf_count);
     return res[0];
   }
 
@@ -267,12 +274,16 @@ class CommonServiceStatisticData {
   }
 
   // Get Combine Result
-  static combineResult(stf_inform, sm_inform, warehouse_inform) {
+  static combineResult(stf_inform, canceled_stf, sm_inform, warehouse_inform) {
     let return_data = {};
     // Combine Data STF
     for (let i of stf_inform) {
       if (!i?.completed) return_data.stf_false = i?.count;
       if (i?.completed) return_data.stf_true = i?.count;
+    }
+    // Combined Canceled STF
+    if(canceled_stf.length){
+      return_data.stf_canceled = canceled_stf[0]?.count;
     }
     // Combine Data SM
     for (let i of sm_inform) {

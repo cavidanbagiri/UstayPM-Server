@@ -112,6 +112,7 @@ class CommonQueries {
   `
 
   static get_stf_statistic_result = 'SELECT completed, count(completed) from stf_models group by completed'
+  static get_canceled_stf_count = 'SELECT count(id) from canceledstf_models'
   static get_sm_statistic_result = 'select status_name, count("situationId") from conditions_models left join situation_models on conditions_models."situationId" = situation_models.id group by "situationId", status_name'
   static get_warehouse_statistic_result = ' select count(id) from warehouse_models where stock <> 0'
   static get_new_stf_notification_result = `
