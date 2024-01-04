@@ -178,8 +178,9 @@ class CommonController {
   // Get Statistic Data
   static async getStatisticData(req, res, next) {
     const user_id = req.params.user_id;
+    const project_id = req.query.project_id;
     tryCatch(
-      await CommonServiceStatisticData.getStatisticData(user_id)
+      await CommonServiceStatisticData.getStatisticData(user_id, project_id)
         .then((respond) => {
           return res.send(respond);
         })

@@ -234,12 +234,14 @@ class CommonServiceFetchSTFRowInform {
 
 class CommonServiceStatisticData {
   // Combine Result
-  static async getStatisticData(user_id) {
+  static async getStatisticData(user_id, project_id) {
+    
+    console.log('user id : ', user_id, ' project id : ',project_id);
     // Fetch Statistic Result Data
-    const stf_inform = await this.getSTFStatisticData();
-    const canceled_stf = await this.getCanceledSTF();
-    const sm_inform = await this.getSMStatisticData();
-    const warehouse_inform = await this.getWarehouseStatisticResult();
+    const stf_inform = await this.getSTFStatisticData(project_id);
+    const canceled_stf = await this.getCanceledSTF(project_id);
+    const sm_inform = await this.getSMStatisticData(project_id);
+    const warehouse_inform = await this.getWarehouseStatisticResult(project_id);
 
     // Create Socket Emit for New STF Notification
     await CommonServiceNewSTFNotification.getNewSTFNotification(user_id);
@@ -248,28 +250,26 @@ class CommonServiceStatisticData {
   }
 
   // Get STF Statistic Data
-  static async getSTFStatisticData() {
-    const res = await sequelize.query(CommonQueries.get_stf_statistic_result);
+  static async getSTFStatisticData(project_id) {
+    const res = await sequelize.query(CommonQueries.get_stf_statistic_result(project_id));
     return res[0];
   }
 
   // Get Canceled STF Count
-  static async getCanceledSTF() {
-    const res = await sequelize.query(CommonQueries.get_canceled_stf_count);
+  static async getCanceledSTF(project_id) {
+    const res = await sequelize.query(CommonQueries.get_canceled_stf_count(project_id));
     return res[0];
   }
 
   // Get SM Statistic Data
-  static async getSMStatisticData() {
-    const res = await sequelize.query(CommonQueries.get_sm_statistic_result);
+  static async getSMStatisticData(project_id) {
+    const res = await sequelize.query(CommonQueries.get_sm_statistic_result(project_id));
     return res[0];
   }
 
   // Get Warehouse Data Count where stock not equal 0
-  static async getWarehouseStatisticResult() {
-    const res = await sequelize.query(
-      CommonQueries.get_warehouse_statistic_result
-    );
+  static async getWarehouseStatisticResult(project_id) {
+    const res = await sequelize.query(CommonQueries.get_warehouse_statistic_result(project_id));
     return res[0];
   }
 

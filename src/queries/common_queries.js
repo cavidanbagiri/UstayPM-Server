@@ -111,10 +111,32 @@ class CommonQueries {
   WHERE stf_models.id = 
   `
 
-  static get_stf_statistic_result = 'SELECT completed, count(completed) from stf_models group by completed'
-  static get_canceled_stf_count = 'SELECT count(id) from canceledstf_models'
-  static get_sm_statistic_result = 'select status_name, count("situationId") from conditions_models left join situation_models on conditions_models."situationId" = situation_models.id group by "situationId", status_name'
-  static get_warehouse_statistic_result = ' select count(id) from warehouse_models where stock <> 0'
+  static get_stf_statistic_result(project_id) {
+    return `SELECT completed, count(completed) from stf_models where "projectId"=${project_id} group by completed`
+  }
+  static get_canceled_stf_count (project_id){
+    return `
+      select count(canceledstf_models.id) from canceledstf_models
+      left join stf_models on canceledstf_models."stfId" = stf_models.id
+      where stf_models."projectId" = ${project_id}
+    `;
+  }
+  static get_sm_statistic_result (project_id) {
+    return `
+      select status_name, count("situationId") from conditions_models 
+      left join situation_models on conditions_models."situationId" = situation_models.id
+      where conditions_models."projectId" = ${project_id}
+      group by "situationId", status_name
+    `
+  }
+  static get_warehouse_statistic_result (project_id){
+    return ` 
+    select count(warehouse_models.id) from warehouse_models 
+    left join sm_models on warehouse_models."smId" = sm_models.id 
+    where stock <> 0 and sm_models."projectId" = ${project_id}
+    `;
+  }
+
   static get_new_stf_notification_result = `
     select stfno, Initcap(Concat(users_models.name, ' ', users_models.surname )) as username, new_stf_notification_models."createdAt" from new_stf_notification_models 
     left join users_models on new_stf_notification_models."createUserId" = users_models.id
@@ -123,14 +145,7 @@ class CommonQueries {
   static read_notification = `
     update new_stf_notification_models set read = true where read = false and "notifyUserId" = 
   `
-  
-  // static fetchMessageQuery(current_id, selected_id){
-  //   const  fetch_message = `
-  //     SELECT "roomId", "receiverId", "senderId", message_text, "createdAt" from message_models
-  //     where  ("receiverId" = ${current_id} and "senderId" = ${selected_id}) or ("receiverId" = ${selected_id} and "senderId" = ${current_id}) 
-  //   `
-  //   return fetch_message;
-  // }
+ 
   static fetchMessageQuery(room_id){
     const  fetch_message = `
       SELECT "roomId", "receiverId", "senderId", message_text, "createdAt" from message_models
