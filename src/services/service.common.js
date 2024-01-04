@@ -75,6 +75,17 @@ class CommonServiceFilterProvided {
   }
 }
 
+// Fetch Departments
+class CommonServiceFetchWarehouseDeliveryTypes {
+  static async fetchWarehouseDeliveryTypes() {
+    console.log('this are not working ');
+    const res = await sequelize.query(
+      CommonQueries.fetch_warehouse_delivery_types
+    );
+    return res[0];
+  }
+}
+
 class CommonServiceFetchFields {
   static async fetchfields(projectId) {
     const res = await FieldsModel.findAll({
@@ -524,6 +535,7 @@ module.exports = {
   CommonServiceFilterSTF,
   CommonServiceFilterSM,
   CommonServiceFilterWarehouse,
+  CommonServiceFetchWarehouseDeliveryTypes,
   CommonServiceFetchFields,
   CommonServiceFetchCompanies,
   CommonServiceFetchProcurementUsers,

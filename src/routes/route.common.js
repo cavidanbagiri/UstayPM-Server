@@ -16,6 +16,9 @@ router.get('/filterwarehouse', CommonController.filterWarehouse); // -> Each Pro
 // Filter Provided Materials
 router.get('/filterprovided', CommonController.filterProvided); // -> Each Project
 
+// Fetch Warehouse Delivery Types
+router.get('/deliverytypes', CommonController.fetchWarehouseDeliveryTypes); // -> For All Projects
+
 // Fetch Field Names
 router.get('/fetchfields/:project_id', CommonController.fetchfields); // -> Each Project
 

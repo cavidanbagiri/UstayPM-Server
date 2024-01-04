@@ -59,6 +59,11 @@ class CommonQueries {
   left join users_models on provided_models."returnbyId" = users_models.id
   `;
 
+  // Fetch Warehouse Delivery Types
+  static fetch_warehouse_delivery_types = `
+    select id, type_name from warehouse_delivery_types 
+  `
+
   // Fetch All Procurement Users
   static select_procurement_users = `
     select id as user_id, INITCAP(concat(name, ' ', surname)) as procurement_users from users_models where "departmentId" = 2

@@ -19,7 +19,8 @@ const {
   CommonServiceFetchUnreadMessagesAndUsers,
   CommonServiceSetTrueReadingMessages,
   CommonServiceChangeSTFStatus,
-  CommonServiceCancelSTF
+  CommonServiceCancelSTF,
+  CommonServiceFetchWarehouseDeliveryTypes
 } = require("../services/service.common");
 const tryCatch = require("../utils/trycatch");
 
@@ -79,6 +80,21 @@ class CommonController {
         })
         .catch((err) => {
           console.log("Filter STF Error : ", err);
+          next(err);
+        })
+    );
+  }
+
+  // Fetch Warehouse Delivery Types
+  static async fetchWarehouseDeliveryTypes (req, res, next) {
+    tryCatch(
+      await CommonServiceFetchWarehouseDeliveryTypes.fetchWarehouseDeliveryTypes()
+        .then((respond) => {
+          return res.send(respond);
+          // return res.send(respond);
+        })
+        .catch((err) => {
+          console.log("Accept SMS Error : ", err);
           next(err);
         })
     );
