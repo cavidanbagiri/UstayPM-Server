@@ -13,8 +13,8 @@ const WhereQuery = require("../utils/whereQuery");
 // Fetch All STF
 class ProcurementServiceFetchSTF {
   // Fetch All STF
-  static async fetchSTF() {
-    const string_query = ProcurementQueries.select_all_stf_query;
+  static async fetchSTF(project_id) {
+    const string_query = ProcurementQueries.select_all_stf_query(project_id);
     const result = await sequelize.query(string_query);
     return result[0];
   }

@@ -25,7 +25,6 @@ router.get('/fetchcompanies', CommonController.fetchCompanies);
 // Fetch Filtered Vendornames
 router.get('/filtervendornames', CommonController.filterVendorName);
 
-
 // Fetch Procurment Users
 router.get('/procurementusers', CommonController.fetchProcurementUsers);
 
@@ -64,7 +63,6 @@ router.post('/readnotification/:user_id', CommonController.readNotification);
 
 // Change STF Statis
 router.post('/changestatus', CommonController.setStfStatus);
-
 
 // Cancel STF
 router.post('/cancelstf', cancelSTF, CommonController.cancelSTF);

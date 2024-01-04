@@ -18,10 +18,11 @@ const {getSocketInstance} = require('../utils/io');
 // Fetch Received Warehouse
 class WarehouseServiceFetchWarehouseData {
   // Fetch Received SM From Warehouse
-  static async fetchWarehouseData() {
+  static async fetchWarehouseData(project_id) {
     const result = await sequelize.query(
-      WarehouseQueries.received_sms_from_warehouse_query
-    );
+      WarehouseQueries.received_sms_from_warehouse_query + ' where stf_models."projectId" = ' + project_id
+      );
+    
     return result[0];
   }
 }
@@ -37,6 +38,7 @@ class WarehouseServiceFetchDepartments {
 // Fetch Departments
 class WarehouseServiceFetchWarehouseDeliveryTypes {
   static async fetchWarehouseDeliveryTypes() {
+    console.log('this are not working ');
     const res = await sequelize.query(
       WarehouseQueries.fetch_warehouse_delivery_types
     );

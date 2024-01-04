@@ -6,7 +6,7 @@ const router = express.Router();
 const procurementMiddleware = require('../middleware/procurement_middleware');
 
 // Fetch All STF and show STF Page
-router.get('/fetchstf', ProcurementController.fetchSTF);
+router.get('/fetchstf/:project_id', ProcurementController.fetchSTF);
 
 // Fetch All STF and show STF Page
 router.get('/fetchsm/:project_id', ProcurementController.fetchSM);

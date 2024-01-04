@@ -6,9 +6,10 @@ class ProvideController {
 
   // Get Provides Data
   static async getProvidesData(req, res, next) {
-
+    const project_id = req.params.project_id
+    console.log('provide : ', project_id)
     tryCatch(
-      await ProvideServiceFetchData.getProvidesData()
+      await ProvideServiceFetchData.getProvidesData(project_id)
       .then((respond)=>{
         return res.send(respond);
       })

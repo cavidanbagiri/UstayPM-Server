@@ -8,8 +8,9 @@ const tryCatch = require("../utils/trycatch");
 class ProcurementController {
   // Fetch All STF
   static async fetchSTF(req, res, next) {
+    const project_id = req.params.project_id;
     tryCatch(
-      await ProcurementServiceFetchSTF.fetchSTF()
+      await ProcurementServiceFetchSTF.fetchSTF(project_id)
         .then((respond) => {
           res.status(200).send(respond);
         })

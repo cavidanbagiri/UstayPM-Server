@@ -1,14 +1,18 @@
 class ProcurementQueries {
 
   // Fetch All STF 
-  static select_all_stf_query = `
-  select stf_models.id as stf_id, stf_models.stf_num, stf_models.completed, stf_models.material_type, stf_models.material_name, stf_models.material_amount as amount, stf_models.material_unit as unit, stf_models."createdAt", stf_models."projectId" as project_id, stf_models."departmentId" as department_id,
-  Initcap(concat(users_models.name , ' ', users_models.surname))  as username
-  from stf_models
-  left join users_models on users_models.id = stf_models."userId" 
-  where stf_models.id not in ( select "stfId" from canceledstf_models)
-  order by "createdAt" desc
-  `;
+  static select_all_stf_query (project_id){
+
+    return `
+    select stf_models.id as stf_id, stf_models.stf_num, stf_models.completed, stf_models.material_type, stf_models.material_name, stf_models.material_amount as amount, stf_models.material_unit as unit, stf_models."createdAt", stf_models."projectId" as project_id, stf_models."departmentId" as department_id,
+    Initcap(concat(users_models.name , ' ', users_models.surname))  as username
+    from stf_models
+    left join users_models on users_models.id = stf_models."userId" 
+    where stf_models."projectId" = ${project_id} and stf_models.id not in ( select "stfId" from canceledstf_models) 
+    order by "createdAt" desc
+    `
+
+  };
 
   // Fetch All STF 
   static select_all_sm_query = `

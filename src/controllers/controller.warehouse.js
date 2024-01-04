@@ -29,8 +29,9 @@ class WarehouseController {
 
   // Fetch Received SM From Warehouse
   static async fetchWarehouseData(req, res, next) {
+    const project_id = req.params.project_id;
     tryCatch(
-      await WarehouseServiceFetchWarehouseData.fetchWarehouseData()
+      await WarehouseServiceFetchWarehouseData.fetchWarehouseData(project_id)
         .then((respond) => {
           return res.send(respond);
           // return res.send(respond);
@@ -60,6 +61,7 @@ class WarehouseController {
 
   // Fetch Departments
   static async fetchDepartments(req, res, next) {
+    console.log('---------------------------------------------------------------------------------------------------------------------------department work : ');
     tryCatch(
       await WarehouseServiceFetchDepartments.fetchDepartments()
         .then((respond) => {
@@ -75,6 +77,7 @@ class WarehouseController {
 
   // Fetch Warehouse Delivery Types
   static async fetchWarehouseDeliveryTypes (req, res, next) {
+    console.log('---------------------------------------------------------------------------------------------------------------------------delivery types work');
     tryCatch(
       await WarehouseServiceFetchWarehouseDeliveryTypes.fetchWarehouseDeliveryTypes()
         .then((respond) => {

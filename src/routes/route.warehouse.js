@@ -6,7 +6,7 @@ const WarehouseController = require("../controllers/controller.warehouse");
 const warehouseMiddleware = require('../middleware/warehouse_middleware');
 
 // Fetch Received SM To Warehouse
-router.get('/', WarehouseController.fetchWarehouseData);
+router.get('/:project_id', WarehouseController.fetchWarehouseData);
 
 // Fetch Departments
 router.get('/departments', WarehouseController.fetchDepartments);
