@@ -20,6 +20,9 @@ static STFWhereQueryTest(start_keyword, filtered_object, table_name) {
       if (key === "material_name") {
         where_query += `${key} ILIKE '%${filtered_object[key]}%' `;
       }
+      else if (key === "project_id") {
+        where_query += `${table_name}."projectId" = ${filtered_object[key]} `
+      }
       else if (key === "usernames") {
         where_query += `users_models.id = ${filtered_object[key]} `
       }
@@ -97,6 +100,9 @@ static STFWhereQueryTest(start_keyword, filtered_object, table_name) {
         if (key === "material_name") {
           where_query += `${key} ILIKE '%${filtered_object[key]}%' `;
         }
+        else if (key === "project_id") {
+          where_query += `${table_name}."projectId" = ${filtered_object[key]} `
+        }
         else if (key === "usernames") {
           where_query += `users_models.id = ${filtered_object[key]} `
         }
@@ -158,6 +164,9 @@ static STFWhereQueryTest(start_keyword, filtered_object, table_name) {
           where_query += `${key} ILIKE '%${filtered_object[key]}%' `;
           // where_query += ` or sm_material_name ILIKE '${filtered_object[key]}%' `
         } 
+        else if (key === "project_id") {
+          where_query += `${table_name}."projectId" = ${filtered_object[key]} `
+        }
         else if (key === "usernames" && filtered_object[key] !== "All") {
           where_query += `users_models.id = ${filtered_object[key]} `
         }
@@ -224,6 +233,9 @@ static STFWhereQueryTest(start_keyword, filtered_object, table_name) {
           where_query += `${key} ILIKE '%${filtered_object[key]}%' `;
           // where_query += ` or sm_material_name ILIKE '${filtered_object[key]}%' `
         } 
+        else if (key === "project_id") {
+          where_query += `stf_models."projectId" = ${filtered_object[key]} `
+        }
         else if (key === "usernames" && filtered_object[key] !== "All") {
           where_query += `users_models.id = ${filtered_object[key]} `
         }
@@ -292,6 +304,9 @@ static STFWhereQueryTest(start_keyword, filtered_object, table_name) {
         if (key === "sm_material_name") {
           where_query += `sm_models.${key} ILIKE '%${filtered_object[key]}%' `;
         } 
+        else if (key === "project_id") {
+          where_query += `sm_models."projectId" = ${filtered_object[key]} `
+        }
         else if (key === "deliver_to") {
           where_query += `${key} ILIKE '%${filtered_object[key]}%' `;
         }

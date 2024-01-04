@@ -116,8 +116,9 @@ class CommonController {
 
   // Fetch Procurement Users
   static async fetchProcurementUsers(req, res, next) {
+    const project_id = req.params.project_id;
     tryCatch(
-      await CommonServiceFetchProcurementUsers.fetchProcurementUsers()
+      await CommonServiceFetchProcurementUsers.fetchProcurementUsers(project_id)
         .then((respond) => {
           res.status(200).send(respond);
         })
@@ -131,8 +132,9 @@ class CommonController {
 
   // Fetch Procurement Users
   static async fetchSTFCreateUsernames(req, res, next) {
+    const project_id = req.params.project_id
     tryCatch(
-      await CommonServiceFetchCreatedSTFUsers.fetchSTFCreateUsernames()
+      await CommonServiceFetchCreatedSTFUsers.fetchSTFCreateUsernames(project_id)
         .then((respond) => {
           res.status(200).send(respond);
         })

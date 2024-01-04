@@ -21,6 +21,7 @@ const { getSocketInstance } = require("../utils/io");
 class CommonServiceFilterSTF {
   static async filterSTF(query) {
     const where_query = WhereQuery.STFWhereQueryTest("where", query, "stf_models");
+    console.log('---------------------------------------------------------------------------------------------------where query is : ', where_query)
     const string_query = `
     ${CommonQueries.select_all_stf_query} ${where_query}
     `;
@@ -105,9 +106,9 @@ class CommonServiceFilteredVendorNames {
 
 class CommonServiceFetchProcurementUsers {
   // Fetch Procurement Users
-  static async fetchProcurementUsers() {
+  static async fetchProcurementUsers(project_id) {
     const result = await sequelize.query(
-      CommonQueries.select_procurement_users
+      CommonQueries.select_procurement_users + ' and "projectId" = ' + project_id
     );
     return result[0];
   }
@@ -115,9 +116,9 @@ class CommonServiceFetchProcurementUsers {
 
 class CommonServiceFetchCreatedSTFUsers {
   // Fetch Procurement Users
-  static async fetchSTFCreateUsernames() {
+  static async fetchSTFCreateUsernames(project_id) {
     const result = await sequelize.query(
-      CommonQueries.select_stf_created_users_names
+      CommonQueries.select_stf_created_users_names(project_id)
     );
     return result[0];
   }
@@ -236,7 +237,6 @@ class CommonServiceStatisticData {
   // Combine Result
   static async getStatisticData(user_id, project_id) {
     
-    console.log('user id : ', user_id, ' project id : ',project_id);
     // Fetch Statistic Result Data
     const stf_inform = await this.getSTFStatisticData(project_id);
     const canceled_stf = await this.getCanceledSTF(project_id);
@@ -505,7 +505,6 @@ class CommonServiceChangeSTFStatus {
 class CommonServiceCancelSTF {
 
   static async cancelSTF (data) {
-    console.log('from frontend side coming data : ', data);
     //return 'OK';
     const respond = await CanceledSTFModel.create({
       stfId: data.stf_id,

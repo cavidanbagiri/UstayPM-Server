@@ -68,15 +68,17 @@ class CommonQueries {
   // static select_stf_created_users_names = `
   // select id, INITCAP(concat(name, ' ', surname)) as ordered_name from users_models
   // `;
-  static select_stf_created_users_names = `
+  static select_stf_created_users_names (project_id) {
+    return `
     select users_models.id,  count(distinct(stf_num)) as stf_data, 
     INITCAP(concat(users_models.name, ' ', users_models.surname )) as ordered_name
     from stf_models
     left join users_models on users_models.id = stf_models."userId"
-    where
+    where stf_models."projectId" = ${project_id} and
     stf_models."userId" in ( select distinct "userId" from stf_models )
     group by "userId", users_models.name, users_models.surname, users_models.id
-  `;
+  `
+  }
   
   // Fetch Department
   static fetch_departments = `
