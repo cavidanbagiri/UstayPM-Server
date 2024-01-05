@@ -40,6 +40,9 @@ router.get('/fetchdepartments', CommonController.fetchDepartments); // -> For Al
 // Fetch Row Inform By STF ID
 router.get('/fetchstfrowinform/:stf_id', CommonController.fetchSTFRowInform); // -> Each Project
 
+// Fetch Row Inform By STF ID
+router.get('/fetchstfdata/:project_id', CommonController.fetchSTFData); // -> Each Project
+
 // Get Statistic Data
 router.get('/statisticdata/:user_id', CommonController.getStatisticData); // -> Each Project
 

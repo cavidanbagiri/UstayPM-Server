@@ -244,6 +244,15 @@ class CommonServiceFetchSTFRowInform {
   }
 }
 
+class CommonServiceFetchSTFData {
+
+  static async fetchSTFData (project_id) {
+    const res = await sequelize.query(CommonQueries.fetch_stf_data(project_id));
+    return res[0]
+  }
+
+}
+
 class CommonServiceStatisticData {
   // Combine Result
   static async getStatisticData(user_id, project_id) {
@@ -539,6 +548,7 @@ module.exports = {
   CommonServiceFetchFields,
   CommonServiceFetchCompanies,
   CommonServiceFetchProcurementUsers,
+  CommonServiceFetchSTFData,
   CommonServiceFetchCreatedSTFUsers,
   CommonServiceFetchDepartments,
   CommonServiceFetchSTFRowInform,

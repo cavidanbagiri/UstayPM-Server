@@ -90,6 +90,24 @@ class CommonQueries {
     select id, department_name from department_models
   `
 
+  // Fetch STF Data For Home Page
+  static fetch_stf_data (project_id){
+    return `
+    select stf_models.id as stf_id, stf_num, material_type, material_name, material_amount as amount, 
+      material_unit as unit, stf_models."createdAt",
+      Initcap(concat(users_models.name, ' ', users_models.surname) ) as username, 
+      users_models.image_url,
+      canceledstf_models."stfId" as canceled_id,
+      fields_models.field_name from stf_models
+      left join users_models on stf_models."userId" = users_models.id
+      left join fields_models on fields_models.id = "fieldId"
+      left join canceledstf_models on stf_models.id = canceledstf_models."stfId" 
+      where stf_models."projectId" = ${project_id}
+      order by "createdAt" DESC
+      limit 20
+    `
+  } 
+
   // Fetch stf_row_inform 
   static fetch_stf_row_inform = `
   SELECT stf_models.id as stf_id, stf_models.stf_num, stf_models.material_type, stf_models.material_name, stf_models.material_amount,
