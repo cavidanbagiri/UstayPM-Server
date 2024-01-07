@@ -46,8 +46,11 @@ router.get('/fetchstfdata/:project_id', CommonController.fetchSTFData); // -> Ea
 // Get STF SM Statistic Data
 router.get('/statisticdata/:user_id', CommonController.getStatisticData); // -> Each Project
 
-// Getc Statistic Data For Group Chart
+// Get Statistic Data For Group Chart
 router.get('/groupchartstatisticdata/:project_id', CommonController.groupChartStatisticData); // -> Each Project
+
+// Get Warehouse Stock Statistic Data
+router.get('/warehousestockstatisticdata/:project_id', CommonController.wsStatisticData); // -> Each Project
 
 // Send Message To User
 router.post('/sendmessage', CommonController.sendMessage); // -> For All Projects

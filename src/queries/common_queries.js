@@ -175,6 +175,17 @@ class CommonQueries {
     where department_models.id not in (select "departmentId" from stf_models)
     `
   }
+  
+  // Warehouse Stock Chart Statistic Data
+  static warehouse_stock_statistic_data (project_id){
+    return `
+    select distinct stf_models.material_type, count(stf_models.material_type)  from warehouse_models
+    left join sm_models on warehouse_models."smId" = sm_models.id
+    left join stf_models on sm_models."stfId"=stf_models.id
+    where stf_models."projectId" = ${project_id}
+    group by stf_models.material_type
+    `
+  }
 
   static get_new_stf_notification_result = `
     select stfno, Initcap(Concat(users_models.name, ' ', users_models.surname )) as username, new_stf_notification_models."createdAt" from new_stf_notification_models 

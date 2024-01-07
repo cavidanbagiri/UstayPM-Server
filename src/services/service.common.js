@@ -325,6 +325,13 @@ class CommonServiceGrpupChartStatisticData {
   }
 }
 
+class CommonServiceWarehouseStockChartStatisticData {
+  static async wsStatisticData(project_id){
+    const res = await sequelize.query(CommonQueries.warehouse_stock_statistic_data(project_id))
+    return res[0];
+  }
+}
+
 class CommonServiceNewSTFNotification {
   // Get New STF Notification
   static async getNewSTFNotification(user_id) {
@@ -562,6 +569,7 @@ module.exports = {
   CommonServiceFilterProvided,
   CommonServiceStatisticData,
   CommonServiceGrpupChartStatisticData,
+  CommonServiceWarehouseStockChartStatisticData,
   CommonServiceReadNotification,
   CommonServiceNewSTFNotification,
   CommonServiceFetchAllUsers,

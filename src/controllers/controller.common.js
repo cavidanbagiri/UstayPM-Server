@@ -12,6 +12,7 @@ const {
   CommonServiceFilterProvided,
   CommonServiceStatisticData,
   CommonServiceGrpupChartStatisticData,
+  CommonServiceWarehouseStockChartStatisticData,
   CommonServiceReadNotification,
   CommonServiceFetchAllUsers,
   CommonServiceSendMessage,
@@ -229,10 +230,26 @@ class CommonController {
     );
   }
 
+  // Group Chart Statistic
   static async groupChartStatisticData (req, res, next) {
     const project_id = req.params.project_id;
     tryCatch(
       await CommonServiceGrpupChartStatisticData.groupChartStatisticData(project_id)
+      .then((respond) => {
+        return res.send(respond);
+      })
+      .catch((err) => {
+        console.log("Fetch Departments Error : ", err);
+        next(err);
+      })
+      )
+    }
+    
+  // Warehouse Chart Statistic
+  static async wsStatisticData (req, res, next) {
+    const project_id = req.params.project_id;
+    tryCatch(
+      await CommonServiceWarehouseStockChartStatisticData.wsStatisticData(project_id)
       .then((respond) => {
         return res.send(respond);
       })
