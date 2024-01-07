@@ -11,6 +11,7 @@ const {
   CommonServiceFetchSTFData,
   CommonServiceFilterProvided,
   CommonServiceStatisticData,
+  CommonServiceGrpupChartStatisticData,
   CommonServiceReadNotification,
   CommonServiceFetchAllUsers,
   CommonServiceSendMessage,
@@ -225,6 +226,20 @@ class CommonController {
           next(err);
         })
     );
+  }
+
+  static async groupChartStatisticData (req, res, next) {
+    const project_id = req.params.project_id;
+    tryCatch(
+      await CommonServiceGrpupChartStatisticData.groupChartStatisticData(project_id)
+      .then((respond) => {
+        return res.send(respond);
+      })
+      .catch((err) => {
+        console.log("Fetch Departments Error : ", err);
+        next(err);
+      })
+    )
   }
 
   // Read Notification

@@ -136,6 +136,7 @@ class CommonQueries {
   WHERE stf_models.id = 
   `
 
+  // Statistic Data FOr Showing Each Module and Home page
   static get_stf_statistic_result(project_id) {
     return `SELECT completed, count(completed) from stf_models where "projectId"=${project_id} group by completed`
   }
@@ -160,6 +161,19 @@ class CommonQueries {
     left join sm_models on warehouse_models."smId" = sm_models.id 
     where stock <> 0 and sm_models."projectId" = ${project_id}
     `;
+  }
+
+  // Group Chart Statistic Data
+  static group_chart_statistic_data (project_id){
+    return `
+    select count( distinct stf_num) as stf_count, department_name as department_id from stf_models
+    left join department_models on department_models.id = stf_models."departmentId"
+    where stf_models."projectId" = ${project_id}
+    group by department_models.department_name 
+    union
+    select department_models.id - department_models.id as stf_count, department_name as department_id from department_models
+    where department_models.id not in (select "departmentId" from stf_models)
+    `
   }
 
   static get_new_stf_notification_result = `

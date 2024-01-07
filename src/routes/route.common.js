@@ -43,8 +43,11 @@ router.get('/fetchstfrowinform/:stf_id', CommonController.fetchSTFRowInform); //
 // Fetch Row Inform By STF ID
 router.get('/fetchstfdata/:project_id', CommonController.fetchSTFData); // -> Each Project
 
-// Get Statistic Data
+// Get STF SM Statistic Data
 router.get('/statisticdata/:user_id', CommonController.getStatisticData); // -> Each Project
+
+// Getc Statistic Data For Group Chart
+router.get('/groupchartstatisticdata/:project_id', CommonController.groupChartStatisticData); // -> Each Project
 
 // Send Message To User
 router.post('/sendmessage', CommonController.sendMessage); // -> For All Projects
