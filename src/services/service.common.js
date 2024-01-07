@@ -321,7 +321,6 @@ class CommonServiceStatisticData {
 class CommonServiceGrpupChartStatisticData {
   static async groupChartStatisticData(project_id){
     const res = await sequelize.query(CommonQueries.group_chart_statistic_data(project_id))
-    console.log('res is : ', res[0]);
     return res[0];
   }
 }

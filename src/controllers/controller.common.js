@@ -24,6 +24,7 @@ const {
   CommonServiceCancelSTF,
   CommonServiceFetchWarehouseDeliveryTypes
 } = require("../services/service.common");
+const { chatMessageSenderProducer } = require("../utils/rabbitmqPublisher");
 const tryCatch = require("../utils/trycatch");
 
 class CommonController {
@@ -259,6 +260,8 @@ class CommonController {
 
   // Send Message
   static async sendMessage(req, res, next) {
+    // Start Work Producer
+    // chatMessageSenderProducer('test')
     tryCatch(
       await CommonServiceSendMessage.sendMessage(req.body)
         .then((respond) => {

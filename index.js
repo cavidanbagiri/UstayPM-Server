@@ -29,13 +29,18 @@ const cookieParser = require("cookie-parser");
 const errorHandler = require("./src/middleware/errorHandler");
 
 
+// Import Rabbitmq Chat Publisher
+// const rabbitMQConnection = require('./src/utils/rabbitmqConnection');
+// rabbitMQConnection();
+// const {chatMessageSenderProducer} = require('./src/utils/rabbitmqPublisher');
+ 
 // Import Routers
 const {
   HomeRouter,
   AdminRouter,
   UserRouter,
   STFRouter,
-  ProcurementRouter,
+  ProcurementRouter, 
   WarehouseRouter,
   CommonRouter,
   ProvideRouter,
@@ -79,6 +84,7 @@ app.use(errorHandler);
 
 
 const server = app.listen(3000, () => {
+  require('./src/utils/rabbitmqConnection');
   console.log(`Server is running in ${process.env.PORT} port`);
 });
 
@@ -133,7 +139,7 @@ io.on("connection", (socket) => {
     When User Send New Messages, This will show new message to sender
   */
   socket.on("new_messages", async (message_data) => {
-
+    // chatMessageSenderProducer();
     /*
     -----------This Fetching Operation and Emiting For Common Messages Notification and realtime chatting
     */
