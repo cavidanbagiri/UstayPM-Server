@@ -4,6 +4,7 @@ const {
   SMModel,
   ProvidedModel,
   ConditionModel,
+  AcceptSMNotificationModel,
 } = require("../../models");
 
 const moment = require('moment');
@@ -11,6 +12,8 @@ const moment = require('moment');
 const EmptyFieldError = require("../exceptions/EmptyFieldError");
 
 const WarehouseQueries = require("../queries/warehouse.queries");
+
+const { CommonServiceAcceptSMNotification } = require('../services/service.common')
 
 
 const {getSocketInstance} = require('../utils/io');
@@ -51,14 +54,6 @@ class WarehouseServiceAcceptSMS {
 
   // Check Entering Warehouse Data
   static async #checkBeforeForComingData(data){
-    // console.log('data : ', data);
-    // First Check 
-    // for (let i = 0; i < data.checked_values.length; i++) {
-    //   let max_entering_value = data.checked_values[i].left_over + (data.checked_values[i].left_over * 0.1) ;
-    //   if(data.table_data[i].entering_delivery_amount > max_entering_value ){
-    //     throw new EmptyFieldError(`${i} Index, Error Happen, Entering Value Greater Than Left Over Value`, 400);
-    //   }
-    // }
 
     for(let i = 0 ; i < data.checked_values.length; i++){
       // Find Material With Id;
@@ -88,13 +83,13 @@ class WarehouseServiceAcceptSMS {
 
     // Step 3 Emit that function
     const emit_socket_inform = {
+      createUserId: data.user.id,
       sm_num: data.checked_values[0].sm_num,
-      orderer_id: data.checked_values[0].orderer_id,
+      notifyUserId: data.checked_values[0].orderer_id,
       orderer_name: data.checked_values[0].orderer,
     }
-    const io = getSocketInstance();
-    // CommonServiceNewSTFNotification.getNewSTFNotification(0);
-    io.emit('accept_sms', emit_socket_inform);
+    await this.#emitAcceptNotification(emit_socket_inform);
+
     return "OK";
     
   }
@@ -283,6 +278,25 @@ class WarehouseServiceAcceptSMS {
       }
     );
   }
+
+  // After Accepting new SMS , send accpet_sm_notification socket
+  static async #emitAcceptNotification(data) {
+    const res = await AcceptSMNotificationModel.create({
+      sm_no: data.sm_num,
+      createUserId: data.createUserId,
+      notifyUserId: data.notifyUserId
+    }).then(async (respond)=>{
+      // const io = getSocketInstance();
+      // io.emit('accept_sms', data);
+      await CommonServiceAcceptSMNotification.getAcceptSMNotification(data.notifyUserId);
+    }).catch((err)=>{
+      console.log('error : ', err);
+      throw new Error("Error Happen to emit accept data notification : ", err);
+    })
+
+    
+  }
+
 }
 
 // Provide Sm From Warehouse To Area

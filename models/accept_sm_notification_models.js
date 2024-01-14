@@ -1,34 +1,34 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class new_stf_notification_model extends Model {
+  class accept_sm_notification_models extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({UserModel}) {
-      this.belongsTo(UserModel,  {foreignKey: 'createUserId'} )
-      this.belongsTo(UserModel,  {foreignKey: 'notifyUserId'} )
+    static associate({ UserModel }) {
+      this.belongsTo(UserModel, { foreignKey: "createUserId" });
+      this.belongsTo(UserModel, { foreignKey: "notifyUserId" });
     }
   }
-  new_stf_notification_model.init(
+  accept_sm_notification_models.init(
     {
       read: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: true
+        defaultValue: false,
       },
-      stfno: {
+      sm_no: {
         type: DataTypes.STRING,
         allowNull: false,
       },
     },
     {
       sequelize,
-      tableName: "new_stf_notification_models",
-      modelName: "NewSTFNotificationModel",
+      tableName: "accept_sm_notification_models",
+      modelName: "AcceptSMNotificationModel",
     }
   );
-  return new_stf_notification_model;
+  return accept_sm_notification_models;
 };

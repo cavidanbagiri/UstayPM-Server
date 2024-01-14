@@ -9,6 +9,7 @@ require("dotenv").config();
 // Import Socket Functions
 const {
   CommonServiceNewSTFNotification,
+  CommonServiceAcceptSMNotification,
   CommonServiceFetchMessage,
   CommonServiceFetchMessagesUnreadCounting
 } = require("./src/services/service.common");
@@ -119,6 +120,9 @@ io.on("connection", (socket) => {
   */
   socket.on("newstfnotification", async (userData) => {
     await CommonServiceNewSTFNotification.getNewSTFNotification(userData.id);
+  });
+  socket.on("acceptsmnotification", async (userData) => {
+    await CommonServiceAcceptSMNotification.getAcceptSMNotification(userData.id);
   });
 
   /*

@@ -14,6 +14,7 @@ const {
   CommonServiceGrpupChartStatisticData,
   CommonServiceWarehouseStockChartStatisticData,
   CommonServiceReadNotification,
+  CommonServiceReadAcceptNotification,
   CommonServiceFetchAllUsers,
   CommonServiceSendMessage,
   CommonServiceFetchMessage,
@@ -261,10 +262,27 @@ class CommonController {
   }
 
   // Read Notification
-  static async readNotification(req, res, next) {
+  static async NewSTFNotificationRead(req, res, next) {
     const user_id = req.params.user_id;
+    const notification_id = req.query.notification_id;
     tryCatch(
-      await CommonServiceReadNotification.readNotification(user_id)
+      await CommonServiceReadNotification.NewSTFNotificationRead(user_id, notification_id)
+        .then((respond) => {
+          return res.send(respond);
+        })
+        .catch((err) => {
+          console.log("Read Notification Error : ", err);
+          next(err);
+        })
+    );
+  }
+
+  // Read Accept Notification
+  static async readAcceptNotification(req, res, next) {
+    const user_id = req.params.user_id;
+    const notification_id = req.query.notification_id;
+    tryCatch(
+      await CommonServiceReadAcceptNotification.readAcceptNotification(user_id, notification_id)
         .then((respond) => {
           return res.send(respond);
         })

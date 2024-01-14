@@ -15,6 +15,7 @@ class CommonQueries {
   sm_models.sm_material_amount as amount, sm_models.sm_material_unit as unit, sm_models.price, sm_models.total, sm_models.currency, sm_models.left_over, sm_models.approximate_date,
   sm_models."createdAt", sm_models."projectId" as project_id, sm_models."departmentId" as department_id,
   Initcap(concat(users_models.name , ' ', users_models.surname))  as orderer,
+  users_models.id as orderer_id,
   Initcap(concat(um.name, ' ', um.surname )) as supplier,
   vendors_models.vendor_name
   from sm_models
@@ -187,13 +188,41 @@ class CommonQueries {
   }
 
   static get_new_stf_notification_result = `
-    select stfno, Initcap(Concat(users_models.name, ' ', users_models.surname )) as username, new_stf_notification_models."createdAt" from new_stf_notification_models 
+    select new_stf_notification_models.id as notification_id, stfno, Initcap(Concat(users_models.name, ' ', users_models.surname )) as username, new_stf_notification_models."createdAt" from new_stf_notification_models 
     left join users_models on new_stf_notification_models."createUserId" = users_models.id
     where read=false and "notifyUserId" = 
   `
-  static read_notification = `
-    update new_stf_notification_models set read = true where read = false and "notifyUserId" = 
+
+  static get_accept_sm_notification_result = `
+  select accept_sm_notification_models.id as notification_id, sm_no, Initcap(Concat(users_models.name, ' ', users_models.surname )) as username, 
+  Initcap(Concat(u_m.name, ' ', u_m.surname )) as orderer,
+  u_m.id as orderer_id, 
+  accept_sm_notification_models."createdAt" 
+  from accept_sm_notification_models 
+  left join users_models on accept_sm_notification_models."createUserId" = users_models.id
+  left join users_models u_m on accept_sm_notification_models."notifyUserId" = u_m.id 
+  where read=false and "notifyUserId" =
   `
+
+  static read_and_delete_new_stf_notification (notification_id){
+    return `
+      delete from new_stf_notification_models where id = ${notification_id} 
+    `
+  }
+
+  // [ DEPRECATED ]
+  // static read_accept_notification (user_id, notification_id){
+  //   return `
+  //     update accept_sm_notification_models set read = true where id = ${notification_id} 
+  //   `
+  // }
+
+  // [ After Read Notification, Delete it ]
+  static read_and_delete_accept_notification (notification_id){
+    return `
+      delete from accept_sm_notification_models where id = ${notification_id} 
+    `
+  }
  
   static fetchMessageQuery(room_id){
     const  fetch_message = `

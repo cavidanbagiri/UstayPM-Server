@@ -21,7 +21,6 @@ const { getSocketInstance } = require("../utils/io");
 class CommonServiceFilterSTF {
   static async filterSTF(query) {
     const where_query = WhereQuery.STFWhereQueryTest("where", query, "stf_models");
-    console.log('---------------------------------------------------------------------------------------------------where query is : ', where_query)
     const string_query = `
     ${CommonQueries.select_all_stf_query} ${where_query}
     `;
@@ -343,11 +342,31 @@ class CommonServiceNewSTFNotification {
   }
 }
 
+class CommonServiceAcceptSMNotification {
+  // Get New STF Notification
+  static async getAcceptSMNotification(user_id) {
+    const result = await sequelize.query(
+      CommonQueries.get_accept_sm_notification_result + user_id
+    );
+    console.log('result is : ', result[0]);
+    const io = getSocketInstance();
+    io.in(user_id).emit("accept_sms", result[0]);
+  }
+}
+
 class CommonServiceReadNotification {
   // Set Notification as Readed
-  static async readNotification(user_id) {
-    await sequelize.query(CommonQueries.read_notification + user_id);
+  static async NewSTFNotificationRead(user_id, notification_id) {
+    await sequelize.query(CommonQueries.read_and_delete_new_stf_notification(notification_id));
     return "OK";
+  }
+}
+
+class CommonServiceReadAcceptNotification {
+  // Set Notification as Readed
+  static async readAcceptNotification(user_id, notification_id) {
+    await sequelize.query(CommonQueries.read_and_delete_accept_notification(notification_id));
+    return 'OK';
   }
 }
 
@@ -571,7 +590,9 @@ module.exports = {
   CommonServiceGrpupChartStatisticData,
   CommonServiceWarehouseStockChartStatisticData,
   CommonServiceReadNotification,
+  CommonServiceReadAcceptNotification,
   CommonServiceNewSTFNotification,
+  CommonServiceAcceptSMNotification,
   CommonServiceFetchAllUsers,
   CommonServiceSendMessage,
   CommonServiceFetchMessage,

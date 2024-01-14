@@ -71,7 +71,8 @@ router.get('/fetchunreadmessagesandusers/:current_id', CommonController.fetchUnr
 router.post('/settruemessages', CommonController.setTrueReadingMessages); // -> For All Projects
 
 // Post Nofitication Reading
-router.post('/readnotification/:user_id', CommonController.readNotification); // -> For All Projects
+router.post('/readnotification/:user_id', CommonController.NewSTFNotificationRead); // -> For All Projects
+router.post('/readacceptsmnotification/:user_id', CommonController.readAcceptNotification); // -> For All Projects
 
 // Change STF Statis
 router.post('/changestatus', CommonController.setStfStatus); // -> Each Project
