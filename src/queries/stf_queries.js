@@ -23,7 +23,7 @@ class STFQUeries {
   // Fetch ALl STF For User
   static fetchUserSTFAll(user_id) {
     const string_query = `
-    select stf_models.id as stf_id, stf_num, material_type, material_name, material_amount as amount, material_unit as unit, stf_models."createdAt", completed,
+    select stf_models.id as stf_id, users_models.id as user_id, stf_models."projectId" as project_id, stf_num, material_type, material_name, material_amount as amount, material_unit as unit, stf_models."createdAt", completed,
     Initcap(concat(users_models.name, ' ', users_models.surname) ) as username, 
     canceledstf_models."stfId" as canceled_id,
     fields_models.field_name from stf_models

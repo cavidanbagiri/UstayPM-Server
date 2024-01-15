@@ -74,6 +74,9 @@ router.post('/settruemessages', CommonController.setTrueReadingMessages); // -> 
 router.post('/readnotification/:user_id', CommonController.NewSTFNotificationRead); // -> For All Projects
 router.post('/readacceptsmnotification/:user_id', CommonController.readAcceptNotification); // -> For All Projects
 
+// Toggle Star
+router.post('/setstar/:user_id', CommonController.toggleStar); // -> Each Project
+
 // Change STF Statis
 router.post('/changestatus', CommonController.setStfStatus); // -> Each Project
 

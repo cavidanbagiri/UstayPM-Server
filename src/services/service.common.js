@@ -14,7 +14,8 @@ const {
   VendorModel,
   WarehouseModel,
   SituationModel,
-  ConditionModel
+  ConditionModel,
+  StarredModel
 } = require("../../models");
 const { getSocketInstance } = require("../utils/io");
 
@@ -573,6 +574,69 @@ class CommonServiceCancelSTF {
 
 }
 
+
+// Toggle Star Class
+class CommonServiceToggleStar {
+
+  // Toggle Star
+  static async toggleStar(body){
+    
+    // Step - 1 -> Check Coming Data is STF or SM
+    if(!body?.sm_id){
+      // Step - 2.0 -> Check Table, STF Or SM Id and User Id is avaliable in table, Create new Starred Row Or Delete
+      return await this.#createNewSTFStarred(body);
+    }
+    else{
+      return 'cavidan'
+    }
+    
+  }
+
+  // Create New Starred STF
+  static async #createNewSTFStarred(body){
+    
+    // Step - 2.1 -> Find Current Starred Row For Stf
+    let find_current = await StarredModel.findOne({
+      where:{
+        userId: body.user_id,
+        stfId: body.stf_id,
+        projectId: body.project_id
+      }
+    });
+    // Step - 2.2 -> Create New Starred Row
+    if(!find_current){
+      // Step - 2.3 -> Create new Starred Row
+      const res = await StarredModel.create({
+        userId:body.user_id,
+        stfId:body.stf_id,
+        smId:null,
+        projectId:body.project_id
+      }).then((respond)=>{
+        console.log('Row Starred');
+        return 'Row Starred';
+      }).catch((err)=>{
+        throw new Error('Create New Star Error : ', err)
+      })
+      return res;
+    }
+    else{
+      //console.log('inside of else and find current is : ', find_current);
+      // Step - 2.3 -> Create new Starred Row
+      const res = await StarredModel.destroy({
+        where:{
+          id: find_current.id
+        }
+      }).then((respond)=>{
+        console.log('Unstarred Work');
+        return 'Row Unstarred';
+      }).catch((err)=>{
+        throw new Error('Create New Star Error : ', err)
+      })
+      return res;
+    }
+  }
+}
+
 module.exports = {
   CommonServiceFilterSTF,
   CommonServiceFilterSM,
@@ -602,5 +666,6 @@ module.exports = {
   CommonServiceSetTrueReadingMessages,
   CommonServiceFetchMessagesUnreadCounting,
   CommonServiceChangeSTFStatus,
-  CommonServiceCancelSTF
+  CommonServiceCancelSTF,
+  CommonServiceToggleStar
 };

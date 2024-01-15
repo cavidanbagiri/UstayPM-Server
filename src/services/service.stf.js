@@ -232,11 +232,6 @@ class FetchUserSTF {
   // Get User STF All
   static async fetchUserSTFAll(user_id) {
     const res = await sequelize.query(STFQueries.fetchUserSTFAll(user_id));
-    /* 
-      Just For Checking
-      const io = getSocketInstance();
-      io.emit('returnfirst',{name:"cavidan"})
-    */
     return res[0];
   }
 }
