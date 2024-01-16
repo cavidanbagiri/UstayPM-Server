@@ -94,12 +94,27 @@ class CommonQueries {
   `
 
   // Fetch STF Data For Home Page
+  // static fetch_stf_data (project_id){
+  //   return `
+  //   select stf_models.id as stf_id, stf_num,  material_name, material_amount as amount, 
+  //     material_unit as unit, 
+  //     Initcap(concat(users_models.name, ' ', users_models.surname) ) as username, 
+  //     users_models.image_url,
+  //     canceledstf_models."stfId" as canceled_id
+  //     from stf_models
+  //     left join users_models on stf_models."userId" = users_models.id
+  //     left join canceledstf_models on stf_models.id = canceledstf_models."stfId" 
+  //     where stf_models."projectId" = ${project_id}
+  //     order by stf_models.id DESC
+  //     limit 20
+  //   `
+  // } 
   static fetch_stf_data (project_id){
     return `
-    select stf_models.id as stf_id, stf_num,  material_name, material_amount as amount, 
-      material_unit as unit, 
-      Initcap(concat(users_models.name, ' ', users_models.surname) ) as username, 
+    select stf_models.id as stf_id, stf_num,
+      Initcap(concat(users_models.name, ' ', users_models.surname) ) as created_by, 
       users_models.image_url,
+      stf_models."createdAt" as created_date,
       canceledstf_models."stfId" as canceled_id
       from stf_models
       left join users_models on stf_models."userId" = users_models.id
