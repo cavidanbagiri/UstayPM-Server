@@ -23,13 +23,15 @@ class STFQUeries {
   // Fetch ALl STF For User
   static fetchUserSTFAll(user_id) {
     const string_query = `
-    select stf_models.id as stf_id, users_models.id as user_id, stf_models."projectId" as project_id, stf_num, material_type, material_name, material_amount as amount, material_unit as unit, stf_models."createdAt", completed,
+    select stf_models.id as stf_id, users_models.id as user_id, stf_models."projectId" as project_id, starred_models.id as starred_id,
+    stf_num, material_type, material_name, material_amount as amount, material_unit as unit, stf_models."createdAt", completed,
     Initcap(concat(users_models.name, ' ', users_models.surname) ) as username, 
     canceledstf_models."stfId" as canceled_id,
     fields_models.field_name from stf_models
     left join users_models on stf_models."userId" = users_models.id
     left join fields_models on fields_models.id = "fieldId"
-    left join canceledstf_models on stf_models.id = canceledstf_models."stfId" 
+    left join canceledstf_models on stf_models.id = canceledstf_models."stfId"
+    left join starred_models on starred_models."stfId" = stf_models.id
     where stf_models."userId"=${user_id}
     `;
     return string_query;

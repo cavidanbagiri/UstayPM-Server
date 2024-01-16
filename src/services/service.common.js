@@ -612,8 +612,12 @@ class CommonServiceToggleStar {
         smId:null,
         projectId:body.project_id
       }).then((respond)=>{
-        console.log('Row Starred');
-        return 'Row Starred';
+        console.log('Row Starred', respond);
+        const return_result = {
+          msg: 'Row Starred',
+          id: respond.id
+        }
+        return return_result;
       }).catch((err)=>{
         throw new Error('Create New Star Error : ', err)
       })
@@ -627,7 +631,7 @@ class CommonServiceToggleStar {
           id: find_current.id
         }
       }).then((respond)=>{
-        console.log('Unstarred Work');
+        console.log('Unstarred Work', respond);
         return 'Row Unstarred';
       }).catch((err)=>{
         throw new Error('Create New Star Error : ', err)
