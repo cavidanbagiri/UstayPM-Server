@@ -9,8 +9,10 @@ class ProcurementController {
   // Fetch All STF
   static async fetchSTF(req, res, next) {
     const project_id = req.params.project_id;
+    const user_id = req.query.user_id;
+    console.log('========================================================================project : ', project_id, " user id : ", user_id)
     tryCatch(
-      await ProcurementServiceFetchSTF.fetchSTF(project_id)
+      await ProcurementServiceFetchSTF.fetchSTF(project_id, user_id)
         .then((respond) => {
           res.status(200).send(respond);
         })

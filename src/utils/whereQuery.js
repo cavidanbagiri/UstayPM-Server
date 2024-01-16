@@ -73,15 +73,11 @@ static STFWhereQueryTest(start_keyword, filtered_object, table_name) {
     where_query += ' and '+ remove_canceled_stf;
 
   }
-
-
-  console.log('--------------------------------------------------------where query is : ', temp);
   
   // Add Ascending Or Descending
   where_query += time_query;
   
-  console.log('--------------------------------------------------------second where query is : ', where_query);
-
+  
   return where_query;
 
 }

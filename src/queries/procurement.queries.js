@@ -1,13 +1,20 @@
 class ProcurementQueries {
 
   // Fetch All STF 
-  static select_all_stf_query (project_id){
+  static select_all_stf_query (project_id, user_id){
 
     return `
-    select stf_models.id as stf_id, stf_models.stf_num, stf_models.completed, stf_models.material_type, stf_models.material_name, stf_models.material_amount as amount, stf_models.material_unit as unit, stf_models."createdAt", stf_models."projectId" as project_id, stf_models."departmentId" as department_id,
+    select stf_models.id as stf_id, stf_models.stf_num, stf_models.completed, 
+    stf_models.material_type, stf_models.material_name, stf_models.material_amount as amount, stf_models.material_unit as unit, 
+    stf_models."createdAt", stf_models."projectId" as project_id, stf_models."departmentId" as department_id,
+    CASE 
+    WHEN starred_models."userId"=${user_id} THEN starred_models.id
+    ELSE null
+    END as starred_id,
     Initcap(concat(users_models.name , ' ', users_models.surname))  as username
     from stf_models
     left join users_models on users_models.id = stf_models."userId" 
+    left join starred_models on starred_models."stfId" = stf_models.id
     where stf_models."projectId" = ${project_id} and stf_models.id not in ( select "stfId" from canceledstf_models) 
     order by "createdAt" desc
     `
