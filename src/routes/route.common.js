@@ -5,7 +5,7 @@ const CommonController = require('../controllers/controller.common');
 const cancelSTF = require('../middleware/cancelstf_middleware');
 
 // Filter All STF
-router.get('/filterstf', CommonController.filterSTF); // -> Each Project
+router.get('/filterstf/:user_id', CommonController.filterSTF); // -> Each Project
 
 // Filter All SM
 router.get('/filtersm', CommonController.filterSM); // -> Each Project

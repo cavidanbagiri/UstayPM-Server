@@ -1,16 +1,23 @@
 class CommonQueries {
   // Fetch All STF
-  static select_all_stf_query = `
-  select stf_models.id as stf_id, users_models.id as user_id, stf_models."projectId" as project_id, starred_models.id as starred_id,
-  stf_models.stf_num, stf_models.completed, stf_models.material_type, stf_models.material_name, stf_models.material_amount as amount,
-  stf_models.material_unit as unit, stf_models."createdAt", stf_models."projectId" as project_id, stf_models."departmentId" as department_id,
-  INITCAP(concat(users_models.name , ' ', users_models.surname))  as username, fields_models.field_name
-  from stf_models
-  left join users_models on users_models.id = stf_models."userId"
-  left join fields_models on fields_models.id = "fieldId"
-  left join starred_models on starred_models."stfId" = stf_models.id
-  `;
+  static select_all_stf_query (user_id){
 
+    return `
+    select stf_models.id as stf_id, users_models.id as user_id, stf_models."projectId" as project_id, 
+    CASE 
+    WHEN starred_models."userId"=${user_id} THEN starred_models.id
+    ELSE null
+    END as starred_id,
+    stf_models.stf_num, stf_models.completed, stf_models.material_type, stf_models.material_name, stf_models.material_amount as amount,
+    stf_models.material_unit as unit, stf_models."createdAt", stf_models."projectId" as project_id, stf_models."departmentId" as department_id,
+    INITCAP(concat(users_models.name , ' ', users_models.surname))  as username, fields_models.field_name
+    from stf_models
+    left join users_models on users_models.id = stf_models."userId"
+    left join fields_models on fields_models.id = "fieldId"
+    left join starred_models on starred_models."stfId" = stf_models.id
+    `;
+
+  }   
 
   static select_all_sm_query = `
   select sm_models.id as sm_id, sm_models."stfId" as stf_id, sm_models.sm_num, stf_models.stf_num, situation_models.status_name as situation, sm_models.sm_material_name,

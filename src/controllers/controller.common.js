@@ -34,8 +34,9 @@ class CommonController {
   // Fetch STF Filter Function
   static async filterSTF(req, res, next) {
     const query = req.query;
+    const user_id = req.params.user_id;
     tryCatch(
-      await CommonServiceFilterSTF.filterSTF(query)
+      await CommonServiceFilterSTF.filterSTF(query, user_id)
         .then((respond) => {
           return res.status(200).send(respond);
         })

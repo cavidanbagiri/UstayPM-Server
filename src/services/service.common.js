@@ -20,10 +20,10 @@ const {
 const { getSocketInstance } = require("../utils/io");
 
 class CommonServiceFilterSTF {
-  static async filterSTF(query) {
+  static async filterSTF(query, user_id) {
     const where_query = WhereQuery.STFWhereQueryTest("where", query, "stf_models");
     const string_query = `
-    ${CommonQueries.select_all_stf_query} ${where_query}
+    ${CommonQueries.select_all_stf_query(user_id)} ${where_query}
     `;
     const result = await sequelize.query(string_query);
     return result[0];
