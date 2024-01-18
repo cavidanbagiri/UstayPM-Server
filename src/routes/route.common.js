@@ -77,6 +77,9 @@ router.post('/readacceptsmnotification/:user_id', CommonController.readAcceptNot
 // Toggle Star
 router.post('/setstar/:user_id', CommonController.toggleStar); // -> Each Project
 
+// Fetch User Starred STF's
+router.get('/fetchuserstarred/:user_id', CommonController.starredSTF); // -> Each Project
+
 // Change STF Statis
 router.post('/changestatus', CommonController.setStfStatus); // -> Each Project
 

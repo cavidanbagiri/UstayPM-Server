@@ -25,7 +25,8 @@ const {
   CommonServiceChangeSTFStatus,
   CommonServiceCancelSTF,
   CommonServiceFetchWarehouseDeliveryTypes,
-  CommonServiceToggleStar
+  CommonServiceToggleStar,
+  CommonServiceFetchUserSTFStarred
 } = require("../services/service.common");
 const { chatMessageSenderProducer } = require("../utils/rabbitmqPublisher");
 const tryCatch = require("../utils/trycatch");
@@ -446,6 +447,22 @@ class CommonController {
     )
   }
 
+  static async starredSTF (req, res, next) {
+    const user_id = req.params.user_id;
+    const project_id = req.query.project_id;
+
+    tryCatch(
+      await CommonServiceFetchUserSTFStarred.starredSTF(user_id, project_id)
+      .then((respond)=>[
+        res.send(respond)
+      ])
+      .catch((err)=>{
+        console.log('Toggle Star Error : ', err);
+        next(err);
+      })
+    )
+
+  }
 
 }
 

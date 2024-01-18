@@ -641,6 +641,25 @@ class CommonServiceToggleStar {
   }
 }
 
+
+class CommonServiceFetchUserSTFStarred {
+
+  static async starredSTF(user_id, project_id) {
+
+    const result = await StarredModel.findAll({
+      where:{
+        userId: user_id,
+        projectId: project_id
+      },
+      include:{
+        model: STFModel,
+      }
+    })
+    return result;
+  }
+
+}
+
 module.exports = {
   CommonServiceFilterSTF,
   CommonServiceFilterSM,
@@ -671,5 +690,6 @@ module.exports = {
   CommonServiceFetchMessagesUnreadCounting,
   CommonServiceChangeSTFStatus,
   CommonServiceCancelSTF,
-  CommonServiceToggleStar
+  CommonServiceToggleStar,
+  CommonServiceFetchUserSTFStarred
 };
