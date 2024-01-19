@@ -9,6 +9,7 @@ const {
   CommonServiceFetchDepartments,
   CommonServiceFetchSTFRowInform,
   CommonServiceFetchSTFData,
+  CommonServiceFetchUserData,
   CommonServiceFilterProvided,
   CommonServiceStatisticData,
   CommonServiceGrpupChartStatisticData,
@@ -206,6 +207,23 @@ class CommonController {
     const project_id = req.params.project_id;
     tryCatch(
       await CommonServiceFetchSTFData.fetchSTFData(project_id)
+        .then((respond) => {
+          return res.send(respond);
+        })
+        .catch((err) => {
+          console.log("Fetch Departments Error : ", err);
+          next(err);
+        })
+    );
+
+    return "OK";
+  }
+
+  // Fetch Row Inform By STF ID
+  static async fetchUserData(req, res, next) {
+    const project_id = req.params.project_id;
+    tryCatch(
+      await CommonServiceFetchUserData.fetchUserData(project_id)
         .then((respond) => {
           return res.send(respond);
         })

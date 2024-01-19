@@ -132,6 +132,14 @@ class CommonQueries {
     `
   } 
 
+  static fetch_user_data_home (project_id){
+    return `
+    select id, image_url, INITCAP(CONCAT(users_models.name, ' ', users_models.surname)) as username
+    from users_models 
+    where "projectId"=${project_id}
+    `
+  } 
+
   // Fetch stf_row_inform 
   static fetch_stf_row_inform = `
   SELECT stf_models.id as stf_id, stf_models.stf_num, stf_models.material_type, stf_models.material_name, stf_models.material_amount,

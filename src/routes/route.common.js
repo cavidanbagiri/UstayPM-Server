@@ -42,6 +42,8 @@ router.get('/fetchstfrowinform/:stf_id', CommonController.fetchSTFRowInform); //
 
 // Fetch Row Inform By STF ID
 router.get('/fetchstfdata/:project_id', CommonController.fetchSTFData); // -> Each Project
+// 
+router.get('/fetchuserdata/:project_id', CommonController.fetchUserData); // -> Each Project
 
 // Get STF SM Statistic Data
 router.get('/statisticdata/:user_id', CommonController.getStatisticData); // -> Each Project
