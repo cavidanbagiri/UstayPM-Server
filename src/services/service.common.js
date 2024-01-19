@@ -646,16 +646,20 @@ class CommonServiceFetchUserSTFStarred {
 
   static async starredSTF(user_id, project_id) {
 
-    const result = await StarredModel.findAll({
-      where:{
-        userId: user_id,
-        projectId: project_id
-      },
-      include:{
-        model: STFModel,
-      }
-    })
-    return result;
+    // const result = await StarredModel.findAll({
+    //   where:{
+    //     userId: user_id,
+    //     projectId: project_id
+    //   },
+    //   include:{
+    //     model: STFModel,
+    //   }
+    // })
+    // return result;
+
+    const res = await sequelize.query(CommonQueries.select_user_starred_stf(user_id));
+
+    return res[0];
   }
 
 }
