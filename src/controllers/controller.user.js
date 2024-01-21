@@ -1,4 +1,4 @@
-const { UserService, UploadImage } = require("../services/service.user");
+const { UserService, UploadImage, FetchAllUsers } = require("../services/service.user");
 
 const tryCatch = require("../utils/trycatch");
 const hashPassowrd = require("../helpers/hash_password");
@@ -8,6 +8,7 @@ const { generateToken, refreshToken } = require("../helpers/tokens");
 // const {formidable} = require("formidable");
 
 class UserController {
+
   // User Login
   static async loginUser(req, res, next) {
     const user_data = req.body;
@@ -36,15 +37,28 @@ class UserController {
     );
   }
 
+  // Fetch All Users
+  static async fetchAllUsers (req, res, next){
+    const project_id = req.params.projectid;
+    const user_id = req.query.userid;
+
+    tryCatch(
+      await FetchAllUsers.fetahAllUsers(project_id, user_id)
+      .then((respond) => {
+        return res.send(respond);
+      })
+      .catch((err) => {
+        console.log("Fetch All Users Error : ", err);
+      })
+    )
+
+  }
+
   // Upload Images To Database
   static async uploadImage(req, res, next) {
     const user_id = req.body.id;
     const file = req.file;
     
-    
-    // console.log('0req : ', req.file);
-    // console.log('1req : ', req.body);
-    // console.log('2req : ', req.body.file);
 
     tryCatch(
       await UploadImage.uploadImageToStorage(user_id, file)

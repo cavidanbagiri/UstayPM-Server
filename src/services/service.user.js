@@ -4,8 +4,9 @@ const {
   DepartmentModel,
   ProjectModel,
   StatusModel,
+  sequelize,
 } = require("../../models");
-
+const UserQueries = require('../queries/user_queries');
 const s3 = require('../../storage/storage');
 
 class UserService {
@@ -38,6 +39,17 @@ class UserService {
         throw new UserNotFoundError("User Not Found : " + err, 400);
       });
   }
+}
+
+class FetchAllUsers {
+
+  static async fetahAllUsers(project_id, user_id){  
+
+    const res = await sequelize.query(UserQueries.fetchAllUsers(project_id, user_id));
+    return res[0];
+
+  }
+
 }
 
 class UploadImage {
@@ -80,4 +92,5 @@ class UploadImage {
 module.exports = {
   UserService,
   UploadImage,
+  FetchAllUsers
 };
